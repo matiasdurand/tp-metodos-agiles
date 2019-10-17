@@ -23,8 +23,8 @@ public class BirthdayValidator implements Validator<TitularDTO> {
 			LocalDate actual = LocalDate.now();
 			Long age = ChronoUnit.YEARS.between(birthday, actual);
 		
-			if(age <= 18) {
-				errors.add("Debe ser mayor de edad para solicitar una licencia.");
+			if(age <= 17) {
+				errors.add("Debe ser mayor de 17 para solicitar una licencia.");
 			}
 		}
 		
