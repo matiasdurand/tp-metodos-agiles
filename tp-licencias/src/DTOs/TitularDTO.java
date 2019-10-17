@@ -1,9 +1,12 @@
-package domain;
+package DTOs;
 
 import java.util.Date;
 
-public class Titular {
-	
+import domain.BloodType;
+import domain.TypeId;
+
+public class TitularDTO {
+
 	private TypeId typeId;
 	private Long personalId;
 	private String name;
@@ -61,6 +64,7 @@ public class Titular {
 	}
 	public void setOrganDonor(Boolean organDonor) {
 		this.organDonor = organDonor;
-	} 
+	}
+	
 	
 }
