@@ -10,6 +10,7 @@ public class License {
 	private Date emisionDate;
 	private Date expiricyDate;
 	private Integer validity;
+	private String observation; 
 	
 	
 	public Titular getTitular() {
@@ -48,5 +49,12 @@ public class License {
 	public void setValidity(Integer validity) {
 		this.validity = validity;
 	}
+	public String getObservation() {
+		return observation;
+	}
+	public void setObservation(String observation) {
+		this.observation = observation;
+	}
+	
 
 }

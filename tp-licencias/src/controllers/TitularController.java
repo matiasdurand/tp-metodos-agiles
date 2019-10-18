@@ -17,17 +17,13 @@ import validators.Validator;
 
 public class TitularController {
 	
-	private static TitularController _INSTANCE = null;
-	//private TitularDAO titularDAO;
+	private static TitularController _INSTANCE = new TitularController();
+	//private TitularDAO titularDAO = new TitularDAOSQL();
 	
 	private TitularController () { 
-		//titularDAO = new TitularDAOSQL();
 	}
 	
 	public static TitularController getInstance() { 
-		if(_INSTANCE == null) { 
-			_INSTANCE = new TitularController();
-		}
 		return _INSTANCE;
 	}	
 
@@ -69,17 +65,13 @@ public class TitularController {
 		TitularDTO titularDTO = titularDAO.search(typeId, id);
 		
 		if(titularDTO == null) { 
-			
-			TaxPayerController.getInstance().taxPayerLocator(typeId, id);
-			
+			//mostrar popup que el titular no existe y que lo tiene que dar de alta
 		}
 		else {
-			//mostrar aviso que ya existe
+			//actualizar lista con el resultado de la busqueda
 		}
-		
 
 	}
-	
 	
 	
 }

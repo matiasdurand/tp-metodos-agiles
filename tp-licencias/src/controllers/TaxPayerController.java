@@ -5,17 +5,13 @@ import domain.TypeId;
 
 public class TaxPayerController {
 	
-	private static TaxPayerController _INSTANCE = null;
-	//private TaxPayerDAO taxPayerDAO; 
+	private static TaxPayerController _INSTANCE = new TaxPayerController();
+	private TaxPayerDAO taxPayerDAO = new TaxPayerDAOSQL(); 
 	
 	private TaxPayerController () { 
-		//taxPayerDAO = new TaxPayerDAOSQL();
 	}
 	
 	public static TaxPayerController getInstance() { 
-		if(_INSTANCE == null) { 
-			_INSTANCE = new TaxPayerController();
-		}
 		return _INSTANCE;
 	}	
 	
@@ -24,10 +20,10 @@ public class TaxPayerController {
 		TaxPayerDTO taxPayerDTO = taxPayerDAO.search(typeId, id); 
 		
 		if(taxPayerDTO == null) {
-			//configurar popup
+			//configurar popup adverencia de que no existe el contribuyente
 		}
 		else { 
-			//mansar dto para cargar datos no editables
+			//mandar dto contribuyente para cargar datos no editables
 		}
 		
 	}

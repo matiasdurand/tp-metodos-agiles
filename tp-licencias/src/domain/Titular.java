@@ -1,6 +1,8 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Titular {
 	
@@ -12,6 +14,7 @@ public class Titular {
 	private Date birthday;
 	private BloodType bloodType;
 	private Boolean organDonor;
+	private List<License> licenses = new ArrayList<License>(); 
 	
 	
 	public TypeId getTypeId() {
@@ -61,6 +64,13 @@ public class Titular {
 	}
 	public void setOrganDonor(Boolean organDonor) {
 		this.organDonor = organDonor;
+	}
+	public List<License> getLicenses() {
+		return licenses;
+	}
+	public void setLicenses(List<License> licenses) {
+		this.licenses = licenses;
 	} 
+	
 	
 }
