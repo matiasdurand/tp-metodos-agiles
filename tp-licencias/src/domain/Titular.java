@@ -1,17 +1,52 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(name="titular")
 public class Titular {
 	
+	@Enumerated(EnumType.STRING)
+	@Column (name="tipo_documento")
 	private TypeId typeId;
+	
+	@Column (name="numero_documento")
 	private Long personalId;
+	
+	@Column (name="nombre")
 	private String name;
+	
+	@Column (name="apellido")
 	private String surname;
-	private String adress; 
+	
+	@Column (name="direccion")
+	private String adress;
+	
+	@Column (name="fecha_nacimiento")
 	private Date birthday;
-	private String bloodType;
+	
+	@Enumerated(EnumType.STRING)
+	@Column (name="grupo_sanguineo")
+	private BloodType bloodType;
+	
+	@Column (name="es_donante")
 	private Boolean organDonor;
+	
+	@OneToMany(mappedBy="titular",
+			cascade = CascadeType.ALL, 
+	        orphanRemoval = true)
+	private List<License> licenses = new ArrayList<License>(); 
 	
 	
 	public TypeId getTypeId() {
@@ -50,10 +85,10 @@ public class Titular {
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
-	public String getBloodType() {
+	public BloodType getBloodType() {
 		return bloodType;
 	}
-	public void setBloodType(String bloodType) {
+	public void setBloodType(BloodType bloodType) {
 		this.bloodType = bloodType;
 	}
 	public Boolean getOrganDonor() {
@@ -61,6 +96,13 @@ public class Titular {
 	}
 	public void setOrganDonor(Boolean organDonor) {
 		this.organDonor = organDonor;
+	}
+	public List<License> getLicenses() {
+		return licenses;
+	}
+	public void setLicenses(List<License> licenses) {
+		this.licenses = licenses;
 	} 
+	
 	
 }

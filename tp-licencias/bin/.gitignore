@@ -1,1 +1,5 @@
-/hibernate.cfg.xml
+/controllers/
+/domain/
+/gui/
+/validators/
+/DTOs/

@@ -3,30 +3,39 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import DTOs.TaxPayerDTO;
+import DTOs.TitularDTO;
+import domain.Titular;
+import domain.TypeId;
+import validators.AdressValidator;
+import validators.BirthdayValidator;
+import validators.BloodValidator;
 import validators.CompositeValidator;
+import validators.IdValidator;
 import validators.NameValidator;
 import validators.Validator;
 
 public class TitularController {
 	
-	private TitularController _INSTANCE = null;
+	private static TitularController _INSTANCE = new TitularController();
+	//private TitularDAO titularDAO = new TitularDAOSQL();
 	
 	private TitularController () { 
-		
 	}
 	
-	public TitularController getInstance() { 
-		if(_INSTANCE == null) { 
-			_INSTANCE = new TitularController();
-		}
+	public static TitularController getInstance() { 
 		return _INSTANCE;
 	}	
 
-	private List<String> validate(TitularDTO info) {
+	public List<String> validate(TitularDTO info) {
 		
-		new List<Validator<TitularDTO>> validators = new ArrayList<Validator<TitularDTO>>();
+		List<Validator<TitularDTO>> validators = new ArrayList<Validator<TitularDTO>>();
 		
-		validators.add(new NameValidator<TitularDTO>());
+		validators.add(new IdValidator());
+		validators.add(new NameValidator());
+		validators.add(new BirthdayValidator());
+		validators.add(new AdressValidator());
+		validators.add(new BloodValidator());
 		
 		Validator<TitularDTO> validator = new CompositeValidator<TitularDTO>(validators);
 		
@@ -34,7 +43,35 @@ public class TitularController {
 		
 	}
 	
+	public void registerTitular(TitularDTO info) {
+		
+		Titular titular = new Titular();
+		
+		titular.setTypeId(info.getTypeId());
+		titular.setPersonalId(info.getPersonalId());
+		titular.setName(info.getName());
+		titular.setSurname(info.getSurname());
+		titular.setAdress(info.getAdress());
+		titular.setBirthday(info.getBirthday());
+		titular.setBloodType(info.getBloodType());
+		titular.setOrganDonor(info.getOrganDonor());
+		
+		//completar
+		
+	}
 	
+	public void titularLocator(TypeId typeId, Long id) {
+		
+		TitularDTO titularDTO = titularDAO.search(typeId, id);
+		
+		if(titularDTO == null) { 
+			//mostrar popup que el titular no existe y que lo tiene que dar de alta
+		}
+		else {
+			//actualizar lista con el resultado de la busqueda
+		}
+
+	}
 	
 	
 }

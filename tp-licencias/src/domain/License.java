@@ -2,14 +2,47 @@ package domain;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+@Entity
+@Table(name="licencia")
 public class License {
 	
-	private Titular titular; 
+	
+	@ManyToOne
+	@JoinColumn(name = "id_titular")
+	private Titular titular;
+	
+	@Enumerated(EnumType.STRING)
+	@Column (name="clase")
 	private LicenseType licenseType;
+	
+	@Transient
 	private Boolean expirated;
+	
+	@Column (name="fecha_emision")
 	private Date emisionDate;
+	
+	@Column (name="fecha_vencimiento")
 	private Date expiricyDate;
+	
+	@Transient
 	private Integer validity;
+	
+	@Column (name="observaciones")
+	private String observation;
+	
+	@Column (name="motivo_emision")
+	private String emmisionMotive;
 	
 	
 	public Titular getTitular() {
@@ -48,5 +81,18 @@ public class License {
 	public void setValidity(Integer validity) {
 		this.validity = validity;
 	}
+	public String getObservation() {
+		return observation;
+	}
+	public void setObservation(String observation) {
+		this.observation = observation;
+	}
+	public String getEmmisionMotive() {
+		return emmisionMotive;
+	}
+	public void setEmmisionMotive(String emmisionMotive) {
+		this.emmisionMotive = emmisionMotive;
+	}
+	
 
 }
