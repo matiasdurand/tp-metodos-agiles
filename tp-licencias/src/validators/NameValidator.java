@@ -6,7 +6,7 @@ import java.util.List;
 import DTOs.TitularDTO;
 
 
-public class NameValidator implements Validator<TitularDTO> {
+public class NameValidator implements Validator<String,TitularDTO> {
 
 	@Override
 	public List<String> validate(TitularDTO info) {

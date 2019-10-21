@@ -1,0 +1,65 @@
+package validators;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import domain.License;
+import domain.LicenseType;
+import domain.Titular;
+
+public class ClassCValidator implements Validator<LicenseType,Titular> {
+	
+	@Override
+	public List<LicenseType> validate(Titular info) {
+		
+		List<LicenseType> validTypesToShow = new ArrayList<LicenseType>();
+		List<License> licensesTypeC = info.getLicenses().stream()
+				.filter(l -> l.getLicenseType().equals(LicenseType.C)).collect(Collectors.toList());
+				
+		LocalDate birthday = info.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate actual = LocalDate.now();
+		Long age = ChronoUnit.YEARS.between(birthday, actual);
+		
+		if(licensesTypeC.isEmpty()) {
+			
+			List<License> oneYearOldLicensesTypeB = info.getLicenses().stream()
+					.filter(l -> ChronoUnit.YEARS.between(l.getEmisionDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),actual)>1)
+								.collect(Collectors.toList());
+			
+			if(!oneYearOldLicensesTypeB.isEmpty()) {
+				
+				if(age>=21 && age<=65) {
+					validTypesToShow.add(LicenseType.C);
+				}
+				else {
+					
+					if (age>65) {
+						
+						List<LicenseType> profesionalLicenseTypes = new ArrayList<LicenseType>();
+						profesionalLicenseTypes.add(LicenseType.C);
+						profesionalLicenseTypes.add(LicenseType.D);
+						profesionalLicenseTypes.add(LicenseType.E);
+						
+						List<License> profesionalLicenses = info.getLicenses().stream()
+								.filter(l -> profesionalLicenseTypes.contains(l.getLicenseType())).collect(Collectors.toList());
+						
+						if(!profesionalLicenses.isEmpty()) {
+							validTypesToShow.add(LicenseType.C);
+						}
+						
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+		return validTypesToShow;
+	}
+
+}

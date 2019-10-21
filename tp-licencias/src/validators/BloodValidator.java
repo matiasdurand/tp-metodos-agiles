@@ -6,7 +6,7 @@ import java.util.List;
 import DTOs.TitularDTO;
 import domain.BloodType;
 
-public class BloodValidator implements Validator<TitularDTO>{
+public class BloodValidator implements Validator<String,TitularDTO>{
 
 	@Override
 	public List<String> validate(TitularDTO info) {

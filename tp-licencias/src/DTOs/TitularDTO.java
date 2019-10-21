@@ -7,6 +7,7 @@ import domain.TypeId;
 
 public class TitularDTO {
 
+	private Integer id;
 	private TypeId typeId;
 	private Long personalId;
 	private String name;
@@ -17,6 +18,12 @@ public class TitularDTO {
 	private Boolean organDonor;
 	
 	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public TypeId getTypeId() {
 		return typeId;
 	}

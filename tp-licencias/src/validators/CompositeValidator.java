@@ -3,23 +3,25 @@ package validators;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompositeValidator<T> implements Validator <T> {
+public class CompositeValidator<D,T> implements Validator <D,T> {
 	
-	private final List<Validator<T>> validators; 
+	private final List<Validator<D,T>> validators; 
 	
-	public CompositeValidator(List<Validator<T>> validators) {
+	public CompositeValidator(List<Validator<D,T>> validators) {
 		this.validators = validators; 
 	}
-	
+
 	@Override
-	public List<String> validate(T info){
+	public List<D> validate(T info) {
+
+		List<D> errors = new ArrayList<D>();
 		
-		List<String> errors = new ArrayList<String>();
-		
-		for(Validator<T> validator: validators) {
+		for(Validator<D,T> validator: validators) {
 			errors.addAll(validator.validate(info));
 		}
 		
 		return errors;
 	}
+	
+	
 }

@@ -2,8 +2,8 @@ package validators;
 
 import java.util.List;
 
-public interface Validator <T> {
+public interface Validator <D,T> {
 	
-	public List<String> validate(T info);
+	public List<D> validate(T info);
 
 }

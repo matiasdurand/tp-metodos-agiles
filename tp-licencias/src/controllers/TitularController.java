@@ -3,6 +3,8 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import DAOs.TitularDAO;
+import DAOs.TitularDAOSQL;
 import DTOs.TaxPayerDTO;
 import DTOs.TitularDTO;
 import domain.Titular;
@@ -18,7 +20,7 @@ import validators.Validator;
 public class TitularController {
 	
 	private static TitularController _INSTANCE = new TitularController();
-	//private TitularDAO titularDAO = new TitularDAOSQL();
+	private TitularDAO titularDAO = new TitularDAOSQL();
 	
 	private TitularController () { 
 	}
@@ -29,7 +31,7 @@ public class TitularController {
 
 	public List<String> validate(TitularDTO info) {
 		
-		List<Validator<TitularDTO>> validators = new ArrayList<Validator<TitularDTO>>();
+		List<Validator<String,TitularDTO>> validators = new ArrayList<Validator<String,TitularDTO>>();
 		
 		validators.add(new IdValidator());
 		validators.add(new NameValidator());
@@ -37,7 +39,7 @@ public class TitularController {
 		validators.add(new AdressValidator());
 		validators.add(new BloodValidator());
 		
-		Validator<TitularDTO> validator = new CompositeValidator<TitularDTO>(validators);
+		Validator<String,TitularDTO> validator = new CompositeValidator<String,TitularDTO>(validators);
 		
 		return validator.validate(info);
 		
@@ -62,7 +64,7 @@ public class TitularController {
 	
 	public void titularLocator(TypeId typeId, Long id) {
 		
-		TitularDTO titularDTO = titularDAO.search(typeId, id);
+		TitularDTO titularDTO = titularDAO.find(typeId, id);
 		
 		if(titularDTO == null) { 
 			//mostrar popup que el titular no existe y que lo tiene que dar de alta
@@ -73,5 +75,8 @@ public class TitularController {
 
 	}
 	
+	public Titular findTitular(Integer id) {
+		return titularDAO.find(id);
+	}
 	
 }

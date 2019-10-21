@@ -5,7 +5,7 @@ import java.util.List;
 
 import DTOs.TitularDTO;
 
-public class AdressValidator implements Validator<TitularDTO> {
+public class AdressValidator implements Validator<String,TitularDTO> {
 
 	@Override
 	public List<String> validate(TitularDTO info) {
