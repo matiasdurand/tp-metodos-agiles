@@ -1,8 +1,7 @@
+/DAOs/
+/DTOs/
 /controllers/
 /domain/
 /gui/
 /validators/
-/DTOs/
-/DAOs/
-/validators2/
-/license_types_validators/
+/useful/

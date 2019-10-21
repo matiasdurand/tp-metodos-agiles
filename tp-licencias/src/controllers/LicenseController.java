@@ -5,11 +5,14 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 
+import DAOs.LicenseDAO;
+import DAOs.LicenseDAOSQL;
 import DTOs.LicenseDTO;
 import DTOs.TitularDTO;
-
+import domain.License;
 import domain.LicenseType;
 import domain.Titular;
+import useful.LicenseCostCalculator;
 import validators.ClassAValidator;
 import validators.ClassBValidator;
 import validators.ClassCValidator;
@@ -23,6 +26,8 @@ import validators.Validator;
 public class LicenseController {
 	
 	private static LicenseController _INSTANCE = new LicenseController();
+	private LicenseCostCalculator licenseCostCalculator = LicenseCostCalculator.getInstance();
+	private LicenseDAO licenseDAO = new LicenseDAOSQL();
 	
 	
 	private LicenseController () { 
@@ -58,11 +63,21 @@ public class LicenseController {
 				
 				Validator<LicenseType,Titular> validator = new CompositeValidator<LicenseType,Titular>(validators);
 		
-				for(LicenseType lt: validator.validate(titular)) {
-					comboBox.addItem(lt);
+				for(LicenseType licenseType: validator.validate(titular)) {
+					comboBox.addItem(licenseType);
 				}
+				break;
 				
 		}
+	}
+	
+	public Double calculateLicenseCost(License license) {
+		String[] key = new String[2];
+		
+		key[0] = license.getLicenseType().toString();
+		key[1] = license.getValidity().toString();
+		
+		return licenseCostCalculator.getLicenseCost(key);
 	}
 
 }
