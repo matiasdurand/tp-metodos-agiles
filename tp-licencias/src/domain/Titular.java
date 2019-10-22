@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Titular {
 	
+	private Integer id;
 	private TypeId typeId;
 	private Long personalId;
 	private String name;
@@ -17,6 +18,12 @@ public class Titular {
 	private List<License> licenses = new ArrayList<License>(); 
 	
 	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public TypeId getTypeId() {
 		return typeId;
 	}

@@ -4,15 +4,22 @@ import java.util.Date;
 
 public class License {
 	
+	private Integer id;
 	private Titular titular; 
 	private LicenseType licenseType;
 	private Boolean expirated;
 	private Date emisionDate;
 	private Date expiricyDate;
 	private Integer validity;
-	private String observation; 
+	private String observation;
 	
 	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public Titular getTitular() {
 		return titular;
 	}

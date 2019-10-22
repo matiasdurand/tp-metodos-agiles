@@ -1,12 +1,14 @@
 package controllers;
 
+import DAOs.TaxPayerDAO;
+import DAOs.TaxPayerDAOSQL;
 import DTOs.TaxPayerDTO;
 import domain.TypeId;
 
 public class TaxPayerController {
 	
 	private static TaxPayerController _INSTANCE = new TaxPayerController();
-	//private TaxPayerDAO taxPayerDAO = new TaxPayerDAOSQL(); 
+	private TaxPayerDAO taxPayerDAO = new TaxPayerDAOSQL(); 
 	
 	private TaxPayerController () { 
 	}
@@ -15,17 +17,26 @@ public class TaxPayerController {
 		return _INSTANCE;
 	}	
 	
-	/*public void taxPayerLocator(TypeId typeId, Long id){
+	public void taxPayerLocator(TypeId typeId, Long personalId){
 		
-		TaxPayerDTO taxPayerDTO = taxPayerDAO.search(typeId, id); 
-		
-		if(taxPayerDTO == null) {
-			//configurar popup adverencia de que no existe el contribuyente
+		if(!TitularController.getInstance().existsTitular(typeId, personalId)) {
+			
+			TaxPayerDTO taxPayerDTO = taxPayerDAO.findByPersonalId(typeId, personalId); 
+			
+			if(taxPayerDTO != null) {
+				// TODO mandar dto contribuyente para cargar datos no editables
+			}
+			else { 
+				// TODO configurar popup adverencia de que no existe el contribuyente y vuelve a la pantalla anterior (emitir licencia)
+			}
 		}
-		else { 
-			//mandar dto contribuyente para cargar datos no editables
+		else {
+			// TODO muestra pop que ya existe y vuelve a la pantalla anterior (emitir licencia)
 		}
-		
-	}*/
+	}
 
+	
+	
+	
+	
 }

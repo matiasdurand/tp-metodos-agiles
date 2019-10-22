@@ -1,3 +1,6 @@
-/useful/
+/DAOs/
+/DTOs/
 /controllers/
-/gui/
+/domain/
+/useful/
+/validators/

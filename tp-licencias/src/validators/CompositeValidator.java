@@ -14,13 +14,13 @@ public class CompositeValidator<D,T> implements Validator <D,T> {
 	@Override
 	public List<D> validate(T info) {
 
-		List<D> errors = new ArrayList<D>();
+		List<D> result = new ArrayList<D>();
 		
 		for(Validator<D,T> validator: validators) {
-			errors.addAll(validator.validate(info));
+			result.addAll(validator.validate(info));
 		}
 		
-		return errors;
+		return result;
 	}
 	
 	

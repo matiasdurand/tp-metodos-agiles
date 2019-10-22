@@ -7,6 +7,7 @@ import DAOs.TitularDAO;
 import DAOs.TitularDAOSQL;
 import DTOs.TaxPayerDTO;
 import DTOs.TitularDTO;
+import domain.License;
 import domain.Titular;
 import domain.TypeId;
 import validators.AdressValidator;
@@ -45,7 +46,7 @@ public class TitularController {
 		
 	}
 	
-	public void registerTitular(TitularDTO info) {
+	public Titular registerTitular(TitularDTO info) {
 		
 		Titular titular = new Titular();
 		
@@ -58,25 +59,60 @@ public class TitularController {
 		titular.setBloodType(info.getBloodType());
 		titular.setOrganDonor(info.getOrganDonor());
 		
-		//completar
+		Runnable r = () -> {
+			titularDAO.save(titular);
+		};
+		Thread thread = new Thread(r);
+		thread.start();
 		
+		return titular;
 	}
 	
-	public void titularLocator(TypeId typeId, Long id) {
+	public void titularLocator(TypeId typeId, Long personalIdFragment) {
 		
-		TitularDTO titularDTO = titularDAO.find(typeId, id);
+		List<Titular> coincidences = titularDAO.findAllByPersonalId(typeId, personalIdFragment);
 		
-		if(titularDTO == null) { 
-			//mostrar popup que el titular no existe y que lo tiene que dar de alta
+		if(coincidences.isEmpty()) { 
+			// TODO mostrar mensajito "No hay coincidencias."
 		}
 		else {
-			//actualizar lista con el resultado de la busqueda
+			List<TitularDTO> coincidencesDTO = createTitularDTO(coincidences);
+			// TODO actualizar lista con el resultado de la busqueda
 		}
-
 	}
 	
+	private List<TitularDTO> createTitularDTO(List<Titular> titulares) {
+		List<TitularDTO> titularDTOs = new ArrayList<TitularDTO>();
+		
+		for(Titular titular: titulares) {
+			TitularDTO titularDTO = new TitularDTO();
+			titularDTO.setId(titular.getId());
+			titularDTO.setTypeId(titular.getTypeId());
+			titularDTO.setPersonalId(titular.getPersonalId());
+			titularDTO.setName(titular.getName());
+			titularDTO.setSurname(titular.getSurname());
+			titularDTO.setAdress(titular.getAdress());
+			titularDTO.setBirthday(titular.getBirthday());
+			titularDTO.setBloodType(titular.getBloodType());
+			titularDTO.setOrganDonor(titular.getOrganDonor());
+			titularDTOs.add(titularDTO);
+		}
+		
+		return titularDTOs;
+	}
+
 	public Titular findTitular(Integer id) {
 		return titularDAO.find(id);
+	}
+	
+	public Boolean existsTitular(TypeId typeId, Long personalId) {
+		
+		Titular titular = titularDAO.findByPersonalId(typeId, personalId);
+		
+		if(titular == null) {
+			return false;
+		}
+		return true;
 	}
 	
 }
