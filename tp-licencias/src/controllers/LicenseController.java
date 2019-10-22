@@ -12,6 +12,7 @@ import DTOs.TitularDTO;
 import domain.License;
 import domain.LicenseType;
 import domain.Titular;
+import useful.Combination;
 import useful.LicenseCostCalculator;
 import validators.ClassAValidator;
 import validators.ClassBValidator;
@@ -72,12 +73,10 @@ public class LicenseController {
 	}
 	
 	public Double calculateLicenseCost(License license) {
-		String[] key = new String[2];
 		
-		key[0] = license.getLicenseType().toString();
-		key[1] = license.getValidity().toString();
+		Combination combination = new Combination(license.getLicenseType(), license.getValidity());
 		
-		return licenseCostCalculator.getLicenseCost(key);
+		return licenseCostCalculator.getLicenseCost(combination);
 	}
 
 }
