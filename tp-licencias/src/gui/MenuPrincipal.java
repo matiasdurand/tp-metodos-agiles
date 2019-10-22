@@ -27,6 +27,9 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
+import javax.swing.JTextArea;
+import java.awt.Rectangle;
+import java.awt.Insets;
 
 public class MenuPrincipal extends JFrame{
 	
@@ -36,6 +39,7 @@ public class MenuPrincipal extends JFrame{
 	private final int PANEL_BUSCAR_TITULAR=2;
 	private final int PANEL_USUARIO=3;
 	private final int PANEL_ALTA_TITULAR=4;
+	private final int PANEL_EMITIR=5;
 	
 	private JFrame frmPrincipal;
 	private JTable tableLicencias;
@@ -45,7 +49,9 @@ public class MenuPrincipal extends JFrame{
 	private JPanel panelPrincipal;
 	private JPanel panelUsuario;
 	private JPanel panelBuscarTitular;
+	private JPanel panelEmitir;
 	private JLabel lblNombreUsuario;
+	private JComboBox cbTipoDoc;
 	private JTextField tfNro;
 	private JTextField tfNombre;
 	private JTextField tfApellido;
@@ -57,7 +63,10 @@ public class MenuPrincipal extends JFrame{
 	private JComboBox cbTipoSangre;
 	private JCheckBox ckbDonante;
 	private JButton btnAceptar;
+	private JButton btnCancelar;
 	private boolean altaTitular=false; //La utilizamos para diferenciar si da de alta un titular o ya existe
+	private JTextField tfVigencia;
+	private JTextField tfCosto;
 
 	/**
 	 * Launch the application.
@@ -104,6 +113,7 @@ public class MenuPrincipal extends JFrame{
 		armarBarraLateral();
 		armarPanelTitulo();
 		armarPanelBuscarTitular();
+		armarPanelEmitirLicencia();
 		armarPanelUsuario();
 		armarPanelLicencia();
 		armarPanelPrincipal();
@@ -133,18 +143,19 @@ public class MenuPrincipal extends JFrame{
 		});
 		btnLicencia.setForeground(Colors.MENU_LATERAL);
 		btnLicencia.setBackground(Colors.FONDO);
-		btnLicencia.setFont(new Font("Google Sans", Font.PLAIN, 15));
+		btnLicencia.setFont(new Font("Google Sans", Font.PLAIN, 18));
 		btnLicencia.setBounds(0, 129, 150, 40);
 		barraLateral.add(btnLicencia);
 		
 		JButton btnUsuario = new JButton("USUARIO");
 		btnUsuario.setForeground(Colors.MENU_LATERAL);
-		btnUsuario.setFont(new Font("Google Sans", Font.PLAIN, 15));
+		btnUsuario.setFont(new Font("Google Sans", Font.PLAIN, 18));
 		btnUsuario.setBackground(Colors.FONDO);
 		btnUsuario.setBounds(0, 169, 150, 40);
 		barraLateral.add(btnUsuario);
 		
 		JButton btnCerrarSesion = new JButton("CERRAR SESI\u00D3N");
+		btnCerrarSesion.setMargin(new Insets(2, 6, 2, 6));
 		btnCerrarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "¿Está seguro que desea cerrar sesión?", "Cerrar sesión", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
@@ -156,7 +167,7 @@ public class MenuPrincipal extends JFrame{
 		});
 		btnCerrarSesion.setBackground(Colors.FONDO);
 		btnCerrarSesion.setForeground(Colors.MENU_LATERAL);
-		btnCerrarSesion.setFont(new Font("Google Sans", Font.PLAIN, 15));
+		btnCerrarSesion.setFont(new Font("Google Sans", Font.PLAIN, 18));
 		btnCerrarSesion.setBounds(0, 625, 150, 40);
 		barraLateral.add(btnCerrarSesion);
 		
@@ -195,11 +206,11 @@ public class MenuPrincipal extends JFrame{
 		frmPrincipal.getContentPane().add(panelBuscarTitular);
 		panelBuscarTitular.setLayout(null);
 		
-		JLabel lblTituloEmitir = new JLabel("Emitir licencia");
-		lblTituloEmitir.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTituloEmitir.setFont(new Font("Google Sans", Font.PLAIN, 25));
-		lblTituloEmitir.setBounds(15, 15, 817, 25);
-		panelBuscarTitular.add(lblTituloEmitir);
+		JLabel lblTituloBuscarTitular = new JLabel("Buscar titular");
+		lblTituloBuscarTitular.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTituloBuscarTitular.setFont(new Font("Google Sans", Font.PLAIN, 25));
+		lblTituloBuscarTitular.setBounds(12, 15, 817, 25);
+		panelBuscarTitular.add(lblTituloBuscarTitular);
 		
 		btnBuscar = new JButton("BUSCAR");
 		btnBuscar.addActionListener(new ActionListener() {
@@ -227,6 +238,9 @@ public class MenuPrincipal extends JFrame{
 						ckbDonante.setSelected(dto.getOrganDonnor());
 					}*/
 				}
+				else {
+					JOptionPane.showMessageDialog(null, "Formato de documento incorrecto", "Error", JOptionPane.OK_OPTION);
+				}
 			}
 		});
 		btnBuscar.setFont(new Font("Google Sans", Font.BOLD, 15));
@@ -239,26 +253,25 @@ public class MenuPrincipal extends JFrame{
 		lblTipoDoc.setBounds(15, 109, 53, 40);
 		panelBuscarTitular.add(lblTipoDoc);
 		
-		JComboBox cbTipo = new JComboBox();
-		cbTipo.setBounds(132, 109, 80, 40);
+		cbTipoDoc = new JComboBox();
+		cbTipoDoc.setBounds(132, 109, 80, 40);
 		
 		//TODO Cargar enum del tipo de doc desde BD
 		
-		panelBuscarTitular.add(cbTipo);
+		panelBuscarTitular.add(cbTipoDoc);
 		
 		JLabel lblNumero = new JLabel("Nro:");
 		lblNumero.setFont(new Font("Google Sans", Font.PLAIN, 20));
 		lblNumero.setBounds(224, 109, 74, 40);
 		panelBuscarTitular.add(lblNumero);
 		
-		JLabel lblDocumento = new JLabel("Documento");
-		lblDocumento.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabel lblDocumento = new JLabel("Documento:");
 		lblDocumento.setFont(new Font("Google Sans", Font.PLAIN, 22));
 		lblDocumento.setBounds(15, 76, 436, 20);
 		panelBuscarTitular.add(lblDocumento);
 		
 		tfNro = new JTextField();
-		tfNro.setFont(new Font("Google Sans", Font.PLAIN, 15));
+		tfNro.setFont(new Font("Google Sans", Font.PLAIN, 18));
 		tfNro.setBounds(274, 109, 177, 40);
 		
 		//Configuramos que solo permita ingresar digitos
@@ -288,13 +301,14 @@ public class MenuPrincipal extends JFrame{
 		panelBuscarTitular.add(lblApellido);
 		
 		tfNombre = new JTextField();
-		tfNombre.setFont(new Font("Google Sans", Font.PLAIN, 15));
+		tfNombre.setEditable(false);
+		tfNombre.setFont(new Font("Google Sans", Font.PLAIN, 18));
 		tfNombre.setColumns(10);
 		tfNombre.setBounds(132, 162, 319, 40);
 		panelBuscarTitular.add(tfNombre);
 		
 		tfApellido = new JTextField();
-		tfApellido.setFont(new Font("Google Sans", Font.PLAIN, 15));
+		tfApellido.setFont(new Font("Google Sans", Font.PLAIN, 18));
 		tfApellido.setEditable(false);
 		tfApellido.setColumns(10);
 		tfApellido.setBounds(572, 164, 260, 40);
@@ -309,10 +323,10 @@ public class MenuPrincipal extends JFrame{
 			MaskFormatter fechaMask = new MaskFormatter("##/##/####");
 			fechaMask.setPlaceholderCharacter('_');
 			tfFechaNac = new JFormattedTextField(fechaMask);
-			tfFechaNac.setFont(new Font("Google Sans", Font.PLAIN, 15));
+			tfFechaNac.setFont(new Font("Google Sans", Font.PLAIN, 18));
 			tfFechaNac.setEditable(false);
 			tfFechaNac.setColumns(10);
-			tfFechaNac.setBounds(132, 215, 319, 40);
+			tfFechaNac.setBounds(132, 215, 80, 40);
 			panelBuscarTitular.add(tfFechaNac);
 		}catch(Exception e) {};
 		
@@ -322,7 +336,7 @@ public class MenuPrincipal extends JFrame{
 		panelBuscarTitular.add(lblDireccion);
 		
 		tfDireccion = new JTextField();
-		tfDireccion.setFont(new Font("Google Sans", Font.PLAIN, 15));
+		tfDireccion.setFont(new Font("Google Sans", Font.PLAIN, 18));
 		tfDireccion.setEditable(false);
 		tfDireccion.setColumns(10);
 		tfDireccion.setBounds(132, 268, 700, 40);
@@ -333,14 +347,15 @@ public class MenuPrincipal extends JFrame{
 		lblGrupoSanguineo.setBounds(463, 215, 170, 40);
 		panelBuscarTitular.add(lblGrupoSanguineo);
 		
-		JButton btnAceptar = new JButton("ACEPTAR");
+		btnAceptar = new JButton("ACEPTAR");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(altaTitular) {
-					//TODO dar de alta al titular
+				if(altaTitular && validarDatosTitular()) {
+					mostrarPanel(PANEL_EMITIR);
 				}
-				
-				altaTitular=false;
+				else {
+					
+				}
 			}
 		});
 		btnAceptar.setEnabled(false);
@@ -349,9 +364,10 @@ public class MenuPrincipal extends JFrame{
 
 		panelBuscarTitular.add(btnAceptar);
 		
-		JButton btnCancelar = new JButton("CANCELAR");
+		btnCancelar = new JButton("CANCELAR");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				altaTitular=false;
 				limpiar(panelBuscarTitular);
 				mostrarPanel(PANEL_LICENCIA);
 			}
@@ -370,6 +386,93 @@ public class MenuPrincipal extends JFrame{
 		ckbDonante.setFont(new Font("Google Sans", Font.PLAIN, 20));
 		ckbDonante.setBounds(703, 215, 129, 40);
 		panelBuscarTitular.add(ckbDonante);
+	}
+	
+	private void armarPanelEmitirLicencia() {
+		panelEmitir = new JPanel();
+		panelEmitir.setVisible(false);
+		panelEmitir.setBounds(0, 321, 844, 284);
+		panelBuscarTitular.add(panelEmitir);
+		panelEmitir.setLayout(null);
+		
+		JLabel lblObservaciones = new JLabel("Observaciones:");
+		lblObservaciones.setBounds(15, 0, 150, 40);
+		panelEmitir.add(lblObservaciones);
+		lblObservaciones.setFont(new Font("Google Sans", Font.PLAIN, 20));
+		
+		JTextArea taObservaciones = new JTextArea();
+		taObservaciones.setBounds(15, 41, 433, 146);
+		panelEmitir.add(taObservaciones);
+		taObservaciones.setLineWrap(true);
+		taObservaciones.setFont(new Font("Google Sans", Font.PLAIN, 18));
+		
+		JLabel lblClase = new JLabel("Clase:");
+		lblClase.setBounds(460, 41, 119, 40);
+		panelEmitir.add(lblClase);
+		lblClase.setFont(new Font("Google Sans", Font.PLAIN, 20));
+		
+		JComboBox cbClase = new JComboBox();
+		cbClase.setBounds(572, 41, 80, 40);
+		panelEmitir.add(cbClase);
+		
+		JLabel lblVigencia = new JLabel("Vigencia:");
+		lblVigencia.setBounds(460, 94, 119, 40);
+		panelEmitir.add(lblVigencia);
+		lblVigencia.setFont(new Font("Google Sans", Font.PLAIN, 20));
+		
+		tfVigencia = new JTextField();
+		tfVigencia.setBounds(572, 93, 260, 40);
+		panelEmitir.add(tfVigencia);
+		tfVigencia.setFont(new Font("Google Sans", Font.PLAIN, 18));
+		tfVigencia.setEditable(false);
+		tfVigencia.setColumns(10);
+		
+		JLabel lblCosto = new JLabel("Costo:");
+		lblCosto.setBounds(460, 147, 119, 40);
+		panelEmitir.add(lblCosto);
+		lblCosto.setFont(new Font("Google Sans", Font.PLAIN, 20));
+		
+		tfCosto = new JTextField();
+		tfCosto.setBounds(572, 147, 260, 40);
+		panelEmitir.add(tfCosto);
+		tfCosto.setFont(new Font("Google Sans", Font.PLAIN, 18));
+		tfCosto.setEditable(false);
+		tfCosto.setColumns(10);
+		
+		JButton btnAceptarEmitir = new JButton("ACEPTAR");
+		btnAceptarEmitir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				configurarPanelEmitir(false);
+			}
+		});
+		btnAceptarEmitir.setBounds(463, 231, 175, 40);
+		btnAceptarEmitir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//TODO Validar datos ingresados
+				/*
+				 
+				 */
+			}
+		});
+		panelEmitir.add(btnAceptarEmitir);
+		btnAceptarEmitir.setFont(new Font("Google Sans", Font.BOLD, 20));
+		btnAceptarEmitir.setEnabled(false);
+		
+		JButton btnCancelarEmitir = new JButton("CANCELAR");
+		btnCancelarEmitir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(JOptionPane.showConfirmDialog(null, "¿Está seguro que desea cancelar?", "Cancelar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+					limpiar(panelBuscarTitular);
+					limpiar(panelEmitir);
+					mostrarPanel(PANEL_BUSCAR_TITULAR);
+					altaTitular=false;
+				}
+			}
+		});
+		btnCancelarEmitir.setBounds(657, 231, 175, 40);
+		panelEmitir.add(btnCancelarEmitir);
+		btnCancelarEmitir.setFont(new Font("Google Sans", Font.BOLD, 20));
 	}
 	
 	//Crea la interfaz y elementos del JPanel PanelPrincipal
@@ -447,6 +550,7 @@ public class MenuPrincipal extends JFrame{
 		panelBuscarTitular.setVisible(false);
 		panelLicencia.setVisible(false);
 		panelUsuario.setVisible(false);
+		panelEmitir.setVisible(false);
 		
 		switch(panel) {
 			case PANEL_PRINCIPAL:{
@@ -459,6 +563,9 @@ public class MenuPrincipal extends JFrame{
 			}
 			case PANEL_BUSCAR_TITULAR:{
 				activarDesactivarComponentesPanelBuscarTitular(Boolean.FALSE);
+				btnAceptar.setVisible(true);
+				btnAceptar.setEnabled(false);
+				btnCancelar.setVisible(true);
 				panelBuscarTitular.setVisible(true);
 				break;
 			}
@@ -471,12 +578,19 @@ public class MenuPrincipal extends JFrame{
 				panelBuscarTitular.setVisible(true);
 				break;
 			}
+			case PANEL_EMITIR:{
+				panelBuscarTitular.setVisible(true);
+				configurarPanelEmitir(true);
+				break;
+			}
 		}
 	}
 	
 	//Activa o desactiva los elementos de la interfaz panel emitir para dar de alta a un titular o emitir una licencia
 	private void activarDesactivarComponentesPanelBuscarTitular(boolean activo) {
 		btnBuscar.setVisible(!activo);
+		cbTipoDoc.setEnabled(!activo);
+		tfNro.setEditable(!activo);
 		tfNombre.setEditable(activo);
 		tfApellido.setEditable(activo);
 		tfDireccion.setEditable(activo);
@@ -485,18 +599,49 @@ public class MenuPrincipal extends JFrame{
 		ckbDonante.setEnabled(activo);
 	}
 	
+	//Configura la interfaz bloqueando los elementos de buscar titular y habilitando los de emitir
+	private void configurarPanelEmitir(boolean activo) {
+		btnBuscar.setVisible(!activo);
+		cbTipoDoc.setEnabled(!activo);
+		tfNro.setEditable(!activo);
+		tfNombre.setEditable(!activo);
+		tfApellido.setEditable(!activo);
+		tfDireccion.setEditable(!activo);
+		tfFechaNac.setEditable(!activo);
+		cbTipoSangre.setEnabled(!activo);
+		ckbDonante.setEnabled(!activo);
+		btnAceptar.setVisible(!activo);
+		btnCancelar.setVisible(!activo);
+		panelEmitir.setVisible(activo);
+	}
+	
 	//Le enviamos un JPanel y limpiar los TextFields
 	private void limpiar(Component component) {
         if (component instanceof JTextField) {
                 JTextField text = (JTextField) component;
                 text.setText("");
         } else {
-                if (component instanceof Container) {
+                if(component instanceof JTextArea) {
+                	((JTextArea) component).setText("");
+                }
+        		if (component instanceof Container) {
                         for (Component c : ((Container) component).getComponents()) {
                                 limpiar(c);
                         }
                 }
         }
+	}
+	
+	//Validamos los datos ingresados en alta titular
+	private boolean validarDatosTitular() {
+		boolean resultado=false;
+		
+		//TODO terminar validaciones
+		if(tfNombre.getText().matches("[A-Za-z]{1,3}")
+				&& tfApellido.getText().matches("[A-Za-z]{1,4")
+				&& tfFechaNac.getText().matches("^(?:3[01]|[12][0-9]|0?[1-9])([\\-/.])(0?[1-9]|1[1-2])\\1\\d{4}$"))
+			resultado=true;
+		return resultado;
 	}
 
 	//Validamos el numero de doc ingresado
