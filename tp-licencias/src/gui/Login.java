@@ -60,14 +60,14 @@ public class Login {
 		frmLogin.getContentPane().setBackground(new Color(240, 240, 240));
 		frmLogin.setTitle("Sistema de Gesti\u00F3n de Licencias");
 		frmLogin.setResizable(false);
-		frmLogin.getContentPane().setFont(new Font("Google Sans", Font.PLAIN, 13));
+		frmLogin.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 13));
 		frmLogin.setBounds(100, 100, 550, 400);
 		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
 		frmLogin.setLocationRelativeTo(null);
 		frmLogin.getContentPane().setLayout(null);
 		
 		JLabel lblIniciarSesion = new JLabel("Iniciar sesi\u00F3n");
-		lblIniciarSesion.setFont(new Font("Google Sans", Font.BOLD, 25));
+		lblIniciarSesion.setFont(new Font("Tahoma", Font.BOLD, 25));
 		lblIniciarSesion.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIniciarSesion.setBounds(65, 121, 420, 33);
 		frmLogin.getContentPane().add(lblIniciarSesion);
@@ -79,25 +79,25 @@ public class Login {
 		frmLogin.getContentPane().add(lblIcono);
 		
 		JLabel lblUser = new JLabel("Usuario:");
-		lblUser.setFont(new Font("Google Sans", Font.PLAIN, 20));
+		lblUser.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblUser.setIcon(new ImageIcon(Login.class.getResource("/res/images/user_filled_30px.png")));
 		lblUser.setBounds(41, 189, 145, 40);
 		frmLogin.getContentPane().add(lblUser);
 		
 		JLabel lblPassword = new JLabel("Contrase\u00F1a:");
-		lblPassword.setFont(new Font("Google Sans", Font.PLAIN, 20));
+		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblPassword.setIcon(new ImageIcon(Login.class.getResource("/res/images/password_filled_30px.png")));
 		lblPassword.setBounds(41, 242, 145, 40);
 		frmLogin.getContentPane().add(lblPassword);
 		
 		tfUser = new JTextField();
-		tfUser.setFont(new Font("Google Sans", Font.PLAIN, 15));
+		tfUser.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		tfUser.setBounds(220, 193, 265, 30);
 		frmLogin.getContentPane().add(tfUser);
 		tfUser.setColumns(10);
 		
 		tfPassword = new JPasswordField();
-		tfPassword.setFont(new Font("Google Sans", Font.PLAIN, 15));
+		tfPassword.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		tfPassword.setColumns(10);
 		tfPassword.setBounds(220, 248, 265, 30);
 		frmLogin.getContentPane().add(tfPassword);
@@ -112,7 +112,7 @@ public class Login {
 				frmLogin.setVisible(false);
 			}
 		});
-		btnAceptar.setFont(new Font("Google Sans", Font.BOLD, 20));
+		btnAceptar.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnAceptar.setBounds(41, 295, 444, 40);
 		frmLogin.getContentPane().add(btnAceptar);
 		
