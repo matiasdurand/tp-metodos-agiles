@@ -8,6 +8,7 @@ import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
 
 import res.colors.Colors;
+import domain.TypeId;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -34,10 +35,10 @@ import java.awt.Insets;
 public class MenuPrincipal extends JFrame{
 	
 	//Constantes que identifican a cada JPanel
-	private final int PANEL_PRINCIPAL=0;
-	private final int PANEL_LICENCIA=1;
-	private final int PANEL_BUSCAR_TITULAR=2;
-	private final int PANEL_USUARIO=3;
+	private final int PANEL_MENU_PRINCIPAL=0;
+	private final int PANEL_MENU_LICENCIA=1;
+	private final int PANEL_TITULAR_LICENCIA=2;
+	private final int PANEL_MENU_USUARIO=3;
 	private final int PANEL_ALTA_TITULAR=4;
 	private final int PANEL_EMITIR=5;
 	
@@ -45,12 +46,14 @@ public class MenuPrincipal extends JFrame{
 	private JTable tableLicencias;
 	private JPanel barraLateral;
 	private JPanel panelTitulo;
-	private JPanel panelLicencia;
-	private JPanel panelPrincipal;
-	private JPanel panelUsuario;
-	private JPanel panelBuscarTitular;
-	private JPanel panelEmitir;
+	private JPanel panelMenuLicencia;
+	private JPanel panelMenuPrincipal;
+	private JPanel panelMenuUsuario;
+	private JPanel panelTitularLicencia;
+	private JPanel panelEmitirLicencia;
 	private JLabel lblNombreUsuario;
+	//TODO completar tipo de dato de comboboxs
+	private JComboBox cbTipoSangre;
 	private JComboBox cbTipoDoc;
 	private JTextField tfNroDoc;
 	private JTextField tfNombre;
@@ -60,7 +63,6 @@ public class MenuPrincipal extends JFrame{
 	private String user=null;
 	private JFrame frmLogin;
 	private JButton btnBuscar;
-	private JComboBox cbTipoSangre;
 	private JCheckBox ckbDonante;
 	private JButton btnAceptar;
 	private JButton btnCancelar;
@@ -120,337 +122,16 @@ public class MenuPrincipal extends JFrame{
 		armarPanelTitulo();
 		armarPanelBuscarTitular();
 		armarPanelEmitirLicencia();
-		armarPanelUsuario();
-		armarPanelLicencia();
-		armarPanelPrincipal();
+		armarPanelMenuUsuario();
+		armarPanelMenuLicencia();
+		armarPanelMenuPrincipal();
 		
 		//Inicializamos la vista en panelPrincipal
-		mostrarPanel(PANEL_PRINCIPAL);
+		mostrarPanel(PANEL_MENU_PRINCIPAL);
 	}
 	
 	//Crea la interfaz y elementos del JPanel BarraLateral
 	private void armarBarraLateral() {
-		panelBuscarTitular = new JPanel();
-		panelBuscarTitular.setBounds(150, 60, 844, 605);
-		frmPrincipal.getContentPane().add(panelBuscarTitular);
-		panelBuscarTitular.setLayout(null);
-		
-		JLabel lblTituloBuscarTitular = new JLabel("Buscar titular");
-		lblTituloBuscarTitular.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTituloBuscarTitular.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lblTituloBuscarTitular.setBounds(12, 15, 817, 25);
-		panelBuscarTitular.add(lblTituloBuscarTitular);
-		
-		btnBuscar = new JButton("BUSCAR");
-		btnBuscar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(validarDoc(tfNroDoc.getText())) {
-					btnAceptar.setEnabled(true);
-					//TODO obtenerDatos del titular
-					/*TitularDTO dtoTitular = controladorTitular.titularLocator(cbTipo.getSelectedItem(), Long.valueOf(tfNroDoc.getText()));
-					if(dtoTitular.isNull()) {
-						//TODO pasar a interfaz dar de alta titular
-						if(JOptionPane.showConfirmDialog(null, "No se encontraron resultados, ¿Desea dar de alta al titular?", "Titular no encontrado", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE)
-							== JOptionPane.YES_OPTION)
-						{
-							TaxPayerDTO dtoContribuyente = controladorContribuyente.taxPayerLocator(cbTipo.getSelectedItem(), long.valueOf(tfNroDoc.getText()));
-							if(dtoContribuyente.isNull()){
-								JOptionPane.showMessageDialog(null, "El documento ingresado no se corresponde a ningún contribuyente registrado", "Contribuyente no encontrado", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
-							}
-							else{
-								altaTitular=true;
-								cargarDatosContribuyente(dtoContribuyente);
-								mostrarPanel(PANEL_ALTA_TITULAR);
-							}
-						}
-					}
-					else{
-						altaTitular=false;
-						cargarDatosTitular(dtoTitular);
-						mostrarPanel(PANEL_EMITIR);
-					}*/
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "Formato de documento incorrecto", "Error", JOptionPane.OK_OPTION);
-				}
-			}
-		});
-		btnBuscar.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnBuscar.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/find_user_filled_30px.png")));
-		btnBuscar.setBounds(572, 111, 130, 40);
-		panelBuscarTitular.add(btnBuscar);
-		
-		JLabel lblTipoDoc = new JLabel("Tipo:");
-		lblTipoDoc.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblTipoDoc.setBounds(15, 109, 53, 40);
-		panelBuscarTitular.add(lblTipoDoc);
-		
-		cbTipoDoc = new JComboBox();
-		cbTipoDoc.setBounds(132, 109, 80, 40);
-		panelBuscarTitular.add(cbTipoDoc);
-		
-		JLabel lblNumero = new JLabel("Nro:");
-		lblNumero.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNumero.setBounds(224, 109, 74, 40);
-		panelBuscarTitular.add(lblNumero);
-		
-		JLabel lblDocumento = new JLabel("Documento:");
-		lblDocumento.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblDocumento.setBounds(12, 56, 436, 40);
-		panelBuscarTitular.add(lblDocumento);
-		
-		tfNroDoc = new JTextField();
-		tfNroDoc.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		tfNroDoc.setBounds(274, 109, 177, 40);
-		
-		//Configuramos que solo permita ingresar digitos
-		tfNroDoc.addKeyListener(new KeyAdapter() {
-			public void keyTyped(KeyEvent e) {
-				char c = e.getKeyChar();
-				if (!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
-					getToolkit().beep();
-					e.consume();
-				}
-				else {
-					//Ingrese solo numeros sin puntos
-				}
-			}
-		});
-		panelBuscarTitular.add(tfNroDoc);
-		tfNroDoc.setColumns(10);
-		
-		JLabel lblNombre = new JLabel("Nombre/s:");
-		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNombre.setBounds(15, 162, 119, 40);
-		panelBuscarTitular.add(lblNombre);
-		
-		JLabel lblApellido = new JLabel("Apellido/s:");
-		lblApellido.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblApellido.setBounds(463, 162, 119, 40);
-		panelBuscarTitular.add(lblApellido);
-		
-		tfNombre = new JTextField();
-		tfNombre.setEditable(false);
-		tfNombre.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		tfNombre.setColumns(10);
-		tfNombre.setBounds(132, 162, 319, 40);
-		panelBuscarTitular.add(tfNombre);
-		
-		tfApellido = new JTextField();
-		tfApellido.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		tfApellido.setEditable(false);
-		tfApellido.setColumns(10);
-		tfApellido.setBounds(572, 164, 260, 40);
-		panelBuscarTitular.add(tfApellido);
-		
-		JLabel lblFechaNac = new JLabel("Fecha nac.:");
-		lblFechaNac.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblFechaNac.setBounds(15, 215, 119, 40);
-		panelBuscarTitular.add(lblFechaNac);
-		tfFechaNac = new JTextField();
-		tfFechaNac.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		tfFechaNac.setEditable(false);
-		tfFechaNac.setColumns(10);
-		tfFechaNac.setBounds(132, 215, 80, 40);
-		panelBuscarTitular.add(tfFechaNac);
-		
-		JLabel lblDireccion = new JLabel("Direcci\u00F3n:");
-		lblDireccion.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblDireccion.setBounds(15, 268, 119, 40);
-		panelBuscarTitular.add(lblDireccion);
-		
-		tfDireccion = new JTextField();
-		tfDireccion.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		tfDireccion.setEditable(false);
-		tfDireccion.setColumns(10);
-		tfDireccion.setBounds(132, 268, 700, 40);
-		panelBuscarTitular.add(tfDireccion);
-		
-		JLabel lblGrupoSanguineo = new JLabel("Tipo de sangre:");
-		lblGrupoSanguineo.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblGrupoSanguineo.setBounds(463, 215, 170, 40);
-		panelBuscarTitular.add(lblGrupoSanguineo);
-		
-		btnAceptar = new JButton("ACEPTAR");
-		btnAceptar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(altaTitular) {
-					mostrarPanel(PANEL_EMITIR);
-				}
-				else {
-					
-				}
-			}
-		});
-		btnAceptar.setEnabled(false);
-		btnAceptar.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnAceptar.setBounds(463, 321, 175, 40);
-		
-				panelBuscarTitular.add(btnAceptar);
-				
-				btnCancelar = new JButton("CANCELAR");
-				btnCancelar.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						altaTitular=false;
-						limpiar(panelBuscarTitular);
-						mostrarPanel(PANEL_LICENCIA);
-					}
-				});
-				btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 20));
-				btnCancelar.setBounds(657, 321, 175, 40);
-				panelBuscarTitular.add(btnCancelar);
-				
-				cbTipoSangre = new JComboBox();
-				cbTipoSangre.setEnabled(false);
-				cbTipoSangre.setBounds(607, 215, 80, 40);
-				panelBuscarTitular.add(cbTipoSangre);
-				
-				ckbDonante = new JCheckBox(" Donante");
-				ckbDonante.setEnabled(false);
-				ckbDonante.setFont(new Font("Tahoma", Font.PLAIN, 20));
-				ckbDonante.setBounds(703, 215, 129, 40);
-				panelBuscarTitular.add(ckbDonante);
-				
-				panelEmitir = new JPanel();
-				panelEmitir.setVisible(false);
-				panelEmitir.setBounds(0, 321, 844, 284);
-				panelBuscarTitular.add(panelEmitir);
-				panelEmitir.setLayout(null);
-				
-				JLabel lblObservaciones = new JLabel("Observaciones:");
-				lblObservaciones.setBounds(15, 0, 150, 40);
-				panelEmitir.add(lblObservaciones);
-				lblObservaciones.setFont(new Font("Tahoma", Font.PLAIN, 20));
-				
-				JTextArea taObservaciones = new JTextArea();
-				taObservaciones.setBounds(15, 53, 433, 146);
-				panelEmitir.add(taObservaciones);
-				taObservaciones.setLineWrap(true);
-				taObservaciones.setFont(new Font("Tahoma", Font.PLAIN, 18));
-				
-				JLabel lblClase = new JLabel("Clase:");
-				lblClase.setBounds(460, 53, 119, 40);
-				panelEmitir.add(lblClase);
-				lblClase.setFont(new Font("Tahoma", Font.PLAIN, 20));
-				
-				JComboBox cbClase = new JComboBox();
-				cbClase.setBounds(572, 53, 80, 40);
-				panelEmitir.add(cbClase);
-				
-				JLabel lblVigencia = new JLabel("Vigencia:");
-				lblVigencia.setBounds(460, 106, 119, 40);
-				panelEmitir.add(lblVigencia);
-				lblVigencia.setFont(new Font("Tahoma", Font.PLAIN, 20));
-				
-				tfVigencia = new JTextField();
-				tfVigencia.setBounds(572, 105, 260, 40);
-				panelEmitir.add(tfVigencia);
-				tfVigencia.setFont(new Font("Tahoma", Font.PLAIN, 18));
-				tfVigencia.setEditable(false);
-				tfVigencia.setColumns(10);
-				
-				JLabel lblCosto = new JLabel("Costo:");
-				lblCosto.setBounds(460, 159, 119, 40);
-				panelEmitir.add(lblCosto);
-				lblCosto.setFont(new Font("Tahoma", Font.PLAIN, 20));
-				
-				tfCosto = new JTextField();
-				tfCosto.setBounds(572, 159, 260, 40);
-				panelEmitir.add(tfCosto);
-				tfCosto.setFont(new Font("Tahoma", Font.PLAIN, 18));
-				tfCosto.setEditable(false);
-				tfCosto.setColumns(10);
-				
-				JButton btnAceptarEmitir = new JButton("ACEPTAR");
-				btnAceptarEmitir.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						
-						configurarPanelEmitir(false);
-					}
-				});
-				btnAceptarEmitir.setBounds(463, 231, 175, 40);
-				btnAceptarEmitir.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						//TODO Validar datos ingresados
-						/*
-						 
-						 */
-					}
-				});
-				panelEmitir.add(btnAceptarEmitir);
-				btnAceptarEmitir.setFont(new Font("Tahoma", Font.BOLD, 20));
-				btnAceptarEmitir.setEnabled(false);
-				
-				JButton btnCancelarEmitir = new JButton("CANCELAR");
-				btnCancelarEmitir.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						if(JOptionPane.showConfirmDialog(null, "¿Está seguro que desea cancelar?", "Cancelar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-							limpiar(panelBuscarTitular);
-							limpiar(panelEmitir);
-							mostrarPanel(PANEL_BUSCAR_TITULAR);
-							altaTitular=false;
-						}
-					}
-				});
-				btnCancelarEmitir.setBounds(657, 231, 175, 40);
-				panelEmitir.add(btnCancelarEmitir);
-				btnCancelarEmitir.setFont(new Font("Tahoma", Font.BOLD, 20));
-				
-				//TODO habilitar boton para seleccionar la licencia que se desea renovar
-				JButton btnLicenciasEmitidas = new JButton("LICENCIAS EMITIDAS");
-				btnLicenciasEmitidas.setVisible(false);
-				btnLicenciasEmitidas.setFont(new Font("Tahoma", Font.BOLD, 20));
-				btnLicenciasEmitidas.setEnabled(false);
-				btnLicenciasEmitidas.setBounds(460, 0, 372, 40);
-				panelEmitir.add(btnLicenciasEmitidas);
-		panelLicencia = new JPanel();
-		panelLicencia.setBounds(150, 60, 844, 605);
-		panelLicencia.setBackground(Colors.FONDO);
-		frmPrincipal.getContentPane().add(panelLicencia);
-		panelLicencia.setVisible(false);
-		panelLicencia.setLayout(null);
-		
-		JButton btnEmitir = new JButton("");
-		btnEmitir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				mostrarPanel(PANEL_BUSCAR_TITULAR);
-			}
-		});
-		btnEmitir.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/emitir_licencia_100px.png")));
-		btnEmitir.setBounds(132, 151, 105, 105);
-		panelLicencia.add(btnEmitir);
-		
-		JButton btnImprimir = new JButton("");
-		btnImprimir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnImprimir.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/imprimir_100px.png")));
-		btnImprimir.setBounds(606, 151, 105, 105);
-		panelLicencia.add(btnImprimir);
-		
-		JLabel lblEmitir = new JLabel("EMITIR");
-		lblEmitir.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEmitir.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblEmitir.setBounds(132, 260, 105, 16);
-		panelLicencia.add(lblEmitir);
-		
-		JLabel lblImprimir = new JLabel("IMPRIMIR");
-		lblImprimir.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImprimir.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblImprimir.setBounds(606, 260, 105, 16);
-		panelLicencia.add(lblImprimir);
-		
-		JButton btnRenovar = new JButton("");
-		btnRenovar.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/renovar_licencia_100px.png")));
-		btnRenovar.setBounds(369, 151, 105, 105);
-		panelLicencia.add(btnRenovar);
-		
-		JLabel lblRenovar = new JLabel("RENOVAR");
-		lblRenovar.setHorizontalAlignment(SwingConstants.CENTER);
-		lblRenovar.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblRenovar.setBounds(369, 260, 105, 16);
-		panelLicencia.add(lblRenovar);
 		barraLateral = new JPanel();
 		barraLateral.setBackground(new Color(0, 0, 128));
 		barraLateral.setBounds(0, 0, 150, 665);
@@ -458,25 +139,40 @@ public class MenuPrincipal extends JFrame{
 		barraLateral.setLayout(null);
 		
 		JButton btnLicencia = new JButton("LICENCIA");
+		btnLicencia.setFocusPainted(false);
 		btnLicencia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(panelPrincipal.isVisible()) {
-					mostrarPanel(PANEL_LICENCIA);
+				if(panelMenuPrincipal.isVisible()) {
+					btnLicencia.setFont(new Font("Tahoma", Font.BOLD, 18));
+					mostrarPanel(PANEL_MENU_LICENCIA);
 				}
 				else {
-					mostrarPanel(PANEL_PRINCIPAL);
+					mostrarPanel(PANEL_MENU_PRINCIPAL);
+					btnLicencia.setFont(new Font("Tahoma", Font.PLAIN, 17));
 				}
 			}
 		});
 		btnLicencia.setForeground(Colors.MENU_LATERAL);
 		btnLicencia.setBackground(Colors.FONDO);
-		btnLicencia.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnLicencia.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnLicencia.setBounds(0, 129, 150, 40);
 		barraLateral.add(btnLicencia);
 		
 		JButton btnUsuario = new JButton("USUARIO");
+		btnUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(panelMenuUsuario.isVisible()) {
+					btnUsuario.setFont(new Font("Tahoma", Font.BOLD, 18));
+					mostrarPanel(PANEL_MENU_USUARIO);
+				}
+				else {
+					btnUsuario.setFont(new Font("Tahoma", Font.PLAIN, 17));
+					mostrarPanel(PANEL_MENU_PRINCIPAL);
+				}
+			}
+		});
 		btnUsuario.setForeground(Colors.MENU_LATERAL);
-		btnUsuario.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnUsuario.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnUsuario.setBackground(Colors.FONDO);
 		btnUsuario.setBounds(0, 169, 150, 40);
 		barraLateral.add(btnUsuario);
@@ -494,7 +190,7 @@ public class MenuPrincipal extends JFrame{
 		});
 		btnCerrarSesion.setBackground(Colors.FONDO);
 		btnCerrarSesion.setForeground(Colors.MENU_LATERAL);
-		btnCerrarSesion.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnCerrarSesion.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnCerrarSesion.setBounds(0, 625, 150, 40);
 		barraLateral.add(btnCerrarSesion);
 		
@@ -548,90 +244,397 @@ public class MenuPrincipal extends JFrame{
 	
 	//Crea la interfaz y elementos del JPanel PanelEmitir
 	private void armarPanelBuscarTitular() {
-		//TODO descomentar cargador combobox
+		panelTitularLicencia = new JPanel();
+		panelTitularLicencia.setBounds(150, 60, 844, 605);
+		frmPrincipal.getContentPane().add(panelTitularLicencia);
+		panelTitularLicencia.setLayout(null);
+		
+		JLabel lblTituloBuscarTitular = new JLabel("Buscar titular");
+		lblTituloBuscarTitular.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTituloBuscarTitular.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		lblTituloBuscarTitular.setBounds(12, 15, 817, 25);
+		panelTitularLicencia.add(lblTituloBuscarTitular);
+		
+		btnBuscar = new JButton("BUSCAR");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(validarDoc(tfNroDoc.getText())) {
+					btnAceptar.setEnabled(true);
+					//TODO obtenerDatos del titular
+					/*TitularDTO dtoTitular = controladorTitular.titularLocator(cbTipo.getSelectedItem(), Long.valueOf(tfNroDoc.getText()));
+					if(dtoTitular.isNull()) {
+						//TODO pasar a interfaz dar de alta titular
+						if(JOptionPane.showConfirmDialog(null, "No se encontraron resultados, ¿Desea dar de alta al titular?", "Titular no encontrado", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE)
+							== JOptionPane.YES_OPTION)
+						{
+							TaxPayerDTO dtoContribuyente = controladorContribuyente.taxPayerLocator(cbTipo.getSelectedItem(), long.valueOf(tfNroDoc.getText()));
+							if(dtoContribuyente.isNull()){
+								JOptionPane.showMessageDialog(null, "El documento ingresado no se corresponde a ningún contribuyente registrado", "Contribuyente no encontrado", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
+							}
+							else{
+								altaTitular=true;
+								cargarDatosContribuyente(dtoContribuyente);
+								mostrarPanel(PANEL_ALTA_TITULAR);
+							}
+						}
+					}
+					else{
+						altaTitular=false;
+						cargarDatosTitular(dtoTitular);
+						mostrarPanel(PANEL_EMITIR);
+					}*/
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Formato de documento incorrecto", "Error", JOptionPane.OK_OPTION);
+				}
+			}
+		});
+		btnBuscar.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnBuscar.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/find_user_filled_30px.png")));
+		btnBuscar.setBounds(572, 111, 130, 40);
+		panelTitularLicencia.add(btnBuscar);
+		
+		JLabel lblTipoDoc = new JLabel("Tipo:");
+		lblTipoDoc.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTipoDoc.setBounds(15, 109, 53, 40);
+		panelTitularLicencia.add(lblTipoDoc);
+		
+		cbTipoDoc = new JComboBox<>();
+		//TODO descomentar cargador combobox y setear tipo de dato en constructor
 		/*controladorTitular.loadPersonalIdComboBox(cbTipoDoc);
 		seleccionar por defecto DNI*/
+		cbTipoDoc.setBounds(132, 109, 80, 40);
+		panelTitularLicencia.add(cbTipoDoc);
 		
-		try {
-			MaskFormatter fechaMask = new MaskFormatter("##/##/####");
-			fechaMask.setPlaceholderCharacter('_');
-		}catch(Exception e) {};
-		//TODO descomentar carga combobox
-		/*controladorTitular.loadBloodTyperComboBox(cbTipoSangre);
-		*/
+		JLabel lblNumero = new JLabel("Nro:");
+		lblNumero.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNumero.setBounds(224, 109, 74, 40);
+		panelTitularLicencia.add(lblNumero);
+		
+		JLabel lblDocumento = new JLabel("Documento:");
+		lblDocumento.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblDocumento.setBounds(12, 56, 436, 40);
+		panelTitularLicencia.add(lblDocumento);
+		
+		tfNroDoc = new JTextField();
+		tfNroDoc.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		tfNroDoc.setBounds(274, 109, 177, 40);
+		
+		//Configuramos que solo permita ingresar digitos
+		tfNroDoc.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+				else {
+					//Ingrese solo numeros sin puntos
+				}
+			}
+		});
+		panelTitularLicencia.add(tfNroDoc);
+		tfNroDoc.setColumns(10);
+		
+		JLabel lblNombre = new JLabel("Nombre/s:");
+		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNombre.setBounds(15, 162, 119, 40);
+		panelTitularLicencia.add(lblNombre);
+		
+		JLabel lblApellido = new JLabel("Apellido/s:");
+		lblApellido.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblApellido.setBounds(463, 162, 119, 40);
+		panelTitularLicencia.add(lblApellido);
+		
+		tfNombre = new JTextField();
+		tfNombre.setEditable(false);
+		tfNombre.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		tfNombre.setColumns(10);
+		tfNombre.setBounds(132, 162, 319, 40);
+		panelTitularLicencia.add(tfNombre);
+		
+		tfApellido = new JTextField();
+		tfApellido.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		tfApellido.setEditable(false);
+		tfApellido.setColumns(10);
+		tfApellido.setBounds(572, 164, 260, 40);
+		panelTitularLicencia.add(tfApellido);
+		
+		JLabel lblFechaNac = new JLabel("Fecha nac.:");
+		lblFechaNac.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblFechaNac.setBounds(15, 215, 119, 40);
+		panelTitularLicencia.add(lblFechaNac);
+		tfFechaNac = new JTextField();
+		tfFechaNac.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		tfFechaNac.setEditable(false);
+		tfFechaNac.setColumns(10);
+		tfFechaNac.setBounds(132, 215, 80, 40);
+		panelTitularLicencia.add(tfFechaNac);
+		
+		JLabel lblDireccion = new JLabel("Direcci\u00F3n:");
+		lblDireccion.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblDireccion.setBounds(15, 268, 119, 40);
+		panelTitularLicencia.add(lblDireccion);
+		
+		tfDireccion = new JTextField();
+		tfDireccion.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		tfDireccion.setEditable(false);
+		tfDireccion.setColumns(10);
+		tfDireccion.setBounds(132, 268, 700, 40);
+		panelTitularLicencia.add(tfDireccion);
+		
+		JLabel lblGrupoSanguineo = new JLabel("Tipo de sangre:");
+		lblGrupoSanguineo.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblGrupoSanguineo.setBounds(463, 215, 170, 40);
+		panelTitularLicencia.add(lblGrupoSanguineo);
+		
+		btnAceptar = new JButton("ACEPTAR");
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(altaTitular) {
+					mostrarPanel(PANEL_EMITIR);
+				}
+				else {
+					
+				}
+			}
+		});
+		btnAceptar.setEnabled(false);
+		btnAceptar.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnAceptar.setBounds(463, 321, 175, 40);
+		
+				panelTitularLicencia.add(btnAceptar);
+				
+				btnCancelar = new JButton("CANCELAR");
+				btnCancelar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						altaTitular=false;
+						limpiar(panelTitularLicencia);
+						mostrarPanel(PANEL_MENU_LICENCIA);
+					}
+				});
+				btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 20));
+				btnCancelar.setBounds(657, 321, 175, 40);
+				panelTitularLicencia.add(btnCancelar);
+				
+				cbTipoSangre = new JComboBox();
+				//TODO descomentar carga combobox y setear tipo de dato en constructor
+				/*controladorTitular.loadBloodTyperComboBox(cbTipoSangre);
+				*/
+				cbTipoSangre.setEnabled(false);
+				cbTipoSangre.setBounds(607, 215, 80, 40);
+				panelTitularLicencia.add(cbTipoSangre);
+				
+				ckbDonante = new JCheckBox(" Donante");
+				ckbDonante.setEnabled(false);
+				ckbDonante.setFont(new Font("Tahoma", Font.PLAIN, 20));
+				ckbDonante.setBounds(703, 215, 129, 40);
+				panelTitularLicencia.add(ckbDonante);
 	}
 	
 	private void armarPanelEmitirLicencia() {
+		panelEmitirLicencia = new JPanel();
+		panelEmitirLicencia.setVisible(false);
+		panelEmitirLicencia.setBounds(0, 321, 844, 284);
+		panelTitularLicencia.add(panelEmitirLicencia);
+		panelEmitirLicencia.setLayout(null);
+		
+		JLabel lblObservaciones = new JLabel("Observaciones:");
+		lblObservaciones.setBounds(15, 0, 150, 40);
+		panelEmitirLicencia.add(lblObservaciones);
+		lblObservaciones.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		
+		JTextArea taObservaciones = new JTextArea();
+		taObservaciones.setBounds(15, 53, 433, 146);
+		panelEmitirLicencia.add(taObservaciones);
+		taObservaciones.setLineWrap(true);
+		taObservaciones.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		
+		JLabel lblClase = new JLabel("Clase:");
+		lblClase.setBounds(460, 53, 119, 40);
+		panelEmitirLicencia.add(lblClase);
+		lblClase.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		
+		JComboBox cbClase = new JComboBox();
+		cbClase.setBounds(572, 53, 80, 40);
+		panelEmitirLicencia.add(cbClase);
+		
+		JLabel lblVigencia = new JLabel("Vigencia:");
+		lblVigencia.setBounds(460, 106, 119, 40);
+		panelEmitirLicencia.add(lblVigencia);
+		lblVigencia.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		
+		tfVigencia = new JTextField();
+		tfVigencia.setBounds(572, 105, 260, 40);
+		panelEmitirLicencia.add(tfVigencia);
+		tfVigencia.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		tfVigencia.setEditable(false);
+		tfVigencia.setColumns(10);
+		
+		JLabel lblCosto = new JLabel("Costo:");
+		lblCosto.setBounds(460, 159, 119, 40);
+		panelEmitirLicencia.add(lblCosto);
+		lblCosto.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		
+		tfCosto = new JTextField();
+		tfCosto.setBounds(572, 159, 260, 40);
+		panelEmitirLicencia.add(tfCosto);
+		tfCosto.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		tfCosto.setEditable(false);
+		tfCosto.setColumns(10);
+		
+		JButton btnAceptarEmitir = new JButton("ACEPTAR");
+		btnAceptarEmitir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				configurarPanelEmitir(false);
+			}
+		});
+		btnAceptarEmitir.setBounds(463, 231, 175, 40);
+		btnAceptarEmitir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//TODO Validar datos ingresados
+				/*
+				 
+				 */
+			}
+		});
+		panelEmitirLicencia.add(btnAceptarEmitir);
+		btnAceptarEmitir.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnAceptarEmitir.setEnabled(false);
+		
+		JButton btnCancelarEmitir = new JButton("CANCELAR");
+		btnCancelarEmitir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(JOptionPane.showConfirmDialog(null, "¿Está seguro que desea cancelar?", "Cancelar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+					limpiar(panelTitularLicencia);
+					limpiar(panelEmitirLicencia);
+					mostrarPanel(PANEL_TITULAR_LICENCIA);
+					altaTitular=false;
+				}
+			}
+		});
+		btnCancelarEmitir.setBounds(657, 231, 175, 40);
+		panelEmitirLicencia.add(btnCancelarEmitir);
+		btnCancelarEmitir.setFont(new Font("Tahoma", Font.BOLD, 20));
 	}
 	
 	//Crea la interfaz y elementos del JPanel PanelPrincipal
-	private void armarPanelPrincipal() {
-		panelPrincipal = new JPanel();
-		panelPrincipal.setBounds(150, 60, 844, 605);
-		panelPrincipal.setBackground(Colors.FONDO);
-		frmPrincipal.getContentPane().add(panelPrincipal);
-		panelPrincipal.setLayout(null);
+	private void armarPanelMenuPrincipal() {
+		panelMenuPrincipal = new JPanel();
+		panelMenuPrincipal.setBounds(150, 60, 844, 605);
+		panelMenuPrincipal.setBackground(Colors.FONDO);
+		frmPrincipal.getContentPane().add(panelMenuPrincipal);
+		panelMenuPrincipal.setLayout(null);
 		
 		JLabel lblTituloPrincipal = new JLabel("Licencias vigentes");
 		lblTituloPrincipal.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTituloPrincipal.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblTituloPrincipal.setBounds(15, 15, 817, 25);
-		panelPrincipal.add(lblTituloPrincipal);
+		panelMenuPrincipal.add(lblTituloPrincipal);
 		
 		tableLicencias = new JTable();
 		tableLicencias.setBounds(15, 55, 817, 537);
-		panelPrincipal.add(tableLicencias);
+		panelMenuPrincipal.add(tableLicencias);
 	}
 	
 	//Crea la interfaz y elementos del JPanel PanelLicencia
-	private void armarPanelLicencia() {
+	private void armarPanelMenuLicencia() {
+		panelMenuLicencia = new JPanel();
+		panelMenuLicencia.setBounds(150, 60, 844, 605);
+		panelMenuLicencia.setBackground(Colors.FONDO);
+		frmPrincipal.getContentPane().add(panelMenuLicencia);
+		panelMenuLicencia.setVisible(false);
+		panelMenuLicencia.setLayout(null);
+		
+		JButton btnEmitir = new JButton("");
+		btnEmitir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mostrarPanel(PANEL_TITULAR_LICENCIA);
+			}
+		});
+		btnEmitir.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/emitir_licencia_100px.png")));
+		btnEmitir.setBounds(132, 151, 105, 105);
+		panelMenuLicencia.add(btnEmitir);
+		
+		JButton btnImprimir = new JButton("");
+		btnImprimir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnImprimir.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/imprimir_100px.png")));
+		btnImprimir.setBounds(606, 151, 105, 105);
+		panelMenuLicencia.add(btnImprimir);
+		
+		JLabel lblEmitir = new JLabel("EMITIR");
+		lblEmitir.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEmitir.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblEmitir.setBounds(132, 260, 105, 16);
+		panelMenuLicencia.add(lblEmitir);
+		
+		JLabel lblImprimir = new JLabel("IMPRIMIR");
+		lblImprimir.setHorizontalAlignment(SwingConstants.CENTER);
+		lblImprimir.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblImprimir.setBounds(606, 260, 105, 16);
+		panelMenuLicencia.add(lblImprimir);
+		
+		JButton btnRenovar = new JButton("");
+		btnRenovar.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/renovar_licencia_100px.png")));
+		btnRenovar.setBounds(369, 151, 105, 105);
+		panelMenuLicencia.add(btnRenovar);
+		
+		JLabel lblRenovar = new JLabel("RENOVAR");
+		lblRenovar.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRenovar.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblRenovar.setBounds(369, 260, 105, 16);
+		panelMenuLicencia.add(lblRenovar);
 	}
 	
 	//Crea la interfaz y elementos del JPanel PanelUsuario
-	private void armarPanelUsuario() {
-		panelUsuario = new JPanel();
-		panelUsuario.setBounds(150, 60, 844, 605);
-		panelUsuario.setBackground(Colors.FONDO);
-		frmPrincipal.getContentPane().add(panelUsuario);
-		panelUsuario.setLayout(null);
+	private void armarPanelMenuUsuario() {
+		panelMenuUsuario = new JPanel();
+		panelMenuUsuario.setBounds(150, 60, 844, 605);
+		panelMenuUsuario.setBackground(Colors.FONDO);
+		frmPrincipal.getContentPane().add(panelMenuUsuario);
+		panelMenuUsuario.setLayout(null);
 	}
 	
 	//Muestra el panel solicitado ocultando los demas
 	private void mostrarPanel(int panel) {
-		panelPrincipal.setVisible(false);
-		panelBuscarTitular.setVisible(false);
-		panelLicencia.setVisible(false);
-		panelUsuario.setVisible(false);
-		panelEmitir.setVisible(false);
+		panelMenuPrincipal.setVisible(false);
+		panelTitularLicencia.setVisible(false);
+		panelMenuLicencia.setVisible(false);
+		panelMenuUsuario.setVisible(false);
+		panelEmitirLicencia.setVisible(false);
 		
 		switch(panel) {
-			case PANEL_PRINCIPAL:{
-				panelPrincipal.setVisible(true);
+			case PANEL_MENU_PRINCIPAL:{
+				panelMenuPrincipal.setVisible(true);
 				break;
 			}
-			case PANEL_LICENCIA:{
-				panelLicencia.setVisible(true);
+			case PANEL_MENU_LICENCIA:{
+				panelMenuLicencia.setVisible(true);
 				break;
 			}
-			case PANEL_BUSCAR_TITULAR:{
-				activarDesactivarComponentesPanelBuscarTitular(Boolean.FALSE);
+			case PANEL_TITULAR_LICENCIA:{
+				activarComponentesPanelTitular(Boolean.FALSE);
 				btnAceptar.setVisible(true);
 				btnAceptar.setEnabled(false);
 				btnCancelar.setVisible(true);
-				panelBuscarTitular.setVisible(true);
+				panelTitularLicencia.setVisible(true);
 				break;
 			}
-			case PANEL_USUARIO:{
-				panelUsuario.setVisible(true);
+			case PANEL_MENU_USUARIO:{
+				panelMenuUsuario.setVisible(true);
 				break;
 			}
 			case PANEL_ALTA_TITULAR:{
-				activarDesactivarComponentesPanelBuscarTitular(Boolean.TRUE);
-				panelBuscarTitular.setVisible(true);
+				activarComponentesPanelTitular(Boolean.TRUE);
+				panelTitularLicencia.setVisible(true);
 				break;
 			}
 			case PANEL_EMITIR:{
-				panelBuscarTitular.setVisible(true);
+				panelTitularLicencia.setVisible(true);
 				configurarPanelEmitir(true);
 				break;
 			}
@@ -639,24 +642,24 @@ public class MenuPrincipal extends JFrame{
 	}
 	
 	//Activa o desactiva los elementos de la interfaz panel emitir para dar de alta a un titular o emitir una licencia
-	private void activarDesactivarComponentesPanelBuscarTitular(boolean activo) {
-		btnBuscar.setVisible(!activo);
-		cbTipoDoc.setEnabled(!activo);
-		tfNroDoc.setEditable(!activo);
-		cbTipoSangre.setEnabled(activo);
-		ckbDonante.setEnabled(activo);
+	private void activarComponentesPanelTitular(boolean activar) {
+		btnBuscar.setVisible(!activar);
+		cbTipoDoc.setEnabled(!activar);
+		tfNroDoc.setEditable(!activar);
+		cbTipoSangre.setEnabled(activar);
+		ckbDonante.setEnabled(activar);
 	}
 	
 	//Configura la interfaz bloqueando los elementos de buscar titular y habilitando los de emitir
-	private void configurarPanelEmitir(boolean activo) {
-		btnBuscar.setVisible(!activo);
-		cbTipoDoc.setEnabled(!activo);
-		tfNroDoc.setEditable(!activo);
-		cbTipoSangre.setEnabled(!activo);
-		ckbDonante.setEnabled(!activo);
-		btnAceptar.setVisible(!activo);
-		btnCancelar.setVisible(!activo);
-		panelEmitir.setVisible(activo);
+	private void configurarPanelEmitir(boolean activar) {
+		btnBuscar.setVisible(!activar);
+		cbTipoDoc.setEnabled(!activar);
+		tfNroDoc.setEditable(!activar);
+		cbTipoSangre.setEnabled(!activar);
+		ckbDonante.setEnabled(!activar);
+		btnAceptar.setVisible(!activar);
+		btnCancelar.setVisible(!activar);
+		panelEmitirLicencia.setVisible(activar);
 	}
 	
 	//Le enviamos un JPanel y limpiar los TextFields
