@@ -2,13 +2,24 @@ package DTOs;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
+@Table(name="contribuyente")
 public class TaxPayerDTO {
 	
+	@Column (name="nombre")
 	private String name; 
-	private String surname;
-	private Date birthday;
-	private String adress;
 	
+	@Column (name="apellido")
+	private String surname;
+	
+	@Column (name="fecha_nacimiento")
+	private Date birthday;
+	
+	@Column (name="direccion")
+	private String adress;	
 	
 	public String getName() {
 		return name;
