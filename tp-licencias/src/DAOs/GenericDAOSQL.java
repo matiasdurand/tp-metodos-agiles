@@ -1,7 +1,6 @@
 package DAOs;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -51,7 +50,7 @@ public class GenericDAOSQL<T, ID extends Serializable> implements GenericDAO<T,I
 	@Override
 	public T update(T entity) {
 		// crear factory
-		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(type).buildSessionFactory();
+		SessionFactory factory = new Configuration().configure("hibernate-sistema.cfg.xml").addAnnotatedClass(type).buildSessionFactory();
 		// crear sesión
 		Session session = factory.getCurrentSession();
 		// usar el objeto session
@@ -65,7 +64,7 @@ public class GenericDAOSQL<T, ID extends Serializable> implements GenericDAO<T,I
 
 	@Override
 	public T find(int id) {
-		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(type).buildSessionFactory();
+		SessionFactory factory = new Configuration().configure("hibernate-sistema.cfg.xml").addAnnotatedClass(type).buildSessionFactory();
 		// crear sesión
 		Session session = factory.getCurrentSession(); // usar el objeto session
 		session.beginTransaction();
@@ -80,7 +79,7 @@ public class GenericDAOSQL<T, ID extends Serializable> implements GenericDAO<T,I
 	@Override
 	public List<T> findAll() {
 		// crear factory
-		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(type).buildSessionFactory();
+		SessionFactory factory = new Configuration().configure("hibernate-sistema.cfg.xml").addAnnotatedClass(type).buildSessionFactory();
 		// crear sesión
 		Session session = factory.getCurrentSession();
 		// usar el objeto session

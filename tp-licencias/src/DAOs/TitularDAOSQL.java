@@ -8,6 +8,12 @@ import domain.TypeId;
 public class TitularDAOSQL extends GenericDAOSQL<Titular,Integer> implements TitularDAO {
 
 	
+	public TitularDAOSQL(Class<Titular> type) {
+		super(type);
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public List<Titular> findAllByPersonalId(TypeId typeId, Long personalIdFragment) {
 		// TODO Auto-generated method stub
 		return null;
