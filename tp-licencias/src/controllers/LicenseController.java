@@ -1,19 +1,24 @@
 package controllers;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.swing.JComboBox;
 
-import DAOs.LicenseDAO;
-import DAOs.LicenseDAOSQL;
-import DTOs.LicenseDTO;
-import DTOs.TitularDTO;
+import dao.LicenseDAO;
+import dao.LicenseDAOSQL;
 import domain.License;
 import domain.LicenseType;
 import domain.Titular;
+import domain.TypeId;
+import dto.LicenseDTO;
+import dto.TitularDTO;
 import useful.Combination;
+import useful.ExpiricyDateCalculator;
 import useful.LicenseCostCalculator;
 import validators.ClassAValidator;
 import validators.ClassBValidator;
@@ -30,6 +35,7 @@ public class LicenseController {
 	
 	private static LicenseController _INSTANCE = new LicenseController();
 	private LicenseCostCalculator licenseCostCalculator = LicenseCostCalculator.getInstance();
+	private ExpiricyDateCalculator expiricyDateCalculator = ExpiricyDateCalculator.getInstance();
 	private LicenseDAO licenseDAO = new LicenseDAOSQL();
 	
 	
@@ -40,43 +46,28 @@ public class LicenseController {
 		return _INSTANCE;
 	}	
 	
-	public void registerLicense(TitularDTO titularDTO, LicenseDTO licenseDTO, Integer cameFrom) { 
+	public void registerLicense(TitularDTO titularDTO, LicenseDTO licenseDTO, Boolean cameFrom) { 
 		
 		License license = new License();
-		Titular titular;
-		
-		switch(cameFrom) {
-		case 1: 
-			titular = TitularController.getInstance().registerTitular(titularDTO);
-			license.setTitular(titular);
-			break;
-		case 2:
-			titular = TitularController.getInstance().findTitular(titularDTO.getId());
-			license.setTitular(titular);
-			break;
-		}
 		
 		license.setLicenseType(licenseDTO.getLicenseType());
 		license.setObservation(licenseDTO.getObservation());
 		license.setEmisionDate(new Date());
-		calculateValidity(license);
+		license.setExpiricyDate(licenseDTO.getExpiricyDate());
+	
+		saveLicense(license);
 		
-		Runnable r = () -> {
-			licenseDAO.save(license);
-		};
-		Thread thread = new Thread(r);
-		thread.start();
-		
-		
-		
-		Double licenseCost = calculateLicenseCost(license);
-		
-		// TODO mostrarPopUp Tuneado (licenseCost) 
-		
+		if(cameFrom) {
+			TitularController.getInstance().registerTitular(titularDTO, license);
+		}
+		else { 
+			Integer id = titularDTO.getId();
+			TitularController.getInstance().addTitularsLicense(id, license);
+		}
 	}
 	
 	public void loadLicenseTypeComboBox(JComboBox<LicenseType> comboBox, TitularDTO titularDTO, Integer cameFrom) {
-		// TODO Se podria ejecutar en hilo secundario.. 
+
 		switch(cameFrom) {
 			case 1:
 				comboBox.addItem(LicenseType.A);
@@ -101,7 +92,6 @@ public class LicenseController {
 					comboBox.addItem(licenseType);
 				}
 				break;
-				
 		}
 		
 	}
@@ -116,15 +106,50 @@ public class LicenseController {
 		return validator.validate(licenseDTO);
 	}
 	
-	public Double calculateLicenseCost(License license) {
+	public void loadTypeIdComboBox(JComboBox<TypeId> comboBox) {
+		for(TypeId typeId: TypeId.values()) {
+			comboBox.addItem(typeId);
+		}
+	}
+	
+	public void loadBloodTypeComboBox(JComboBox<String> comboBox) {
+		comboBox.addItem("AB-");
+		comboBox.addItem("AB+");
+		comboBox.addItem("A-");
+		comboBox.addItem("A+");
+		comboBox.addItem("B-");
+		comboBox.addItem("B+");
+		comboBox.addItem("O-");
+		comboBox.addItem("O+");
+	}
+	
+	public License findLicense(Integer id) {
+		return licenseDAO.find(id);
+	}
+	
+	public void saveLicense(License license) {
+		licenseDAO.save(license);
+	}
+	
+	public Double calculateLicenseCost(LicenseType licenseType, Date expiricyDate) {
 		
-		Combination combination = new Combination(license.getLicenseType(), license.getValidity());
+		LocalDate expiricy = expiricyDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate actual = LocalDate.now();
+		Integer validity = (int) ChronoUnit.YEARS.between(expiricy, actual);
+		
+		Combination combination = new Combination(licenseType, validity);
 		
 		return licenseCostCalculator.getLicenseCost(combination);
 	}
 	
-	private void calculateValidity(License license){ 
-		// TODO Implementar metodo calcular vigencia
+	private Date calculateExpiricyDate(TitularDTO titularDTO) { 
+		
+		Date birthday = titularDTO.getBirthday();
+		Long personalId = Long.parseLong(titularDTO.getPersonalId());
+		TypeId typeId = titularDTO.getTypeId();
+		
+		return expiricyDateCalculator.calculateExpiricyDate(typeId, personalId, birthday);
+		
 	}
-
+	
 }

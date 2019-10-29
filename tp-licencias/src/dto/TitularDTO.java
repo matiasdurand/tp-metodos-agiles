@@ -1,20 +1,19 @@
-package DTOs;
+package dto;
 
 import java.util.Date;
 
-import domain.BloodType;
 import domain.TypeId;
 
 public class TitularDTO {
 
 	private Integer id;
 	private TypeId typeId;
-	private Long personalId;
+	private String personalId;
 	private String name;
 	private String surname;
 	private String adress;
 	private Date birthday;
-	private BloodType bloodType;
+	private String bloodType;
 	private Boolean organDonor;
 	
 	
@@ -30,10 +29,10 @@ public class TitularDTO {
 	public void setTypeId(TypeId typeId) {
 		this.typeId = typeId;
 	}
-	public Long getPersonalId() {
+	public String getPersonalId() {
 		return personalId;
 	}
-	public void setPersonalId(Long personalId) {
+	public void setPersonalId(String personalId) {
 		this.personalId = personalId;
 	}
 	public String getName() {
@@ -60,10 +59,10 @@ public class TitularDTO {
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
-	public BloodType getBloodType() {
+	public String getBloodType() {
 		return bloodType;
 	}
-	public void setBloodType(BloodType bloodType) {
+	public void setBloodType(String bloodType) {
 		this.bloodType = bloodType;
 	}
 	public Boolean getOrganDonor() {

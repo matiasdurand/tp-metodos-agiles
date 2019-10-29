@@ -1,6 +1,4 @@
-package DAOs;
-
-import java.util.List;
+package dao;
 
 import domain.Titular;
 import domain.TypeId;
@@ -8,14 +6,9 @@ import domain.TypeId;
 public class TitularDAOSQL extends GenericDAOSQL<Titular,Integer> implements TitularDAO {
 
 	
-	public List<Titular> findAllByPersonalId(TypeId typeId, Long personalIdFragment) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
 	public Titular findByPersonalId(TypeId typeId, Long personalId) {
 		// TODO Auto-generated method stub
+		//Este metodo debe retornar null en caso que no exista (Borrar este comentario)
 		return null;
 	}
 	

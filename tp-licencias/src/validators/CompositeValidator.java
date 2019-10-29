@@ -3,6 +3,7 @@ package validators;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class CompositeValidator<D,T> implements Validator <D,T> {
 	
 	private final List<Validator<D,T>> validators; 
@@ -23,5 +24,24 @@ public class CompositeValidator<D,T> implements Validator <D,T> {
 		return result;
 	}
 	
+	/*
+		private final List<Validator<D,T>> validators; 
+		
+		public Builder (List<Validator<D,T>> validators) {
+			this.validators = validators;
+		}
+		
+		public Builder setAdressValidator() {
+			validator = 
+			
+		}
+		
+		@Override
+		public CompositeValidator build() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+	}*/
 	
 }

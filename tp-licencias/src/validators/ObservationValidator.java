@@ -3,7 +3,7 @@ package validators;
 import java.util.ArrayList;
 import java.util.List;
 
-import DTOs.LicenseDTO;
+import dto.LicenseDTO;
 
 public class ObservationValidator implements Validator<String,LicenseDTO> {
 

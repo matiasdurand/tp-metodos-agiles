@@ -1,4 +1,4 @@
-package DAOs;
+package dao;
 
 import java.io.Serializable;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.List;
  * de esta clase heredaran las implementaciones de cada interfaz DAO, de esta manera se evita duplicar codigo en cada entidad*/
 
 public class GenericDAOSQL<T, ID extends Serializable> implements GenericDAO<T,ID> {
-
+		
 	@Override
 	public T create() {
 		// TODO Auto-generated method stub

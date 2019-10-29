@@ -1,4 +1,4 @@
-package DAOs;
+package dao;
 
 import domain.License;
 

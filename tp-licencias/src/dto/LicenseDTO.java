@@ -1,4 +1,6 @@
-package DTOs;
+package dto;
+
+import java.util.Date;
 
 import domain.LicenseType;
 
@@ -7,8 +9,15 @@ public class LicenseDTO {
 	private Integer id;
 	private LicenseType licenseType;
 	private String observation;
+	private Date expiricyDate;
 	
 	
+	public Date getExpiricyDate() {
+		return expiricyDate;
+	}
+	public void setExpiricyDate(Date expiricyDate) {
+		this.expiricyDate = expiricyDate;
+	}
 	public Integer getId() {
 		return id;
 	}

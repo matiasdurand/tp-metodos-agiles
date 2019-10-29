@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import builders.Build;
+
 public class Titular {
 	
 	private Integer id;
@@ -13,7 +15,7 @@ public class Titular {
 	private String surname;
 	private String adress;
 	private Date birthday;
-	private BloodType bloodType;
+	private String bloodType;
 	private Boolean organDonor;
 	private List<License> licenses = new ArrayList<License>(); 
 	
@@ -60,10 +62,10 @@ public class Titular {
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
-	public BloodType getBloodType() {
+	public String getBloodType() {
 		return bloodType;
 	}
-	public void setBloodType(BloodType bloodType) {
+	public void setBloodType(String bloodType) {
 		this.bloodType = bloodType;
 	}
 	public Boolean getOrganDonor() {
@@ -79,5 +81,82 @@ public class Titular {
 		this.licenses = licenses;
 	} 
 	
+	public static class Builder implements Build<Titular>{
+
+		private TypeId typeId;
+		private Long personalId;
+		private String name;
+		private String surname;
+		private String adress;
+		private Date birthday;
+		private String bloodType;
+		private Boolean organDonor;
+		private List<License> licenses = new ArrayList<License>(); 
+		
+		
+		public Builder() {
+			
+		}
+		
+		public Builder setTypeId(TypeId typeId) {
+			this.typeId = typeId;
+			return this;
+		}
+		
+		public Builder setPersonalid(Long personalId) {
+			this.personalId = personalId;
+			return this;
+		}
+		
+		public Builder setName(String name) {
+			this.name = name;
+			return this;
+		}
+		
+		public Builder setSurname(String surname) { 
+			this.surname = surname;
+			return this;
+		}
+		
+		public Builder setAdress(String adress) {
+			this.adress = adress;
+			return this;
+		}
+		
+		public Builder setBirthday(Date birthday) {
+			this.birthday = birthday;
+			return this;
+		}
+		
+		public Builder setBloodType(String bloodType) { 
+			this.bloodType = bloodType;
+			return this;
+		}
+		
+		public Builder setOrganDonor(Boolean organDonor) {
+			this.organDonor = organDonor;
+			return this;
+		}
+		
+		public Builder addLicense(License license) {
+			this.licenses.add(license);
+			return this;
+		}
+
+		@Override
+		public Titular build() {
+			Titular titular = new Titular();
+			titular.setTypeId(this.typeId);
+			titular.setPersonalId(this.personalId);
+			titular.setName(this.name);
+			titular.setSurname(this.surname);
+			titular.setAdress(this.adress);
+			titular.setBirthday(this.birthday);
+			titular.setBloodType(this.bloodType);
+			titular.setOrganDonor(this.organDonor);
+			return titular;
+		}
+		
+	}
 	
 }

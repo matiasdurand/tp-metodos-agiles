@@ -1,9 +1,9 @@
 package controllers;
 
-import DAOs.TaxPayerDAO;
-import DAOs.TaxPayerDAOSQL;
-import DTOs.TaxPayerDTO;
+import dao.TaxPayerDAO;
+import dao.TaxPayerDAOSQL;
 import domain.TypeId;
+import dto.TaxPayerDTO;
 
 public class TaxPayerController {
 	
@@ -17,22 +17,10 @@ public class TaxPayerController {
 		return _INSTANCE;
 	}	
 	
-	public void taxPayerLocator(TypeId typeId, Long personalId){
+	public TaxPayerDTO taxPayerLocator(TypeId typeId, Long personalId){
 		
-		if(!TitularController.getInstance().existsTitular(typeId, personalId)) {
+		return taxPayerDAO.findByPersonalId(typeId, personalId);
 			
-			TaxPayerDTO taxPayerDTO = taxPayerDAO.findByPersonalId(typeId, personalId); 
-			
-			if(taxPayerDTO != null) {
-				// TODO mandar dto contribuyente para cargar datos no editables
-			}
-			else { 
-				// TODO configurar popup adverencia de que no existe el contribuyente y vuelve a la pantalla anterior (emitir licencia)
-			}
-		}
-		else {
-			// TODO muestra pop que ya existe y vuelve a la pantalla anterior (emitir licencia)
-		}
 	}
 
 	

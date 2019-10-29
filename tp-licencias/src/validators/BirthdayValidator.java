@@ -6,7 +6,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import DTOs.TitularDTO;
+import dto.TitularDTO;
 
 public class BirthdayValidator implements Validator<String,TitularDTO> {
 

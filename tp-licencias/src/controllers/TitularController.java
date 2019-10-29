@@ -3,13 +3,12 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import DAOs.TitularDAO;
-import DAOs.TitularDAOSQL;
-import DTOs.TaxPayerDTO;
-import DTOs.TitularDTO;
+import dao.TitularDAO;
+import dao.TitularDAOSQL;
 import domain.License;
 import domain.Titular;
 import domain.TypeId;
+import dto.TitularDTO;
 import validators.AdressValidator;
 import validators.BirthdayValidator;
 import validators.BloodValidator;
@@ -31,7 +30,6 @@ public class TitularController {
 	}	
 
 	public List<String> validate(TitularDTO info) {
-		
 		List<Validator<String,TitularDTO>> validators = new ArrayList<Validator<String,TitularDTO>>();
 		
 		validators.add(new IdValidator());
@@ -46,65 +44,53 @@ public class TitularController {
 		
 	}
 	
-	public Titular registerTitular(TitularDTO info) {
+	public void registerTitular(TitularDTO info, License license) {
 		
 		Titular titular = new Titular();
 		
 		titular.setTypeId(info.getTypeId());
-		titular.setPersonalId(info.getPersonalId());
+		titular.setPersonalId(Long.parseLong(info.getPersonalId()));
 		titular.setName(info.getName());
 		titular.setSurname(info.getSurname());
 		titular.setAdress(info.getAdress());
 		titular.setBirthday(info.getBirthday());
 		titular.setBloodType(info.getBloodType());
 		titular.setOrganDonor(info.getOrganDonor());
+		titular.getLicenses().add(license);
 		
 		Runnable r = () -> {
-			titularDAO.save(titular);
+			saveTitular(titular);
 		};
 		Thread thread = new Thread(r);
 		thread.start();
 		
-		return titular;
 	}
 	
-	public void titularLocator(TypeId typeId, Long personalIdFragment) {
+	public TitularDTO titularLocator(TypeId typeId, Long personalId) {
 		
-		List<Titular> coincidences = titularDAO.findAllByPersonalId(typeId, personalIdFragment);
+		Titular titular = titularDAO.findByPersonalId(typeId, personalId);
 		
-		if(coincidences.isEmpty()) { 
-			// TODO mostrar mensajito "No hay coincidencias."
-		}
-		else {
-			List<TitularDTO> coincidencesDTO = createTitularDTO(coincidences);
-			// TODO actualizar lista con el resultado de la busqueda
-		}
+		return createTitularDTO(titular);
+	
 	}
 	
-	private List<TitularDTO> createTitularDTO(List<Titular> titulares) {
-		List<TitularDTO> titularDTOs = new ArrayList<TitularDTO>();
+	private TitularDTO createTitularDTO(Titular titular) {
 		
-		for(Titular titular: titulares) {
-			TitularDTO titularDTO = new TitularDTO();
-			titularDTO.setId(titular.getId());
-			titularDTO.setTypeId(titular.getTypeId());
-			titularDTO.setPersonalId(titular.getPersonalId());
-			titularDTO.setName(titular.getName());
-			titularDTO.setSurname(titular.getSurname());
-			titularDTO.setAdress(titular.getAdress());
-			titularDTO.setBirthday(titular.getBirthday());
-			titularDTO.setBloodType(titular.getBloodType());
-			titularDTO.setOrganDonor(titular.getOrganDonor());
-			titularDTOs.add(titularDTO);
-		}
+		TitularDTO titularDTO = new TitularDTO();
 		
-		return titularDTOs;
+		titularDTO.setId(titular.getId());
+		titularDTO.setTypeId(titular.getTypeId());
+		titularDTO.setPersonalId(titular.getPersonalId().toString());
+		titularDTO.setName(titular.getName());
+		titularDTO.setSurname(titular.getSurname());
+		titularDTO.setAdress(titular.getAdress());
+		titularDTO.setBirthday(titular.getBirthday());
+		titularDTO.setBloodType(titular.getBloodType());
+		titularDTO.setOrganDonor(titular.getOrganDonor());
+
+		return titularDTO;
 	}
 
-	public Titular findTitular(Integer id) {
-		return titularDAO.find(id);
-	}
-	
 	public Boolean existsTitular(TypeId typeId, Long personalId) {
 		
 		Titular titular = titularDAO.findByPersonalId(typeId, personalId);
@@ -113,6 +99,30 @@ public class TitularController {
 			return false;
 		}
 		return true;
+	}
+	
+	public Titular findTitular(Integer id) {
+		return titularDAO.find(id);	
+	}
+	
+	public void saveTitular(Titular titular) {
+		titularDAO.save(titular);
+	}
+	
+	public Titular findTitularByPersonalId(TypeId typeId, Long personalId) {
+		return titularDAO.findByPersonalId(typeId, personalId);
+	}
+	
+	public void addTitularsLicense(Integer id, License license) {
+		
+		Runnable r = () -> {
+			Titular titular = findTitular(id);
+			titular.getLicenses().add(license);
+			titularDAO.update(titular);
+		};
+		Thread thread = new Thread(r);
+		thread.start();
+		
 	}
 	
 }

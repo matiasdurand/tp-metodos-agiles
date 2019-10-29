@@ -3,7 +3,7 @@ package validators;
 import java.util.ArrayList;
 import java.util.List;
 
-import DTOs.TitularDTO;
+import dto.TitularDTO;
 
 
 public class NameValidator implements Validator<String,TitularDTO> {
