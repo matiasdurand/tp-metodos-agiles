@@ -5,11 +5,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
 import res.colors.Colors;
-import domain.TypeId;
-
+//TODO descomentar imports
+/*import domain.TypeId;
+*/
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -23,6 +25,7 @@ import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -31,6 +34,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JTextArea;
 import java.awt.Rectangle;
 import java.awt.Insets;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class MenuPrincipal extends JFrame{
 	
@@ -55,6 +60,7 @@ public class MenuPrincipal extends JFrame{
 	//TODO completar tipo de dato de comboboxs
 	private JComboBox cbTipoSangre;
 	private JComboBox cbTipoDoc;
+	private JComboBox cbClase;
 	private JTextField tfNroDoc;
 	private JTextField tfNombre;
 	private JTextField tfApellido;
@@ -69,6 +75,10 @@ public class MenuPrincipal extends JFrame{
 	private boolean altaTitular=false; //La utilizamos para diferenciar si da de alta un titular o ya existe
 	private JTextField tfVigencia;
 	private JTextField tfCosto;
+	private JTextArea taObservaciones;
+	
+	private TitularDTO titularDTO;
+	private TaxPayerDTO contribuyenteDTO;
 	
 	//TODO descomentar controladores
 	/*private TitularController controladorTitular;
@@ -261,26 +271,27 @@ public class MenuPrincipal extends JFrame{
 				if(validarDoc(tfNroDoc.getText())) {
 					btnAceptar.setEnabled(true);
 					//TODO obtenerDatos del titular
-					/*TitularDTO dtoTitular = controladorTitular.titularLocator(cbTipo.getSelectedItem(), Long.valueOf(tfNroDoc.getText()));
-					if(dtoTitular.isNull()) {
-						//TODO pasar a interfaz dar de alta titular
+					/*titularDTO = controladorTitular.titularLocator(cbTipo.getSelectedItem(), Long.valueOf(tfNroDoc.getText()));
+					if(titularDTO.isNull()) {
+						
+						//Como el titular no existe, consultamos si desea darlo de alta
 						if(JOptionPane.showConfirmDialog(null, "No se encontraron resultados, ¿Desea dar de alta al titular?", "Titular no encontrado", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE)
 							== JOptionPane.YES_OPTION)
 						{
-							TaxPayerDTO dtoContribuyente = controladorContribuyente.taxPayerLocator(cbTipo.getSelectedItem(), long.valueOf(tfNroDoc.getText()));
-							if(dtoContribuyente.isNull()){
+							contribuyenteDTO = controladorContribuyente.taxPayerLocator(cbTipo.getSelectedItem(), long.valueOf(tfNroDoc.getText()));
+							if(contribuyenteDTO.isNull()){
 								JOptionPane.showMessageDialog(null, "El documento ingresado no se corresponde a ningún contribuyente registrado", "Contribuyente no encontrado", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
 							}
 							else{
 								altaTitular=true;
-								cargarDatosContribuyente(dtoContribuyente);
+								cargarDatosContribuyente(contribuyenteDTO);
 								mostrarPanel(PANEL_ALTA_TITULAR);
 							}
 						}
 					}
 					else{
 						altaTitular=false;
-						cargarDatosTitular(dtoTitular);
+						cargarDatosTitular(titularDTO);
 						mostrarPanel(PANEL_EMITIR);
 					}*/
 				}
@@ -311,7 +322,7 @@ public class MenuPrincipal extends JFrame{
 		lblNumero.setBounds(224, 109, 74, 40);
 		panelTitularLicencia.add(lblNumero);
 		
-		JLabel lblDocumento = new JLabel("Documento:");
+		JLabel lblDocumento = new JLabel("Ingrese el documento:");
 		lblDocumento.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblDocumento.setBounds(12, 56, 436, 40);
 		panelTitularLicencia.add(lblDocumento);
@@ -392,11 +403,9 @@ public class MenuPrincipal extends JFrame{
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(altaTitular) {
-					mostrarPanel(PANEL_EMITIR);
+					titularDTO = completarTitularDTO(contribuyenteDTO);
 				}
-				else {
-					
-				}
+				mostrarPanel(PANEL_EMITIR);
 			}
 		});
 		btnAceptar.setEnabled(false);
@@ -417,7 +426,7 @@ public class MenuPrincipal extends JFrame{
 				btnCancelar.setBounds(657, 321, 175, 40);
 				panelTitularLicencia.add(btnCancelar);
 				
-				cbTipoSangre = new JComboBox();
+				cbTipoSangre = new JComboBox<>();
 				//TODO descomentar carga combobox y setear tipo de dato en constructor
 				/*controladorTitular.loadBloodTyperComboBox(cbTipoSangre);
 				*/
@@ -426,10 +435,24 @@ public class MenuPrincipal extends JFrame{
 				panelTitularLicencia.add(cbTipoSangre);
 				
 				ckbDonante = new JCheckBox(" Donante");
-				ckbDonante.setEnabled(false);
+				ckbDonante.setEnabled(true);
 				ckbDonante.setFont(new Font("Tahoma", Font.PLAIN, 20));
 				ckbDonante.setBounds(703, 215, 129, 40);
 				panelTitularLicencia.add(ckbDonante);
+	}
+	
+	private TitularDTO completarTitularDTO(TaxPayerDTO dto) {
+		TitularDTO aux = new TitularDTO();
+		aux.setId(dto.getId())
+			.setTypeId(dto.getTypeId())
+			.setPersonalId(dto.getPersonalId())
+			.setName(dto.getName())
+			.setSurname(dto.getSurname())
+			.setAdress(dto.getAdress())
+			.setBirthday(dto.getBirthday())
+			.setBloodType(cbTipoSangre.getSelectedItem())
+			.setOrganDonnor(ckbDonante.isSelected());
+		return aux;
 	}
 	
 	private void armarPanelEmitirLicencia() {
@@ -444,7 +467,7 @@ public class MenuPrincipal extends JFrame{
 		panelEmitirLicencia.add(lblObservaciones);
 		lblObservaciones.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		
-		JTextArea taObservaciones = new JTextArea();
+		taObservaciones = new JTextArea();
 		taObservaciones.setBounds(15, 53, 433, 146);
 		panelEmitirLicencia.add(taObservaciones);
 		taObservaciones.setLineWrap(true);
@@ -455,7 +478,19 @@ public class MenuPrincipal extends JFrame{
 		panelEmitirLicencia.add(lblClase);
 		lblClase.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		
-		JComboBox cbClase = new JComboBox();
+		cbClase = new JComboBox<>();
+		Date vigencia;
+		cbClase.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				tfCosto.setText(" $"+String.valueOf(controladorLicencia.calculateLicenceCost(cbClase.getSelectedItem()))+" .");
+				vigencia = controladorLicencia.calculateValidity(cbClase.getSelectedItem());
+				tfVigencia.setText(vigencia.toString()+" año/s."));
+			}
+		});
+		//TODO descomentar combobox clase
+		/*
+		controladorLicencia.loadLicenceTypeComboBox(cbClase, titularDTO, altaTitular);
+		*/
 		cbClase.setBounds(572, 53, 80, 40);
 		panelEmitirLicencia.add(cbClase);
 		
@@ -486,22 +521,21 @@ public class MenuPrincipal extends JFrame{
 		JButton btnAceptarEmitir = new JButton("ACEPTAR");
 		btnAceptarEmitir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				if(altaTitular) {
+					controladorTitular.registerTitular(titularDTO, cbClase.getSelectedItem());
+				}
+				LicenciaDTO licenciaDTO = new LicenciaDTO();
+				licenciaDTO.setLicenceType(cbClase.getSelectedItem())
+					.setObservation(taObservaciones)
+					.setExpiricyDate(vigencia);
+				controladorLicencia.registerLicence(titularDTO, licenciaDTO, altaTitular);
+				//TODO hacer un popup mostrado la informacion de la licencia
 				configurarPanelEmitir(false);
 			}
 		});
 		btnAceptarEmitir.setBounds(463, 231, 175, 40);
-		btnAceptarEmitir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//TODO Validar datos ingresados
-				/*
-				 
-				 */
-			}
-		});
 		panelEmitirLicencia.add(btnAceptarEmitir);
 		btnAceptarEmitir.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnAceptarEmitir.setEnabled(false);
 		
 		JButton btnCancelarEmitir = new JButton("CANCELAR");
 		btnCancelarEmitir.addActionListener(new ActionListener() {
@@ -527,11 +561,16 @@ public class MenuPrincipal extends JFrame{
 		frmPrincipal.getContentPane().add(panelMenuPrincipal);
 		panelMenuPrincipal.setLayout(null);
 		
-		JLabel lblTituloPrincipal = new JLabel("Licencias vigentes");
-		lblTituloPrincipal.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabel lblTituloPrincipal = new JLabel("Licencias");
 		lblTituloPrincipal.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblTituloPrincipal.setBounds(15, 15, 817, 25);
 		panelMenuPrincipal.add(lblTituloPrincipal);
+		
+		JCheckBox ckbxVencidas = new JCheckBox("Mostrar solo vencidas");
+		ckbxVencidas.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		ckbxVencidas.setBackground(Colors.FONDO);
+		ckbxVencidas.setBounds(633, 15, 199, 25);
+		panelMenuPrincipal.add(ckbxVencidas);
 		
 		tableLicencias = new JTable();
 		tableLicencias.setBounds(15, 55, 817, 537);
