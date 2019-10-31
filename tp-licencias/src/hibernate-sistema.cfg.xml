@@ -28,6 +28,7 @@
  		<mapping class="domain.License"/>
  		<mapping class="domain.LicenseType"/>
  		<mapping class="domain.User"/>
+ 		<mapping class="domain.Titular"/>
     </session-factory>
 
 </hibernate-configuration>  

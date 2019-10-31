@@ -2,6 +2,12 @@ package DAOs;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+import domain.License;
+import domain.TaxPayer;
 import domain.Titular;
 import domain.TypeId;
 
@@ -12,20 +18,38 @@ public class TitularDAOSQL extends GenericDAOSQL<Titular,Integer> implements Tit
 		super(type);
 		// TODO Auto-generated constructor stub
 	}
-
-
-	public List<Titular> findAllByPersonalId(TypeId typeId, Long personalIdFragment) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	
+	
+
+
 	public Titular findByPersonalId(TypeId typeId, Long personalId) {
-		// TODO Auto-generated method stub
-		return null;
+		// crear factory
+		SessionFactory factory = new Configuration().configure("hibernate-sistema.cfg.xml").addAnnotatedClass(Titular.class).buildSessionFactory();
+		// crear sesión
+		Session session = factory.getCurrentSession();
+		// usar el objeto session
+		session.beginTransaction();
+		Titular titular = (Titular) session.createQuery("from titular where tipo_documento =" + typeId +"and numero_documento = " + personalId).getSingleResult();
+		session.getTransaction().commit();
+		session.close();
+		factory.close();
+		return titular;
+			
 	}
 	
-	/*Borrar esto
-	 * Aca se implementan los metodos especificos declarados en la interface TitularDAO 
-	 */
+	@Override
+	public List<Titular> findAllTitulars() {
+		// crear factory
+		SessionFactory factory = new Configuration().configure("hibernate-sistema.cfg.xml").addAnnotatedClass(Titular.class).buildSessionFactory();
+		// crear sesión
+		Session session = factory.getCurrentSession();
+		// usar el objeto session
+		session.beginTransaction();
+		List<Titular> titulares = (List<Titular>) session.createQuery("from titular").getResultList(); 
+		session.getTransaction().commit();
+		session.close();
+		factory.close();
+		return titulares;
+		
+	}
 }
