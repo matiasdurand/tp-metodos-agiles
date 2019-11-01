@@ -22,7 +22,7 @@ public class ClassAValidator implements Validator<LicenseType,Titular> {
 				
 		if(licensesTypeA.isEmpty()) {
 			
-			LocalDate birthday = info.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalDate birthday = info.getBirthdate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			LocalDate actual = LocalDate.now();
 
 			if(ChronoUnit.YEARS.between(birthday, actual)>17) {

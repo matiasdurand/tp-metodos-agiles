@@ -14,7 +14,7 @@ public class Titular {
 	private String name;
 	private String surname;
 	private String adress;
-	private Date birthday;
+	private Date birthdate;
 	private String bloodType;
 	private Boolean organDonor;
 	private List<License> licenses = new ArrayList<License>(); 
@@ -56,11 +56,11 @@ public class Titular {
 	public void setAdress(String adress) {
 		this.adress = adress;
 	}
-	public Date getBirthday() {
-		return birthday;
+	public Date getBirthdate() {
+		return birthdate;
 	}
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
 	}
 	public String getBloodType() {
 		return bloodType;
@@ -88,7 +88,7 @@ public class Titular {
 		private String name;
 		private String surname;
 		private String adress;
-		private Date birthday;
+		private Date birthdate;
 		private String bloodType;
 		private Boolean organDonor;
 		private List<License> licenses = new ArrayList<License>(); 
@@ -103,7 +103,7 @@ public class Titular {
 			return this;
 		}
 		
-		public Builder setPersonalid(Long personalId) {
+		public Builder setPersonalId(Long personalId) {
 			this.personalId = personalId;
 			return this;
 		}
@@ -123,8 +123,8 @@ public class Titular {
 			return this;
 		}
 		
-		public Builder setBirthday(Date birthday) {
-			this.birthday = birthday;
+		public Builder setBirthdate(Date birthdate) {
+			this.birthdate = birthdate;
 			return this;
 		}
 		
@@ -151,7 +151,7 @@ public class Titular {
 			titular.setName(this.name);
 			titular.setSurname(this.surname);
 			titular.setAdress(this.adress);
-			titular.setBirthday(this.birthday);
+			titular.setBirthdate(this.birthdate);
 			titular.setBloodType(this.bloodType);
 			titular.setOrganDonor(this.organDonor);
 			return titular;

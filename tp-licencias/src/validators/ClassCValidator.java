@@ -20,7 +20,7 @@ public class ClassCValidator implements Validator<LicenseType,Titular> {
 		List<License> licensesTypeC = info.getLicenses().stream()
 				.filter(l -> l.getLicenseType().equals(LicenseType.C)).collect(Collectors.toList());
 				
-		LocalDate birthday = info.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate birthday = info.getBirthdate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		LocalDate actual = LocalDate.now();
 		Long age = ChronoUnit.YEARS.between(birthday, actual);
 		

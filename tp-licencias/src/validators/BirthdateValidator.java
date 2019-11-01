@@ -8,13 +8,13 @@ import java.util.List;
 
 import dto.TitularDTO;
 
-public class BirthdayValidator implements Validator<String,TitularDTO> {
+public class BirthdateValidator implements Validator<String,TitularDTO> {
 
 	@Override
 	public List<String> validate(TitularDTO info) {
 		List<String> errors = new ArrayList<String>();
 		
-		LocalDate birthday = info.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate birthday = info.getBirthdate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		
 		if(birthday == null) {
 			errors.add("Lo sentimos, hubo un error.");

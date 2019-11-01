@@ -48,13 +48,12 @@ public class LicenseController {
 	
 	public void registerLicense(TitularDTO titularDTO, LicenseDTO licenseDTO, Boolean cameFrom) { 
 		
-		License license = new License();
+		License license = new License.Builder()
+				.setLicenseType(licenseDTO.getLicenseType())
+				.setObservation(licenseDTO.getObservation())
+				.setExpiricyDate(licenseDTO.getExpiricyDate())
+				.build();
 		
-		license.setLicenseType(licenseDTO.getLicenseType());
-		license.setObservation(licenseDTO.getObservation());
-		license.setEmisionDate(new Date());
-		license.setExpiricyDate(licenseDTO.getExpiricyDate());
-	
 		saveLicense(license);
 		
 		if(cameFrom) {
@@ -66,33 +65,35 @@ public class LicenseController {
 		}
 	}
 	
-	public void loadLicenseTypeComboBox(JComboBox<LicenseType> comboBox, TitularDTO titularDTO, Integer cameFrom) {
-
-		switch(cameFrom) {
-			case 1:
-				comboBox.addItem(LicenseType.A);
-				comboBox.addItem(LicenseType.B);
-				comboBox.addItem(LicenseType.F);
-				comboBox.addItem(LicenseType.G);
-				break; 
-			case 2: 
-				Titular titular = TitularController.getInstance().findTitular(titularDTO.getId());
-				List<Validator<LicenseType,Titular>> validators = new ArrayList<Validator<LicenseType,Titular>>();
-				validators.add(new ClassAValidator());
-				validators.add(new ClassBValidator());
-				validators.add(new ClassCValidator());
-				validators.add(new ClassDValidator());
-				validators.add(new ClassEValidator());
-				validators.add(new ClassFValidator());
-				validators.add(new ClassGValidator());
-				
-				Validator<LicenseType,Titular> validator = new CompositeValidator<LicenseType,Titular>(validators);
-		
-				for(LicenseType licenseType: validator.validate(titular)) {
-					comboBox.addItem(licenseType);
-				}
-				break;
+	public void loadLicenseTypeComboBox(JComboBox<LicenseType> comboBox, TitularDTO titularDTO, Boolean cameFrom) {
+		//cameFrom es true si esta dando de alta al titular
+		if(cameFrom) {
+			
+			comboBox.addItem(LicenseType.A);
+			comboBox.addItem(LicenseType.B);
+			comboBox.addItem(LicenseType.F);
+			comboBox.addItem(LicenseType.G);
+			
 		}
+		else {
+		
+			Titular titular = TitularController.getInstance().findTitular(titularDTO.getId());
+			List<Validator<LicenseType,Titular>> validators = new ArrayList<Validator<LicenseType,Titular>>();
+			validators.add(new ClassAValidator());
+			validators.add(new ClassBValidator());
+			validators.add(new ClassCValidator());
+			validators.add(new ClassDValidator());
+			validators.add(new ClassEValidator());
+			validators.add(new ClassFValidator());
+			validators.add(new ClassGValidator());
+		
+			Validator<LicenseType,Titular> validator = new CompositeValidator<LicenseType,Titular>(validators);
+
+			for(LicenseType licenseType: validator.validate(titular)) {
+				comboBox.addItem(licenseType);
+			}
+		
+		}	
 		
 	}
 	
@@ -142,9 +143,10 @@ public class LicenseController {
 		return licenseCostCalculator.getLicenseCost(combination);
 	}
 	
+	@SuppressWarnings("unused")
 	private Date calculateExpiricyDate(TitularDTO titularDTO) { 
 		
-		Date birthday = titularDTO.getBirthday();
+		Date birthday = titularDTO.getBirthdate();
 		Long personalId = Long.parseLong(titularDTO.getPersonalId());
 		TypeId typeId = titularDTO.getTypeId();
 		

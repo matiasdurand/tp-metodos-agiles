@@ -10,7 +10,7 @@ import domain.Titular;
 import domain.TypeId;
 import dto.TitularDTO;
 import validators.AdressValidator;
-import validators.BirthdayValidator;
+import validators.BirthdateValidator;
 import validators.BloodValidator;
 import validators.CompositeValidator;
 import validators.IdValidator;
@@ -34,7 +34,7 @@ public class TitularController {
 		
 		validators.add(new IdValidator());
 		validators.add(new NameValidator());
-		validators.add(new BirthdayValidator());
+		validators.add(new BirthdateValidator());
 		validators.add(new AdressValidator());
 		validators.add(new BloodValidator());
 		
@@ -44,20 +44,20 @@ public class TitularController {
 		
 	}
 	
-	public void registerTitular(TitularDTO info, License license) {
+	public void registerTitular(TitularDTO titularDTO, License license) {
 		
-		Titular titular = new Titular();
-		
-		titular.setTypeId(info.getTypeId());
-		titular.setPersonalId(Long.parseLong(info.getPersonalId()));
-		titular.setName(info.getName());
-		titular.setSurname(info.getSurname());
-		titular.setAdress(info.getAdress());
-		titular.setBirthday(info.getBirthday());
-		titular.setBloodType(info.getBloodType());
-		titular.setOrganDonor(info.getOrganDonor());
-		titular.getLicenses().add(license);
-		
+		Titular titular = new Titular.Builder()
+				.setTypeId(titularDTO.getTypeId())
+				.setPersonalId(Long.parseLong(titularDTO.getPersonalId()))
+				.setName(titularDTO.getName())
+				.setSurname(titularDTO.getSurname())
+				.setAdress(titularDTO.getAdress())
+				.setBirthdate(titularDTO.getBirthdate())
+				.setBloodType(titularDTO.getBloodType())
+				.setOrganDonor(titularDTO.getOrganDonor())
+				.addLicense(license)
+				.build();
+				
 		Runnable r = () -> {
 			saveTitular(titular);
 		};
@@ -84,7 +84,7 @@ public class TitularController {
 		titularDTO.setName(titular.getName());
 		titularDTO.setSurname(titular.getSurname());
 		titularDTO.setAdress(titular.getAdress());
-		titularDTO.setBirthday(titular.getBirthday());
+		titularDTO.setBirthdate(titular.getBirthdate());
 		titularDTO.setBloodType(titular.getBloodType());
 		titularDTO.setOrganDonor(titular.getOrganDonor());
 

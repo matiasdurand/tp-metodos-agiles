@@ -12,7 +12,7 @@ public class TitularDTO {
 	private String name;
 	private String surname;
 	private String adress;
-	private Date birthday;
+	private Date birthdate;
 	private String bloodType;
 	private Boolean organDonor;
 	
@@ -53,11 +53,11 @@ public class TitularDTO {
 	public void setAdress(String adress) {
 		this.adress = adress;
 	}
-	public Date getBirthday() {
-		return birthday;
+	public Date getBirthdate() {
+		return birthdate;
 	}
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
 	}
 	public String getBloodType() {
 		return bloodType;
