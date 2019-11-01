@@ -19,7 +19,7 @@ public class IdValidator implements Validator<String,TitularDTO> {
 			errors.add("Lo sentimos, hubo un error.");
 		}
 		else {
-			if(personalId.matches("[0-9]+)")) {
+			if(personalId.matches("[0-9]+")) {
 				try {
 					@SuppressWarnings("unused")
 					Long id = Long.parseLong(personalId);

@@ -1,4 +1,4 @@
-package useful;
+package utils;
 
 import domain.LicenseType;
 

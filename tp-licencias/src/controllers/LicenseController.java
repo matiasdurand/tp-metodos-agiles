@@ -17,9 +17,9 @@ import domain.Titular;
 import domain.TypeId;
 import dto.LicenseDTO;
 import dto.TitularDTO;
-import useful.Combination;
-import useful.ExpiricyDateCalculator;
-import useful.LicenseCostCalculator;
+import utils.Combination;
+import utils.ExpiryDateCalculator;
+import utils.LicenseCostCalculator;
 import validators.ClassAValidator;
 import validators.ClassBValidator;
 import validators.ClassCValidator;
@@ -35,7 +35,7 @@ public class LicenseController {
 	
 	private static LicenseController _INSTANCE = new LicenseController();
 	private LicenseCostCalculator licenseCostCalculator = LicenseCostCalculator.getInstance();
-	private ExpiricyDateCalculator expiricyDateCalculator = ExpiricyDateCalculator.getInstance();
+	private ExpiryDateCalculator expiryDateCalculator = ExpiryDateCalculator.getInstance();
 	private LicenseDAO licenseDAO = new LicenseDAOSQL();
 	
 	
@@ -132,25 +132,24 @@ public class LicenseController {
 		licenseDAO.save(license);
 	}
 	
-	public Double calculateLicenseCost(LicenseType licenseType, Date expiricyDate) {
+	public Double calculateLicenseCost(LicenseType licenseType, Date expiryDate) {
 		
-		LocalDate expiricy = expiricyDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate expiry = expiryDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		LocalDate actual = LocalDate.now();
-		Integer validity = (int) ChronoUnit.YEARS.between(expiricy, actual);
+		Integer validity = (int) ChronoUnit.YEARS.between(actual, expiry);
 		
 		Combination combination = new Combination(licenseType, validity);
 		
 		return licenseCostCalculator.getLicenseCost(combination);
 	}
 	
-	@SuppressWarnings("unused")
-	private Date calculateExpiricyDate(TitularDTO titularDTO) { 
+	public Date calculateExpiryDate(TitularDTO titularDTO) { 
 		
 		Date birthday = titularDTO.getBirthdate();
 		Long personalId = Long.parseLong(titularDTO.getPersonalId());
 		TypeId typeId = titularDTO.getTypeId();
 		
-		return expiricyDateCalculator.calculateExpiricyDate(typeId, personalId, birthday);
+		return expiryDateCalculator.calculateExpiryDate(typeId, personalId, birthday);
 		
 	}
 	

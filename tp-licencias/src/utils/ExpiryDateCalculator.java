@@ -1,4 +1,4 @@
-package useful;
+package utils;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -9,19 +9,19 @@ import controllers.TitularController;
 import domain.Titular;
 import domain.TypeId;
 
-public class ExpiricyDateCalculator {
+public class ExpiryDateCalculator {
 	
-	private static ExpiricyDateCalculator _INSTANCE = new ExpiricyDateCalculator();
+	private static ExpiryDateCalculator _INSTANCE = new ExpiryDateCalculator();
 	
-	private ExpiricyDateCalculator() {
+	private ExpiryDateCalculator() {
 		
 	}
 	
-	public static ExpiricyDateCalculator getInstance() {
+	public static ExpiryDateCalculator getInstance() {
 		return _INSTANCE;
 	}
 	
-	public Date calculateExpiricyDate(TypeId typeId, Long personalId, Date birthdate) {
+	public Date calculateExpiryDate(TypeId typeId, Long personalId, Date birthdate) {
 
 		LocalDate birthdateLocalDate = birthdate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		LocalDate actual = LocalDate.now();
