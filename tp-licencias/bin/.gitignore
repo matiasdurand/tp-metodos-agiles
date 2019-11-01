@@ -1,6 +1,6 @@
 /builders/
-/domain/
 /controllers/
-/validators/
+/dao/
 /dto/
 /useful/
+/validators/
