@@ -17,18 +17,30 @@ public class LicenseDAOSQL extends GenericDAOSQL<License, Integer> implements Li
  
 	@Override
 	public List<License> findAllLicenses() {
-		// crear factory
-		SessionFactory factory = new Configuration().configure("hibernate-sistema.cfg.xml").addAnnotatedClass(License.class).buildSessionFactory();
-		// crear sesión
-		Session session = factory.getCurrentSession();
-		// usar el objeto session
-		session.beginTransaction();
+		//creamos factory
+		SessionFactory factory = createFactory();
+		//creamos session BD
+		Session session = createSession(factory);
 		List<License> licencias = (List<License>) session.createQuery("from licencia").getResultList(); //Necesito la tabla y no la tengo 
 		session.getTransaction().commit();
 		session.close();
 		factory.close();
 		return licencias;
 		
+	}
+	
+	private SessionFactory createFactory() {
+		// crear factory
+		SessionFactory factory = new Configuration().configure("hibernate-sistema.cfg.xml").addAnnotatedClass(License.class).buildSessionFactory();
+		return factory;
+	}
+	
+	private Session createSession(SessionFactory factory) {
+		// crear sesión
+		Session session = factory.getCurrentSession();
+		// usar el objeto session
+		session.beginTransaction();
+		return session;
 	}
 	
 }

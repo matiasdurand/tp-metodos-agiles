@@ -23,12 +23,10 @@ public class TitularDAOSQL extends GenericDAOSQL<Titular,Integer> implements Tit
 
 
 	public Titular findByPersonalId(TypeId typeId, Long personalId) {
-		// crear factory
-		SessionFactory factory = new Configuration().configure("hibernate-sistema.cfg.xml").addAnnotatedClass(Titular.class).buildSessionFactory();
-		// crear sesión
-		Session session = factory.getCurrentSession();
-		// usar el objeto session
-		session.beginTransaction();
+		//creamos factory
+		SessionFactory factory = createFactory();
+		//creamos session BD
+		Session session = createSession(factory);
 		Titular titular = (Titular) session.createQuery("from titular where tipo_documento =" + typeId +"and numero_documento = " + personalId).getSingleResult();
 		session.getTransaction().commit();
 		session.close();
@@ -39,12 +37,10 @@ public class TitularDAOSQL extends GenericDAOSQL<Titular,Integer> implements Tit
 	
 	@Override
 	public List<Titular> findAllTitulars() {
-		// crear factory
-		SessionFactory factory = new Configuration().configure("hibernate-sistema.cfg.xml").addAnnotatedClass(Titular.class).buildSessionFactory();
-		// crear sesión
-		Session session = factory.getCurrentSession();
-		// usar el objeto session
-		session.beginTransaction();
+		//creamos factory
+		SessionFactory factory = createFactory();
+		//creamos session BD
+		Session session = createSession(factory);
 		List<Titular> titulares = (List<Titular>) session.createQuery("from titular").getResultList(); 
 		session.getTransaction().commit();
 		session.close();
@@ -52,4 +48,19 @@ public class TitularDAOSQL extends GenericDAOSQL<Titular,Integer> implements Tit
 		return titulares;
 		
 	}
+	
+	private SessionFactory createFactory() {
+		// crear factory
+		SessionFactory factory = new Configuration().configure("hibernate-sistema.cfg.xml").addAnnotatedClass(Titular.class).buildSessionFactory();
+		return factory;
+	}
+	
+	private Session createSession(SessionFactory factory) {
+		// crear sesión
+		Session session = factory.getCurrentSession();
+		// usar el objeto session
+		session.beginTransaction();
+		return session;
+	}
+	
 }
