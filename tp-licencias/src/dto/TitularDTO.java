@@ -4,6 +4,12 @@ import java.util.Date;
 
 import domain.TypeId;
 
+/**
+ * Clase tipo POJO utilizada para transferencia de datos de titular con la interfaz. 
+ * Patron data transfer object.
+ * @author Juan Suppicich & Matias Durand
+ *
+ */
 public class TitularDTO {
 
 	private Integer id;

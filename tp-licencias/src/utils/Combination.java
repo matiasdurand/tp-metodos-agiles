@@ -2,6 +2,11 @@ package utils;
 
 import domain.LicenseType;
 
+/**
+ * 
+ * @author LENOVO
+ *
+ */
 public class Combination {
 
 	private LicenseType licenseType;

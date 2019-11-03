@@ -11,6 +11,12 @@ import domain.License;
 import domain.LicenseType;
 import domain.Titular;
 
+/**
+ * Clase validadora concreta de licencia tipo D. 
+ * Esta clase valida que un titular este habilitado a obtener dicho tipo de licencia.
+ * @author Suppicich Juan & Matias Durand
+ *
+ */
 public class ClassDValidator implements Validator<LicenseType,Titular>  {
 	
 	@Override

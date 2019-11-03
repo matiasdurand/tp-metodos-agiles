@@ -6,6 +6,11 @@ import java.util.List;
 import domain.TypeId;
 import dto.TitularDTO;
 
+/**
+ * Clase validadora concreta de numero de documento. 
+ * @author Suppicich Juan & Matias Durand
+ *
+ */
 public class IdValidator implements Validator<String,TitularDTO> {
 
 	@Override

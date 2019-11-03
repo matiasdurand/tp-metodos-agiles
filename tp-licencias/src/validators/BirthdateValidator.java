@@ -8,6 +8,11 @@ import java.util.List;
 
 import dto.TitularDTO;
 
+/**
+ * Clase validadora concreta de fecha de nacimiento y edad. 
+ * @author Suppicich Juan & Matias Durand
+ *
+ */
 public class BirthdateValidator implements Validator<String,TitularDTO> {
 
 	@Override
