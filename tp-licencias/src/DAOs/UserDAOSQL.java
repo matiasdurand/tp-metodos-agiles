@@ -34,7 +34,7 @@ public class UserDAOSQL extends GenericDAOSQL<User,Integer> implements UserDAO {
 		SessionFactory factory = createFactory();
 		//creamos session BD
 		Session session = createSession(factory);
-		User usuario = (User) session.createQuery("from usuario where nombre_usuario =" + username +"and password = " + password).getSingleResult();
+		User usuario = (User) session.createQuery("from usuario where nombre_usuario =" + username +"and password =" + password).getSingleResult();
 		session.getTransaction().commit();
 		session.close();
 		factory.close();
