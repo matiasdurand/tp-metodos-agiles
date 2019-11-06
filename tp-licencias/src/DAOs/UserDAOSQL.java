@@ -5,7 +5,9 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
+import domain.Titular;
 import domain.User;
 
 public class UserDAOSQL extends GenericDAOSQL<User,Integer> implements UserDAO {
@@ -34,12 +36,14 @@ public class UserDAOSQL extends GenericDAOSQL<User,Integer> implements UserDAO {
 		SessionFactory factory = createFactory();
 		//creamos session BD
 		Session session = createSession(factory);
-		User usuario = (User) session.createQuery("from usuario where nombre_usuario =" + username +"and password =" + password).getSingleResult();
+	
+		User usuario = (User) session.createQuery("from User where username= '" + username + "' and  password= '" + password + "'").getSingleResult();
 		session.getTransaction().commit();
 		session.close();
 		factory.close();
 		return usuario;
 	}
+	
 	
 	private SessionFactory createFactory() {
 		// crear factory

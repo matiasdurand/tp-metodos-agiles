@@ -56,11 +56,9 @@ public class Titular {
 	
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
-	private int usuarioCreador;
+	private User usuarioCreador;
 	
-	@OneToMany(mappedBy="id_titular",
-			cascade = CascadeType.ALL, 
-	        orphanRemoval = true)
+	@OneToMany
 	private List<License> licenses = new ArrayList<License>(); 
 	
 	
@@ -119,11 +117,11 @@ public class Titular {
 		this.licenses = licenses;
 	} 
 	
-	public void SetUsuarioCreador(int id) {
-		this.usuarioCreador=id;
+	public void SetUsuarioCreador(User usuario) {
+		this.usuarioCreador=usuario;
 	}
 	
-	public int getUsuarioCreador() {
+	public User getUsuarioCreador() {
 		return this.usuarioCreador;
 	}
 	
