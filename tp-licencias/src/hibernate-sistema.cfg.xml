@@ -10,7 +10,7 @@
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://127.0.0.1:3306/bd-sistema</property>
         <property name="connection.username">root</property>
-        <property name="connection.password">root</property>
+        <property name="connection.password">12348765</property>
 
         <!-- JDBC connection pool settings ... using built-in test pool -->
         <property name="connection.pool_size">80</property>
@@ -29,6 +29,9 @@
  		<mapping class="domain.LicenseType"/>
  		<mapping class="domain.User"/>
  		<mapping class="domain.Titular"/>
+ 		<mapping class="domain.BloodType"/>
+ 		<mapping class="domain.TypeId"/>
+ 		
     </session-factory>
 
 </hibernate-configuration>  

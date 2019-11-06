@@ -23,6 +23,8 @@ public static void main(String[] args) throws ParseException {
 	pepito.setPersonalId((long) 39841740);
 	pepito.setSurname("suarez");
 	pepito.setTypeId(TypeId.DNI);
+	pepito.SetUsuarioCreador(2);
+	
 	
 	TitularDAOSQL T = new TitularDAOSQL(Titular.class);
 	T.save(pepito);

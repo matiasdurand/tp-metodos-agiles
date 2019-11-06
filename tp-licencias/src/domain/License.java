@@ -7,6 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -17,10 +20,19 @@ import javax.persistence.Transient;
 @Table(name="licencia")
 public class License {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_licencia")
+	private Integer id;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_titular")
 	private Titular titular;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_usuario")
+	private User usuariocreador;
+	
 	
 	@Enumerated(EnumType.STRING)
 	@Column (name="clase")
@@ -44,6 +56,13 @@ public class License {
 	@Column (name="motivo_emision")
 	private String emmisionMotive;
 	
+	public User getUsuario() {
+		return usuariocreador;
+	}
+	
+	public void setUsuario(User usuario) {
+		this.usuariocreador=usuario;
+	}
 	
 	public Titular getTitular() {
 		return titular;
