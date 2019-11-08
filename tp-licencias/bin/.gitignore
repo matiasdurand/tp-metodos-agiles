@@ -1,3 +1,9 @@
+/builders/
+/dao/
+/dto/
+/utils/
+/validators/
+/controllers/
+/domain/
 /gui/
 /res/
-/controllers/
