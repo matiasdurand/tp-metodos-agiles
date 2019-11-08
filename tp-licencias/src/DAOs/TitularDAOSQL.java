@@ -18,16 +18,14 @@ public class TitularDAOSQL extends GenericDAOSQL<Titular,Integer> implements Tit
 		super(type);
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-
 
 	public Titular findByPersonalId(TypeId typeId, Long personalId) {
 		//creamos factory
 		SessionFactory factory = createFactory();
 		//creamos session BD
 		Session session = createSession(factory);
-		Titular titular = (Titular) session.createQuery("from titular where tipo_documento =" + typeId +"and numero_documento = " + personalId).getSingleResult();
+		//creamos consulta HQL
+		Titular titular = (Titular) session.createQuery("from Titular where typeId= '" + typeId +"' and personalId= '" + personalId + "'").getSingleResult();
 		session.getTransaction().commit();
 		session.close();
 		factory.close();
@@ -41,7 +39,7 @@ public class TitularDAOSQL extends GenericDAOSQL<Titular,Integer> implements Tit
 		SessionFactory factory = createFactory();
 		//creamos session BD
 		Session session = createSession(factory);
-		List<Titular> titulares = (List<Titular>) session.createQuery("from titular").getResultList(); 
+		List<Titular> titulares = (List<Titular>) session.createQuery("from Titular").getResultList(); 
 		session.getTransaction().commit();
 		session.close();
 		factory.close();

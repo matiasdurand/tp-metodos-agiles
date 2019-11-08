@@ -4,11 +4,19 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="contribuyente")
 public class TaxPayer {
+	@Column (name="numero_documento")
+	private Long personalId;
+
+	@Enumerated(EnumType.STRING)
+	@Column (name="tipo_documento")
+	private TypeId typeId;
 	
 	@Column (name="nombre")
 	private String name; 
@@ -20,8 +28,21 @@ public class TaxPayer {
 	private Date birthday;
 	
 	@Column (name="direccion")
-	private String adress;	
+	private String adress;
 	
+
+	public Long getPersonalId() {
+		return personalId;
+	}
+	public void setPersonalId(Long personalId) {
+		this.personalId = personalId;
+	}
+	public TypeId getTypeId() {
+		return typeId;
+	}
+	public void setTypeId(TypeId typeId) {
+		this.typeId = typeId;
+	}	
 	public String getName() {
 		return name;
 	}

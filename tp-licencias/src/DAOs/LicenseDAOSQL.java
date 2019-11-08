@@ -21,12 +21,12 @@ public class LicenseDAOSQL extends GenericDAOSQL<License, Integer> implements Li
 		SessionFactory factory = createFactory();
 		//creamos session BD
 		Session session = createSession(factory);
-		List<License> licencias = (List<License>) session.createQuery("from licencia").getResultList(); //Necesito la tabla y no la tengo 
+		//creamos consulta HQL
+		List<License> licencias = (List<License>) session.createQuery("from License").getResultList(); 
 		session.getTransaction().commit();
 		session.close();
 		factory.close();
 		return licencias;
-		
 	}
 	
 	private SessionFactory createFactory() {

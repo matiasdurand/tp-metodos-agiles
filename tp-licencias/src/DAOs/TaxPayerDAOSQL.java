@@ -8,12 +8,14 @@ import org.hibernate.cfg.Configuration;
 
 import domain.License;
 import domain.TaxPayer;
+import domain.Titular;
 import domain.TypeId;
 
-public class TaxPayerDAOSQL implements TaxPayerDAO {
+public class TaxPayerDAOSQL extends GenericDAOSQL<TaxPayer,Integer> implements TaxPayerDAO {
 
-	
-	public TaxPayerDAOSQL(){
+	public TaxPayerDAOSQL(Class<TaxPayer> type) {
+		super(type);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -22,50 +24,12 @@ public class TaxPayerDAOSQL implements TaxPayerDAO {
 		SessionFactory factory = createFactory();
 		//creamos session BD
 		Session session = createSession(factory);
-		TaxPayer contribuyente = (TaxPayer) session.createQuery("from contribuyente where tipo_documento =" + typeId +"and nro_documento = " + personalId).getSingleResult();
+		//creamos consulta HQL
+		TaxPayer contribuyente = (TaxPayer) session.createQuery("from TaxPayer where typeId= '" + typeId +"' and personalId= '" + personalId + "'").getSingleResult();
 		session.getTransaction().commit();
 		session.close();
 		factory.close();
 		return contribuyente;	
-	}	
-
-	@Override
-	public void save(TaxPayer contribuyente) {
-		//creamos factory
-		SessionFactory factory = createFactory();
-		//creamos session BD
-		Session session = createSession(factory);
-		session.save(contribuyente);
-		session.getTransaction().commit();
-		session.close();
-		factory.close();
-	}
-
-	@Override
-	public TaxPayer update(TaxPayer contribuyente) {
-		//creamos factory
-		SessionFactory factory = createFactory();
-		//creamos session BD
-		Session session = createSession(factory);
-		session.saveOrUpdate(contribuyente);
-		session.getTransaction().commit();
-		session.close();
-		factory.close();
-		return contribuyente;
-	}
-
-	@Override
-	public TaxPayer find(int id) {
-		//creamos factory
-		SessionFactory factory = createFactory();
-		//creamos session BD
-		Session session = createSession(factory);
-		TaxPayer contribuyente = session.get(TaxPayer.class, id);
-		session.getTransaction().commit();
-		session.close();
-		factory.close();
-		return contribuyente;
-		
 	}
 
 	@Override
@@ -74,7 +38,7 @@ public class TaxPayerDAOSQL implements TaxPayerDAO {
 		SessionFactory factory = createFactory();
 		//creamos session BD
 		Session session = createSession(factory);
-		List<TaxPayer> contribuyentes = (List<TaxPayer>) session.createQuery("from contribuyente").getResultList();
+		List<TaxPayer> contribuyentes = (List<TaxPayer>) session.createQuery("from TaxPayer").getResultList();
 		session.getTransaction().commit();
 		session.close();
 		factory.close();
