@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 package gui;
+=======
+/*package gui;
+
+import java.awt.EventQueue;
+>>>>>>> 5d2ddb0a2a1ca1e03f8606fcf182332a49d463d0
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.util.Calendar;
@@ -125,6 +131,7 @@ public class GeneratePDF{
 		datos.setMargins(75, 0, 0, 150);
 		return datos;
 	}
+<<<<<<< HEAD
 
 	/*public GeneratePDF(PdfDTO dto, String destino) throws IOException, java.io.IOException{
 		try {
@@ -154,3 +161,6 @@ public class GeneratePDF{
 		return datos;
 	}*/
 }
+=======
+}*/
+>>>>>>> 5d2ddb0a2a1ca1e03f8606fcf182332a49d463d0
