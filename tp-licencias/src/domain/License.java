@@ -4,11 +4,6 @@ import java.util.Date;
 
 import builders.Build;
 
-/**
- * Clase de dominio Licencia.
- * @author Juan Suppicich & Matias Durand
- *
- */
 public class License {
 	
 	private Integer id;
@@ -16,7 +11,7 @@ public class License {
 	private LicenseType licenseType;
 	private Boolean expirated;
 	private Date emisionDate;
-	private Date expiryDate;
+	private Date expiricyDate;
 	private String observation;
 	
 	
@@ -50,11 +45,11 @@ public class License {
 	public void setEmisionDate(Date emisionDate) {
 		this.emisionDate = emisionDate;
 	}
-	public Date getExpiryDate() {
-		return expiryDate;
+	public Date getExpiricyDate() {
+		return expiricyDate;
 	}
-	public void setExpiryDate(Date expiryDate) {
-		this.expiryDate = expiryDate;
+	public void setExpiricyDate(Date expiricyDate) {
+		this.expiricyDate = expiricyDate;
 	}
 	public String getObservation() {
 		return observation;
@@ -63,18 +58,12 @@ public class License {
 		this.observation = observation;
 	}
 	
-	/**
-	 * Clase estatica constructora de licencia.
-	 * @author Juan Suppicich & Matias Durand
-	 * Por defecto contruye una licencia con atributo expirated = false
-	 * y emisionDate = fecha actual.
-	 */
 	public static class Builder implements Build<License>{
 		
 		private LicenseType licenseType;
 		private Boolean expirated;
 		private Date emisionDate;
-		private Date expiryDate;
+		private Date expiricyDate;
 		private String observation;
 		
 		public Builder() {
@@ -87,8 +76,8 @@ public class License {
 			return this;
 		}
 		
-		public Builder setExpiryDate(Date expiryDate) {
-			this.expiryDate = expiryDate;
+		public Builder setExpiricyDate(Date expiricyDate) {
+			this.expiricyDate = expiricyDate;
 			return this;
 		}
 		
@@ -103,7 +92,7 @@ public class License {
 			license.setLicenseType(this.licenseType);
 			license.setExpirated(this.expirated);
 			license.setEmisionDate(this.emisionDate);
-			license.setExpiryDate(this.expiryDate);
+			license.setExpiricyDate(this.expiricyDate);
 			license.setObservation(this.observation);
 			return license;
 		}

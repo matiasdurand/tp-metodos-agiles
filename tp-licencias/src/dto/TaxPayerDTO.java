@@ -2,12 +2,6 @@ package dto;
 
 import java.util.Date;
 
-/**
- * Clase tipo POJO utilizada para transferencia de datos de contribuyente con la interfaz. 
- * Patron data transfer object. 
- * @author Juan Suppicich & Matias Durand
- *
- */
 public class TaxPayerDTO {
 	
 	private String name; 

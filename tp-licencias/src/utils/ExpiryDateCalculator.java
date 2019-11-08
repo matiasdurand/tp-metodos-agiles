@@ -6,14 +6,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import controllers.TitularController;
+import domain.Titular;
 import domain.TypeId;
 
-/**
- * Clase calculadora y contructora de fecha de vencimiento de Licencia. Singleton.
- * Singleton.
- * @author Juan Suppicich & Matias Durand
- *
- */
 public class ExpiryDateCalculator {
 	
 	private static ExpiryDateCalculator _INSTANCE = new ExpiryDateCalculator();
@@ -26,15 +21,6 @@ public class ExpiryDateCalculator {
 		return _INSTANCE;
 	}
 	
-	/**
-	 * Este metodo calcula y contruye la fecha de expiracion de la licencia en base al tipo,
-	 * numero y fecha de nacimiento del titular. 
-	 * @param typeId tipo de documento del titular.
-	 * @param personalId numero de documento del titular.
-	 * @param birthdate fecha de nacimiento del titualar.
-	 * @return fecha de vencimiento de la licencia, donde el dia y mes coincide con el dia y mes 
-	 * de nacimiento del titular.
-	 */
 	public Date calculateExpiryDate(TypeId typeId, Long personalId, Date birthdate) {
 
 		LocalDate birthdateLocalDate = birthdate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -43,10 +29,10 @@ public class ExpiryDateCalculator {
 		int validity = 0;
 		
 		if(age<21) {
-		
-		Boolean existsTitular = TitularController.getInstance().existsTitular(typeId, personalId);
-			//Preguntamos si existe el titular, si no existe se infiere que no poseía ninguna licencia.
-			if(existsTitular) {
+			
+			Titular titular = TitularController.getInstance().findTitularByPersonalId(typeId, personalId);
+			
+			if(titular == null) {
 				validity = 1;
 			}
 			else {

@@ -6,11 +6,6 @@ import java.util.List;
 
 import builders.Build;
 
-/**
- * Clase de dominio Titular. 
- * @author Juan Suppicich & Matias Durand
- *
- */
 public class Titular {
 	
 	private Integer id;
@@ -86,11 +81,6 @@ public class Titular {
 		this.licenses = licenses;
 	} 
 	
-	/**
-	 * Clase estatica constructora de Titular. 
-	 * @author Juan Suppicich & Matias Durand
-	 *
-	 */
 	public static class Builder implements Build<Titular>{
 
 		private TypeId typeId;

@@ -11,12 +11,6 @@ import domain.License;
 import domain.LicenseType;
 import domain.Titular;
 
-/**
- * Clase validadora concreta de licencia tipo G. 
- * Esta clase valida que un titular este habilitado a obtener dicho tipo de licencia.
- * @author Suppicich Juan & Matias Durand
- *
- */
 public class ClassGValidator implements Validator<LicenseType,Titular> {
 	
 	@Override

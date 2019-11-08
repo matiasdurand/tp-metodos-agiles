@@ -1,7 +1,8 @@
-/utils/
-/validators/
 /builders/
 /controllers/
+/dao/
 /domain/
 /dto/
-/dao/
+/useful/
+/utils/
+/validators/

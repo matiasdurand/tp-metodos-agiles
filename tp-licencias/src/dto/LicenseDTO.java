@@ -4,25 +4,19 @@ import java.util.Date;
 
 import domain.LicenseType;
 
-/**
- * Clase tipo POJO utilizada para transferencia de datos de licencia con la interfaz. 
- * Patron data transfer object. 
- * @author Juan Suppicich & Matias Durand
- *
- */
 public class LicenseDTO {
 	
 	private Integer id;
 	private LicenseType licenseType;
 	private String observation;
-	private Date expiryDate;
+	private Date expiricyDate;
 	
 	
-	public Date getExpiryDate() {
-		return expiryDate;
+	public Date getExpiricyDate() {
+		return expiricyDate;
 	}
-	public void setExpiryDate(Date expiryDate) {
-		this.expiryDate = expiryDate;
+	public void setExpiricyDate(Date expiricyDate) {
+		this.expiricyDate = expiricyDate;
 	}
 	public Integer getId() {
 		return id;
