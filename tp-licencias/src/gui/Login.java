@@ -1,17 +1,13 @@
 package gui;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 
 import res.colors.Colors;
 
 import java.awt.Font;
-import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
@@ -20,14 +16,11 @@ import javax.swing.JDialog;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Dialog.ModalExclusionType;
-import java.awt.Window.Type;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Login extends JDialog{
 	/**
@@ -36,9 +29,16 @@ public class Login extends JDialog{
 	private static final long serialVersionUID = 1L;
 	private JTextField tfUser;
 	private JTextField tfPassword;
+	private JButton btnIngresar;
 
 	public Login() {
 		super();
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				MenuPrincipal.menuPrincipal.cerrar();
+			}
+		});
 		initialize();
 	}
 
@@ -93,13 +93,24 @@ public class Login extends JDialog{
 		tfPassword.setBounds(220, 240, 265, 30);
 		this.getContentPane().add(tfPassword);
 		
-		JButton btnAceptar = new JButton("ACEPTAR");
-		btnAceptar.addActionListener(new ActionListener() {
+		btnIngresar = new JButton("INGRESAR");
+		btnIngresar.setFocusable(false);
+		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(!tfUser.getText().isEmpty() && !tfPassword.getText().isEmpty()) {
+					//TODO validar usuario/contraseña
+					MenuPrincipal.menuPrincipal.ingresar(tfUser.getText());
+					dispose();
+				}
 			}
 		});
-		btnAceptar.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnAceptar.setBounds(41, 295, 444, 40);
-		this.getContentPane().add(btnAceptar);
+		btnIngresar.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnIngresar.setBounds(41, 295, 444, 40);
+		this.getContentPane().add(btnIngresar);
+	}
+	
+	public void reset() {
+		tfUser.setText("");
+		tfPassword.setText("");
 	}
 }

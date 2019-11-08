@@ -1,8 +1,5 @@
 package gui;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -349,6 +346,7 @@ public class PanelEmitir extends JPanel {
 				controladorLicencia.registerLicense(titularDTO, licenciaDTO, altaTitular);
 				if(JOptionPane.showConfirmDialog(null, "Licencia emitida exitosamente, ¿Desea imprimirla ahora?", "Éxito", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
 					//TODO pasar a imprimir licencia
+					 //Pasar dto y ruta a generarPdf
 				}*/
 			}
 		});

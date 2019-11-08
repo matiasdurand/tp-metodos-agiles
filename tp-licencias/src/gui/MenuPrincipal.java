@@ -5,8 +5,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.MaskFormatter;
 
 import controllers.PanelController;
 import res.colors.Colors;
@@ -14,8 +12,6 @@ import res.colors.Colors;
 /*import domain.TypeId;
 */
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
@@ -23,27 +19,18 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.Font;
-import javax.swing.JTable;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.sql.Date;
 import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFormattedTextField;
-import javax.swing.JTextField;
-import javax.swing.JCheckBox;
-import javax.swing.JTextArea;
-import java.awt.Rectangle;
 import java.awt.Insets;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 import java.awt.Toolkit;
 
 public class MenuPrincipal extends JFrame{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//Constantes que identifican a cada JPanel
 	private final int PANEL_LOGIN=-1;
 	private final int PANEL_INICIAL=0;
@@ -55,10 +42,10 @@ public class MenuPrincipal extends JFrame{
 	
 	protected static MenuPrincipal menuPrincipal;
 	private JFrame frmPrincipal;
-	private JDialog login;
 	private JButton btnUsuario;
 	private JButton btnLicencia;
 	private JButton btnInicio;
+	private JButton btnCerrarSesion;
 	private JPanel barraLateral;
 	private JPanel panelTitulo;
 	private JPanel panelMenuLicencia;
@@ -87,9 +74,9 @@ public class MenuPrincipal extends JFrame{
 
 	private void initialize() {
 		frmPrincipal = new JFrame();
+		frmPrincipal.setResizable(false);
 		frmPrincipal.setIconImage(Toolkit.getDefaultToolkit().getImage(MenuPrincipal.class.getResource("/res/images/program_icon_125px.png")));
 		frmPrincipal.setTitle("Sistema de Gesti\u00F3n de Licencias");
-		frmPrincipal.setResizable(false);
 		frmPrincipal.setBounds(100, 100, 1000, 700);
 		frmPrincipal.setMinimumSize(new Dimension(1000, 700));
 		frmPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -147,7 +134,7 @@ public class MenuPrincipal extends JFrame{
 		btnUsuario.setBounds(0, 209, 150, 40);
 		barraLateral.add(btnUsuario);
 		
-		JButton btnCerrarSesion = new JButton("CERRAR SESI\u00D3N");
+		btnCerrarSesion = new JButton("CERRAR SESI\u00D3N");
 		btnCerrarSesion.setFocusable(false);
 		btnCerrarSesion.setMargin(new Insets(0, 0, 0, 0));
 		btnCerrarSesion.addActionListener(new ActionListener() {
@@ -155,6 +142,8 @@ public class MenuPrincipal extends JFrame{
 				btnCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 17));
 				if(JOptionPane.showConfirmDialog(null, "¿Está seguro que desea cerrar sesión?", "Cerrar sesión", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 					user=null;
+					lblNombreUsuario.setText("nombreUsuario");
+					barraLateral.repaint();
 					mostrarPanel(PANEL_LOGIN);
 				}
 				else
@@ -273,6 +262,7 @@ public class MenuPrincipal extends JFrame{
 		btnInicio.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnLicencia.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnUsuario.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		btnCerrarSesion.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		frmPrincipal.getContentPane().remove(panel);
 		switch(opcion) {
 			case PANEL_LOGIN:{
@@ -309,12 +299,23 @@ public class MenuPrincipal extends JFrame{
 		frmPrincipal.repaint();
 	}
 	
-	public void cancelar(Integer aux) {
+	protected void cancelar(Integer aux) {
 		switch(aux){
 			case PANEL_EMITIR:{
 				mostrarPanel(PANEL_MENU_LICENCIA);
 				break;
 			}
 		}
+	}
+	
+	protected void ingresar(String user) {
+		this.user=user;
+		lblNombreUsuario.setText(user);
+		barraLateral.repaint();
+		mostrarPanel(PANEL_INICIAL);
+	}
+	
+	protected void cerrar() {
+		System.exit(0);
 	}
 }

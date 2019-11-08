@@ -1,14 +1,8 @@
 package controllers;
 
-import java.awt.Component;
-import java.awt.Container;
-
-import javax.naming.Context;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import gui.ImprimirLicencia;
 import gui.Login;
@@ -58,23 +52,8 @@ public class PanelController {
 	public static JDialog getLogin() {
 		if(login == null)
 			login = new Login();
+		else
+			login.reset();
 		return login;
-	}
-
-	private void limpiar(Component component) {
-        if (component instanceof JTextField) {
-                JTextField text = (JTextField) component;
-                text.setText("");
-        } else {
-                if(component instanceof JTextArea) {
-                	((JTextArea) component).setText("");
-                }
-        		if (component instanceof Container) {
-                        for (Component c : ((Container) component).getComponents()) {
-                                limpiar(c);
-                        }
-                }
-        }
-	}
-	
+	}	
 }
