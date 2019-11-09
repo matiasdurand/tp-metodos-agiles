@@ -4,6 +4,12 @@ import java.util.Date;
 
 import domain.LicenseType;
 
+/**
+ * Clase tipo POJO utilizada para transferencia de datos de licencia con la interfaz. 
+ * Patron data transfer object. 
+ * @author Juan Suppicich & Matias Durand
+ *
+ */
 public class LicenseDTO {
 	
 	private Integer id;

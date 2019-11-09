@@ -5,6 +5,11 @@ import java.util.List;
 
 import dto.TitularDTO;
 
+/**
+ * Clase validadora concreta de direccion.
+ * @author Suppicich Juan & Matias Durand
+ *
+ */
 public class AdressValidator implements Validator<String,TitularDTO> {
 
 	@Override

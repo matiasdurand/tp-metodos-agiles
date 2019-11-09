@@ -5,7 +5,11 @@ import java.util.List;
 
 import dto.TitularDTO;
 
-
+/**
+ * Clase valdiadora concreta de nombre y apellido de persona.
+ * @author Juan Suppicich & Matias Durand
+ *
+ */
 public class NameValidator implements Validator<String,TitularDTO> {
 
 	@Override
@@ -22,7 +26,11 @@ public class NameValidator implements Validator<String,TitularDTO> {
 			if(name.isEmpty()) {
 				errors.add("Debe completar el nombre del titular.");
 			}
-			
+			else {
+				if(name.length()<3) {
+					errors.add("Nombre invalido.");
+				}
+			}
 			if(surname.isEmpty()) {
 				errors.add("Debe completar el apellido del titular.");
 			}

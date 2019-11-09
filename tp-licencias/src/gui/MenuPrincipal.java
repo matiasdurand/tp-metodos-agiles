@@ -8,9 +8,6 @@ import javax.swing.SwingConstants;
 
 import controllers.PanelController;
 import res.colors.Colors;
-//TODO descomentar imports
-/*import domain.TypeId;
-*/
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -21,15 +18,11 @@ import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JDialog;
 import java.awt.Insets;
 import java.awt.Toolkit;
 
 public class MenuPrincipal extends JFrame{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	//Constantes que identifican a cada JPanel
 	private final int PANEL_LOGIN=-1;
@@ -53,6 +46,7 @@ public class MenuPrincipal extends JFrame{
 	private JPanel panel; //En este puntero se asigna el JPanel que se debe visualizar en pantalla
 	private JLabel lblNombreUsuario;
 	private String user=null;
+	
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

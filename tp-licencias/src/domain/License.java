@@ -4,17 +4,71 @@ import java.util.Date;
 
 import builders.Build;
 
+//import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+//import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+/**
+ * Clase de dominio Licencia. Corresponde a una entidad de base de datos.
+ * @author Juan Suppicich & Matias Durand
+ *
+ */
+@Entity
+@Table(name="licencia")
 public class License {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_licencia")
 	private Integer id;
-	private Titular titular; 
+	
+	@ManyToOne
+	@JoinColumn(name = "id_titular")
+	private Titular titular;
+	
+	/*@ManyToOne
+	@JoinColumn(name = "id_usuario")
+	private User usuariocreador;*/
+	
+	@Enumerated(EnumType.STRING)
+	@Column (name="clase")
 	private LicenseType licenseType;
+	
+	@Transient
 	private Boolean expirated;
+	
+	@Column (name="fecha_emision")
 	private Date emisionDate;
-	private Date expiricyDate;
+	
+	@Column (name="fecha_vencimiento")
+	private Date expiryDate;
+	
+	/*@Transient
+	private Integer validity;*/
+
+	@Column (name="observaciones")
 	private String observation;
 	
+	/*@Column (name="motivo_emision")
+	private String emmisionMotive;*/
 	
+	
+	/*public User getUsuario() {
+		return usuariocreador;
+	}
+	public void setUsuario(User usuario) {
+		this.usuariocreador=usuario;
+	}*/
 	public Integer getId() {
 		return id;
 	}
@@ -45,11 +99,11 @@ public class License {
 	public void setEmisionDate(Date emisionDate) {
 		this.emisionDate = emisionDate;
 	}
-	public Date getExpiricyDate() {
-		return expiricyDate;
+	public Date getExpiryDate() {
+		return expiryDate;
 	}
-	public void setExpiricyDate(Date expiricyDate) {
-		this.expiricyDate = expiricyDate;
+	public void setExpiryDate(Date expiryDate) {
+		this.expiryDate = expiryDate;
 	}
 	public String getObservation() {
 		return observation;
@@ -57,13 +111,25 @@ public class License {
 	public void setObservation(String observation) {
 		this.observation = observation;
 	}
+	/*public String getEmmisionMotive() {
+		return emmisionMotive;
+	}
+	public void setEmmisionMotive(String emmisionMotive) {
+		this.emmisionMotive = emmisionMotive;
+	}*/
 	
+	/**
+	 * Clase estatica constructora de licencia.
+	 * @author Juan Suppicich & Matias Durand
+	 * Por defecto contruye una licencia con atributo expirated = false
+	 * y emisionDate = fecha actual.
+	 */
 	public static class Builder implements Build<License>{
 		
 		private LicenseType licenseType;
 		private Boolean expirated;
 		private Date emisionDate;
-		private Date expiricyDate;
+		private Date expiryDate;
 		private String observation;
 		
 		public Builder() {
@@ -76,8 +142,8 @@ public class License {
 			return this;
 		}
 		
-		public Builder setExpiricyDate(Date expiricyDate) {
-			this.expiricyDate = expiricyDate;
+		public Builder setExpiryDate(Date expiryDate) {
+			this.expiryDate = expiryDate;
 			return this;
 		}
 		
@@ -92,7 +158,7 @@ public class License {
 			license.setLicenseType(this.licenseType);
 			license.setExpirated(this.expirated);
 			license.setEmisionDate(this.emisionDate);
-			license.setExpiricyDate(this.expiricyDate);
+			license.setExpiryDate(this.expiryDate);
 			license.setObservation(this.observation);
 			return license;
 		}

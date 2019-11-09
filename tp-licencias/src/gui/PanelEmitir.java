@@ -7,7 +7,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,25 +23,23 @@ import javax.swing.SwingConstants;
 import res.colors.Colors;
 import java.awt.Insets;
 
-//TODO descomentar
-/*import controller.TitularController;
-import controller.TaxPayerController;
-import controller.LicenseController;
+import controllers.TitularController;
+import domain.LicenseType;
+import domain.TypeId;
+import controllers.TaxPayerController;
+import controllers.LicenseController;
 import dto.TitularDTO;
 import res.colors.Colors;
 import dto.TaxPayerDTO;
-import dto.LicenseDTO;*/
+import dto.LicenseDTO;
 
 public class PanelEmitir extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	//TODO completar tipo de dato de comboboxs
-	private JComboBox cbTipoSangre;
-	private JComboBox cbTipoDoc;
-	private JComboBox cbClase;
+
+	private JComboBox<String> cbTipoSangre;
+	private JComboBox<TypeId> cbTipoDoc;
+	private JComboBox<LicenseType> cbClase;
 	private JTextField tfNroDoc;
 	private JTextField tfNombre;
 	private JTextField tfApellido;
@@ -57,13 +55,11 @@ public class PanelEmitir extends JPanel {
 	private JTextArea taObservaciones;
 	private JPanel panelEmitirLicencia;
 	
-	//TODO descomentar
-	/*
 	private TitularDTO titularDTO;
 	private TaxPayerDTO contribuyenteDTO;
 	private LicenseController controladorLicencia;
 	private TitularController controladorTitular;
-	private TaxPayerController controladorContribuyente;*/
+	private TaxPayerController controladorContribuyente;
 		
 	public PanelEmitir() {
 		super();
@@ -89,16 +85,15 @@ public class PanelEmitir extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if(validarDoc(tfNroDoc.getText())) {
 					btnAceptar.setEnabled(true);
-					//TODO descomentar
-					/*titularDTO = controladorTitular.titularLocator(cbTipo.getSelectedItem(), Long.valueOf(tfNroDoc.getText()));
-					if(titularDTO.isNull()) {
+					titularDTO = controladorTitular.titularLocator((TypeId) cbTipoDoc.getSelectedItem(), Long.valueOf(tfNroDoc.getText()));
+					if(titularDTO == null) {
 						//Como el titular no existe, consultamos si desea darlo de alta
 						if(JOptionPane.showConfirmDialog(null, "No se encontraron resultados, ¿Desea dar de alta al titular?", "Titular no encontrado", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE)
 							== JOptionPane.YES_OPTION)
 						{
-							contribuyenteDTO = controladorContribuyente.taxPayerLocator(cbTipo.getSelectedItem(), long.valueOf(tfNroDoc.getText()));
-							if(contribuyenteDTO.isNull()){
-								JOptionPane.showMessageDialog(null, "El documento ingresado no se corresponde a ningún contribuyente registrado", "Contribuyente no encontrado", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
+							contribuyenteDTO = controladorContribuyente.taxPayerLocator((TypeId) cbTipoDoc.getSelectedItem(), Long.valueOf(tfNroDoc.getText()));
+							if(contribuyenteDTO == null){
+								// TODO JOptionPane.showMessageDialog(this, "El documento ingresado no se corresponde a ningún contribuyente registrado", "Contribuyente no encontrado", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
 							}
 							else{
 								altaTitular=true;
@@ -113,7 +108,7 @@ public class PanelEmitir extends JPanel {
 						bloquearComponentes(altaTitular);
 						cargarDatosTitular(titularDTO);
 						panelEmitirLicencia.setVisible(true);
-					}*/
+					}
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Formato de documento incorrecto", "Error", JOptionPane.OK_OPTION);
@@ -132,9 +127,7 @@ public class PanelEmitir extends JPanel {
 		
 		cbTipoDoc = new JComboBox<>();
 		cbTipoDoc.setFocusable(false);
-		//TODO descomentar cargador combobox y setear tipo de dato en constructor
-		/*controladorTitular.loadPersonalIdComboBox(cbTipoDoc);
-		seleccionar por defecto DNI*/
+		controladorTitular.loadTypeIdComboBox(cbTipoDoc);
 		cbTipoDoc.setBounds(132, 109, 80, 40);
 		this.add(cbTipoDoc);
 		
@@ -251,8 +244,7 @@ public class PanelEmitir extends JPanel {
 		
 		cbTipoSangre = new JComboBox<>();
 		cbTipoSangre.setFocusable(false);
-		//TODO descomentar carga combobox y setear tipo de dato en constructor
-		//controladorTitular.loadBloodTyperComboBox(cbTipoSangre);
+		controladorTitular.loadBloodTypeComboBox(cbTipoSangre);
 		cbTipoSangre.setEnabled(false);
 		cbTipoSangre.setBounds(607, 215, 80, 40);
 		this.add(cbTipoSangre);
@@ -291,19 +283,18 @@ public class PanelEmitir extends JPanel {
 		lblClase.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		
 		cbClase = new JComboBox<>();
-		Date vigencia;
+		Date expiryDate = controladorLicencia.calculateExpiryDate(titularDTO);
+		tfVigencia.setText(expiryDate.toString());
 		cbClase.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
-				//TODO descomentar
-				/*tfCosto.setText(" $"+String.valueOf(controladorLicencia.calculateLicenseCost(cbClase.getSelectedItem()))+" .");
-				vigencia = controladorLicencia.calculateValidity(cbClase.getSelectedItem());
-				tfVigencia.setText(vigencia.toString());*/
+				StringBuffer sb = new StringBuffer("$ ");
+				sb.append(String.valueOf(controladorLicencia.calculateLicenseCost((LicenseType)cbClase.getSelectedItem(), expiryDate)));
+				sb.append(".");
+				tfCosto.setText(sb.toString());
 			}
 		});
-		//TODO descomentar combobox clase
-		/*
+
 		controladorLicencia.loadLicenseTypeComboBox(cbClase, titularDTO, altaTitular);
-		*/
 		cbClase.setBounds(572, 53, 80, 40);
 		panelEmitirLicencia.add(cbClase);
 		
@@ -335,19 +326,18 @@ public class PanelEmitir extends JPanel {
 		btnAceptarEmitir.setFocusable(false);
 		btnAceptarEmitir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO descomentar
-				/*if(altaTitular) {
-					controladorTitular.registerTitular(titularDTO, cbClase.getSelectedItem());
-				}
-				LicenciaDTO licenciaDTO = new LicenciaDTO();
-				licenciaDTO.setLicenseType(cbClase.getSelectedItem())
-					.setObservation(taObservaciones)
-					.setExpiricyDate(vigencia);
+				
+				LicenseDTO licenciaDTO = new LicenseDTO();
+				licenciaDTO.setLicenseType((LicenseType) cbClase.getSelectedItem());
+				licenciaDTO.setObservation(taObservaciones.getText());
+				licenciaDTO.setExpiricyDate(expiryDate);
 				controladorLicencia.registerLicense(titularDTO, licenciaDTO, altaTitular);
+				controladorLicencia.registerLicense(titularDTO, licenciaDTO, altaTitular);
+				
 				if(JOptionPane.showConfirmDialog(null, "Licencia emitida exitosamente, ¿Desea imprimirla ahora?", "Éxito", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
 					//TODO pasar a imprimir licencia
 					 //Pasar dto y ruta a generarPdf
-				}*/
+				}
 			}
 		});
 		btnAceptarEmitir.setBounds(463, 231, 175, 40);
@@ -380,22 +370,20 @@ public class PanelEmitir extends JPanel {
         return resultado;
 	}
 	
-	//TODO descomentar
-	/*
 	private void cargarDatosTitular(TitularDTO dto) {
 		tfNombre.setText(dto.getName());
 		tfApellido.setText(dto.getSurname());
-		tfDireccion.setText(dto.getAddress());
-		tfFechaNac.setText(dto.getBirthday());
+		tfDireccion.setText(dto.getAdress());
+		tfFechaNac.setText(dto.getBirthdate().toString());
 		cbTipoSangre.setSelectedItem(dto.getBloodType());
-		ckbDonante.setSelected(dto.getOrganDonnor());
+		ckbDonante.setSelected(dto.getOrganDonor());
 	}
 	
 	private void cargarDatosContribuyente(TaxPayerDTO dto){
 		tfNombre.setText(dto.getName());
 		tfApellido.setText(dto.getSurname());
-		tfDireccion.setText(dto.getAddress());
-		tfFechaNac.setText(dto.getBirthday());
+		tfDireccion.setText(dto.getAdress());
+		tfFechaNac.setText(dto.getBirthdate().toString());
 	}
 	
 	private void bloquearComponentes(Boolean altaTitular) {
@@ -411,17 +399,16 @@ public class PanelEmitir extends JPanel {
 	
 	private TitularDTO completarTitularDTO(TaxPayerDTO dto) {
 		TitularDTO aux = new TitularDTO();
-		aux.setId(dto.getId())
-			.setTypeId(dto.getTypeId())
-			.setPersonalId(dto.getPersonalId())
-			.setName(dto.getName())
-			.setSurname(dto.getSurname())
-			.setAdress(dto.getAdress())
-			.setBirthday(dto.getBirthday())
-			.setBloodType(cbTipoSangre.getSelectedItem())
-			.setOrganDonnor(ckbDonante.isSelected());
+		aux.setTypeId(dto.getTypeId());
+		aux.setPersonalId(dto.getPersonalId().toString());
+		aux.setName(dto.getName());
+		aux.setSurname(dto.getSurname());
+		aux.setAdress(dto.getAdress());
+		aux.setBirthdate(dto.getBirthdate());
+		aux.setBloodType(cbTipoSangre.getSelectedItem().toString());
+		aux.setOrganDonor(ckbDonante.isSelected());
 		return aux;
-	}*/
+	}
 	
 	public void reset() {
 		this.removeAll();

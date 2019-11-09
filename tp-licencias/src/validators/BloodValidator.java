@@ -5,6 +5,11 @@ import java.util.List;
 
 import dto.TitularDTO;
 
+/**
+ * Clase validadora concreta de tipo de sangre y donante. 
+ * @author Suppicich Juan & Matias Durand
+ *
+ */
 public class BloodValidator implements Validator<String,TitularDTO>{
 
 	@Override

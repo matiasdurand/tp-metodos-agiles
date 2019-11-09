@@ -5,6 +5,11 @@ import java.util.Map;
 
 import domain.LicenseType;
 
+/**
+ * Clase calculadora de costo de licencia. Singleton. 
+ * @author Suppicich Juan & Matias Durand
+ *
+ */
 public class LicenseCostCalculator {
 
 	private static LicenseCostCalculator _INSTANCE = new LicenseCostCalculator();
@@ -19,10 +24,19 @@ public class LicenseCostCalculator {
 		return _INSTANCE;
 	}
 	
+	/**
+	 * Retorna el costo de la licencia para la combinacion recibida 
+	 * como parametro.
+	 * @param combination
+	 * @return el costo de la licencia.
+	 */
 	public Double getLicenseCost(Combination combination) {
 		return licenseCosts.get(combination);
 	}
 	
+	/**
+	 * Carha el HashMap asocionado a cada combinacion su costo.
+	 */
 	private void loadLicenseCosts() {
 	
 		licenseCosts.put(new Combination(LicenseType.A, 1), 20.00);

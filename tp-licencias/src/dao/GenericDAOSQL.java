@@ -1,41 +1,84 @@
 package dao;
 
 import java.io.Serializable;
-import java.util.List;
 
-/* Esta clase implementa de manera generica el acceso a la base de datos SQL (mediante Hibernate),
- * de esta clase heredaran las implementaciones de cada interfaz DAO, de esta manera se evita duplicar codigo en cada entidad*/
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
+/**
+ * Esta clase es una implementacion generica para SQL (utilizando Hibernate) de la interfaz GenericDAO
+ * de esta clase heredaran las implementaciones de cada interfaz DAO, de esta manera se evita duplicar codigo
+ * en cada clase.
+ * @author 
+ * 
+ * @param <T> tipo de dato generico que representa la entidad del dominio.  
+ * @param <ID> tipo de dato generico que representa un parametro de busqueda.
+ */
 public class GenericDAOSQL<T, ID extends Serializable> implements GenericDAO<T,ID> {
-		
-	@Override
-	public T create() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
+	private final Class<T> type;
+	
+	
+	public GenericDAOSQL(Class<T> type){
+	     this.type = type;
+	   }
+	
 	@Override
 	public void save(T entity) {
-		// TODO Auto-generated method stub
-		
+		// crear factory
+		SessionFactory sf = new Configuration().configure("hibernate-sistema.cfg.xml").buildSessionFactory();
+		// crear sesión
+		Session session = sf.openSession();
+		// usar el objeto session
+		session.beginTransaction();
+		session.save(entity);
+		session.getTransaction().commit();
+		session.close();
+		sf.close();
 	}
 
 	@Override
 	public T update(T entity) {
-		// TODO Auto-generated method stub
-		return null;
+		// crear factory
+		SessionFactory factory = new Configuration().configure("hibernate-sistema.cfg.xml").addAnnotatedClass(type).buildSessionFactory();
+		// crear sesión
+		Session session = factory.getCurrentSession();
+		// usar el objeto session
+		session.beginTransaction();
+		session.saveOrUpdate(entity);
+		session.getTransaction().commit();
+		session.close();
+		factory.close();
+		return entity;
 	}
 
 	@Override
 	public T find(ID id) {
-		// TODO Auto-generated method stub
-		return null;
+		SessionFactory factory = new Configuration().configure("hibernate-sistema.cfg.xml").addAnnotatedClass(type).buildSessionFactory();
+		// crear sesión
+		Session session = factory.getCurrentSession(); // usar el objeto session
+		session.beginTransaction();
+		T t = session.get(type, id);
+		session.getTransaction().commit();
+		session.close();
+		factory.close();
+		return t;
+		
 	}
 
-	@Override
-	public List<T> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+	protected SessionFactory createFactory() {
+		// crear factory
+		SessionFactory factory = new Configuration().configure("hibernate-sistema.cfg.xml").addAnnotatedClass(type).buildSessionFactory();
+		return factory;
+	}
+	
+	protected Session createSession(SessionFactory factory) {
+		// crear sesión
+		Session session = factory.getCurrentSession();
+		// usar el objeto session
+		session.beginTransaction();
+		return session;
 	}
 
 }

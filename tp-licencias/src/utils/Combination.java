@@ -2,6 +2,12 @@ package utils;
 
 import domain.LicenseType;
 
+/**
+ * Esta clase representa la combinacion clase licencia - años de vigencia 
+ * la cual es utilizada como clave hash para el calculo del costo de la licencia.
+ * @author Matias Durand 
+ *
+ */
 public class Combination {
 
 	private LicenseType licenseType;

@@ -1,0 +1,9 @@
+/domain/
+/controllers/
+/validators/
+/dto/
+/DAOs/
+/dao/
+/gui/
+/builders/
+/utils/

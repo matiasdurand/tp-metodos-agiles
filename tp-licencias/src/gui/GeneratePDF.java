@@ -1,10 +1,6 @@
-<<<<<<< HEAD
-package gui;
-=======
 /*package gui;
 
-import java.awt.EventQueue;
->>>>>>> 5d2ddb0a2a1ca1e03f8606fcf182332a49d463d0
+import java.awt.EventQueue;S
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.util.Calendar;
@@ -77,7 +73,7 @@ public class GeneratePDF{
 		}catch(IOException e) {}
 	}
 	
-	/*private List getLabels() throws java.io.IOException {
+	private List getLabels() throws java.io.IOException {
 		List datos = new List().setSymbolIndent(0).setListSymbol("");
 		datos.add(new ListItem("5. N° Licencia                                                                      9. Clase"))
 			 .add(new ListItem(""+'\n'))
@@ -95,9 +91,9 @@ public class GeneratePDF{
 		datos.setFontSize(9);
 		datos.setMargins(50, 0, 0, 150);
 		return datos;
-	}*/
+	}
 	
-	/*private List getLabels() throws java.io.IOException {
+	private List getLabels() throws java.io.IOException {
 		List datos = new List().setSymbolIndent(0).setListSymbol("");
 		doc.add(new ListItem("5. N° Licencia                                                                      9. Clase")).setFontSize(8);
 		doc.add(new ListItem("123456789                                                                      A1, B1")).setFontSize(15);
@@ -115,7 +111,7 @@ public class GeneratePDF{
 		datos.setFont(fontInfo);
 		datos.setMargins(50, 0, 0, 150);
 		return datos;
-	}*/
+	}
 	
 	private List getInfo() throws java.io.IOException {
 		List datos = new List().setSymbolIndent(0).setListSymbol("");
@@ -131,9 +127,9 @@ public class GeneratePDF{
 		datos.setMargins(75, 0, 0, 150);
 		return datos;
 	}
-<<<<<<< HEAD
 
-	/*public GeneratePDF(PdfDTO dto, String destino) throws IOException, java.io.IOException{
+
+	public GeneratePDF(PdfDTO dto, String destino) throws IOException, java.io.IOException{
 		try {
 			PdfWriter writer = new PdfWriter(destino);
 			PdfDocument pdf = new PdfDocument(writer);
@@ -160,7 +156,5 @@ public class GeneratePDF{
 		datos.setMargins(50, 0, 0, 150);
 		return datos;
 	}*/
-}
-=======
-}*/
->>>>>>> 5d2ddb0a2a1ca1e03f8606fcf182332a49d463d0
+
+

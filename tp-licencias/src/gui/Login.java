@@ -1,7 +1,6 @@
 package gui;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 
@@ -19,18 +18,16 @@ import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+
 
 public class Login extends JDialog{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private JTextField tfUser;
 	private JTextField tfPassword;
 	private JButton btnIngresar;
 
+	
 	public Login() {
 		super();
 		addWindowListener(new WindowAdapter() {

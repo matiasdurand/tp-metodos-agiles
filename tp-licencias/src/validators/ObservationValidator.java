@@ -5,6 +5,11 @@ import java.util.List;
 
 import dto.LicenseDTO;
 
+/**
+ * Clase valdiadora concreta de observacion de licencia de persona.
+ * @author Juan Suppicich & Matias Durand
+ *
+ */
 public class ObservationValidator implements Validator<String,LicenseDTO> {
 
 	@Override

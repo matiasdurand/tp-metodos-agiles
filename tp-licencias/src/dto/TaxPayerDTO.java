@@ -1,15 +1,56 @@
 package dto;
 
+/**
+ * Clase tipo POJO utilizada para transferencia de datos de contribuyente con la interfaz. 
+ * Patron data transfer object. 
+ * @author Juan Suppicich & Matias Durand
+ *
+ */
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
+
+import domain.TypeId;
+
+@Entity
+@Table(name="contribuyente")
 public class TaxPayerDTO {
+	@Column (name="numero_documento")
+	private Long personalId;
+
+	@Enumerated(EnumType.STRING)
+	@Column (name="tipo_documento")
+	private TypeId typeId;
 	
+	@Column (name="nombre")
 	private String name; 
+	
+	@Column (name="apellido")
 	private String surname;
-	private Date birthday;
+	
+	@Column (name="fecha_nacimiento")
+	private Date birthdate;
+	
+	@Column (name="direccion")
 	private String adress;
 	
-	
+
+	public Long getPersonalId() {
+		return personalId;
+	}
+	public void setPersonalId(Long personalId) {
+		this.personalId = personalId;
+	}
+	public TypeId getTypeId() {
+		return typeId;
+	}
+	public void setTypeId(TypeId typeId) {
+		this.typeId = typeId;
+	}	
 	public String getName() {
 		return name;
 	}
@@ -22,11 +63,11 @@ public class TaxPayerDTO {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	public Date getBirthday() {
-		return birthday;
+	public Date getBirthdate() {
+		return birthdate;
 	}
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
 	}
 	public String getAdress() {
 		return adress;

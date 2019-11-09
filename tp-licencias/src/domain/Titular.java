@@ -6,17 +6,64 @@ import java.util.List;
 
 import builders.Build;
 
+//import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+//import javax.persistence.JoinColumn;
+//import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+/**
+ * Clase de dominio Titular. Corresponde a una entidad de base de datos.
+ * @author Juan Suppicich & Matias Durand
+ *
+ */
+@Entity
+@Table(name="titular")
 public class Titular {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_titular")
 	private Integer id;
+	
+	@Enumerated(EnumType.STRING)
+	@Column (name="tipo_documento")
 	private TypeId typeId;
+	
+	@Column (name="numero_documento")
 	private Long personalId;
+	
+	@Column (name="nombre")
 	private String name;
+	
+	@Column (name="apellido")
 	private String surname;
+	
+	@Column (name="direccion")
 	private String adress;
+
+	@Column (name="fecha_nacimiento")
 	private Date birthdate;
-	private String bloodType;
+	
+	/*@Enumerated(EnumType.STRING)
+	@Column (name="grupo_sanguineo")
+	private BloodType bloodType;*/
+	
+	@Column (name="es_donante")
 	private Boolean organDonor;
+	
+	/*@ManyToOne
+	@JoinColumn(name = "id_usuario")
+	private User usuarioCreador;*/
+	
+	@OneToMany
 	private List<License> licenses = new ArrayList<License>(); 
 	
 	
@@ -62,12 +109,12 @@ public class Titular {
 	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
-	public String getBloodType() {
+	/*public String getBloodType() {
 		return bloodType;
 	}
 	public void setBloodType(String bloodType) {
 		this.bloodType = bloodType;
-	}
+	}*/
 	public Boolean getOrganDonor() {
 		return organDonor;
 	}
@@ -81,6 +128,11 @@ public class Titular {
 		this.licenses = licenses;
 	} 
 	
+	/**
+	 * Clase estatica constructora de Titular. 
+	 * @author Juan Suppicich & Matias Durand
+	 *
+	 */
 	public static class Builder implements Build<Titular>{
 
 		private TypeId typeId;
@@ -89,13 +141,12 @@ public class Titular {
 		private String surname;
 		private String adress;
 		private Date birthdate;
-		private String bloodType;
+		//private String bloodType;
 		private Boolean organDonor;
 		private List<License> licenses = new ArrayList<License>(); 
 		
 		
-		public Builder() {
-			
+		public Builder() {	
 		}
 		
 		public Builder setTypeId(TypeId typeId) {
@@ -128,10 +179,10 @@ public class Titular {
 			return this;
 		}
 		
-		public Builder setBloodType(String bloodType) { 
+		/*public Builder setBloodType(String bloodType) { 
 			this.bloodType = bloodType;
 			return this;
-		}
+		}*/
 		
 		public Builder setOrganDonor(Boolean organDonor) {
 			this.organDonor = organDonor;
@@ -152,11 +203,10 @@ public class Titular {
 			titular.setSurname(this.surname);
 			titular.setAdress(this.adress);
 			titular.setBirthdate(this.birthdate);
-			titular.setBloodType(this.bloodType);
+			//titular.setBloodType(this.bloodType);
 			titular.setOrganDonor(this.organDonor);
 			return titular;
 		}
 		
 	}
-	
 }
