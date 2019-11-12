@@ -28,7 +28,9 @@ import domain.LicenseType;
 import domain.TypeId;
 import controllers.TaxPayerController;
 import controllers.LicenseController;
+import controllers.PanelController;
 import dto.TitularDTO;
+import net.bytebuddy.agent.builder.AgentBuilder.CircularityLock.Global;
 import res.colors.Colors;
 import dto.TaxPayerDTO;
 import dto.LicenseDTO;
@@ -36,6 +38,9 @@ import dto.LicenseDTO;
 public class PanelEmitir extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	
+	//Direccion donde se guarda el pdf de la licencia emitida
+	private static  String _DESTINO = System.getProperty("user.home") + "\\Desktop\\" + "licencia.pdf";
 
 	private JComboBox<String> cbTipoSangre;
 	private JComboBox<TypeId> cbTipoDoc;
@@ -93,7 +98,7 @@ public class PanelEmitir extends JPanel {
 						{
 							contribuyenteDTO = controladorContribuyente.taxPayerLocator((TypeId) cbTipoDoc.getSelectedItem(), Long.valueOf(tfNroDoc.getText()));
 							if(contribuyenteDTO == null){
-								// TODO JOptionPane.showMessageDialog(this, "El documento ingresado no se corresponde a ningún contribuyente registrado", "Contribuyente no encontrado", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(null, "El documento ingresado no se corresponde a ningún contribuyente registrado");
 							}
 							else{
 								altaTitular=true;
@@ -258,8 +263,6 @@ public class PanelEmitir extends JPanel {
 		ckbDonante.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		ckbDonante.setBounds(703, 215, 129, 40);
 		this.add(ckbDonante);
-		
-		
 	}
 	
 	private void initializeEmitirLicencia() {
@@ -336,14 +339,18 @@ public class PanelEmitir extends JPanel {
 				LicenseDTO licenciaDTO = new LicenseDTO();
 				licenciaDTO.setLicenseType((LicenseType) cbClase.getSelectedItem());
 				licenciaDTO.setObservation(taObservaciones.getText());
+				licenciaDTO.setEmisionDate(new Date());
 				licenciaDTO.setExpiricyDate(expiryDate);
 				controladorLicencia.registerLicense(titularDTO, licenciaDTO, altaTitular);
 				controladorLicencia.registerLicense(titularDTO, licenciaDTO, altaTitular);
 				
 				if(JOptionPane.showConfirmDialog(null, "Licencia emitida exitosamente, ¿Desea imprimirla ahora?", "Éxito", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
 					//TODO pasar a imprimir licencia
-					 //Pasar dto y ruta a generarPdf
+					try {
+						PanelController.getImprimir(titularDTO, licenciaDTO, _DESTINO);
+					}catch(Exception ex) {}
 				}
+				MenuPrincipal.menuPrincipal.cancelar(MenuPrincipal.PANEL_EMITIR);
 			}
 		});
 		btnAceptarEmitir.setBounds(463, 231, 175, 40);

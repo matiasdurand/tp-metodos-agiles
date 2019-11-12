@@ -19,6 +19,7 @@ public class TitularDAOSQL extends GenericDAOSQL<Titular,Integer> implements Tit
 		super(type);
 	}
 
+	@Override
 	public Titular findByPersonalId(TypeId typeId, Long personalId) {
 		//creamos factory
 		SessionFactory factory = createFactory();

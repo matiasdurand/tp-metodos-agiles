@@ -1,11 +1,16 @@
 package gui;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import org.apache.pdfbox.io.RandomAccessFile;
+
+import com.itextpdf.io.IOException;
+import com.itextpdf.kernel.xmp.impl.ByteBuffer;
+
+import dto.LicenseDTO;
+import dto.TitularDTO;
 import res.colors.Colors;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,6 +24,8 @@ import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.nio.channels.FileChannel;
 import java.awt.event.ActionEvent;
 
 public class ImprimirLicencia extends JFrame {
@@ -27,24 +34,10 @@ public class ImprimirLicencia extends JFrame {
 	private JPanel contentPane;
 	private JButton btnCancelar;
 
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ImprimirLicencia frame = new ImprimirLicencia();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	public ImprimirLicencia() {
+	public ImprimirLicencia(TitularDTO titularDTO, LicenseDTO licenseDTO, String destino) throws IOException, java.io.IOException {
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
-		this.setMinimumSize(new Dimension(844,605));
+		this.setMinimumSize(new Dimension(1050,605));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ImprimirLicencia.class.getResource("/res/images/print_icon_125px.png")));
 		setTitle("Imprimir licencia");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -59,29 +52,22 @@ public class ImprimirLicencia extends JFrame {
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 30));
 		lblTitulo.setBackground(new Color(16, 16, 16));
-		lblTitulo.setBounds(10, 13, 816, 39);
+		lblTitulo.setBounds(10, 13, 1022, 39);
 		contentPane.add(lblTitulo);
 		
 		JPanel panelPDF = new JPanel();
 		panelPDF.setFocusable(false);
-		panelPDF.setBounds(10, 65, 816, 439);
+		panelPDF.setBounds(10, 65, 1022, 439);
 		panelPDF.setBackground(Color.WHITE);
 		contentPane.add(panelPDF);
 		panelPDF.setLayout(null);
-		
-		JTextArea taInfoLicencia = new JTextArea();
-		taInfoLicencia.setFont(new Font("Verdana", Font.BOLD, 20));
-		taInfoLicencia.setBounds(332, 135, 297, 174);
-		taInfoLicencia.setBorder(null);
-		taInfoLicencia.setBackground(new Color(0,0,0,0));
-		panelPDF.add(taInfoLicencia);
 		
 		JLabel lblTemplateLicencia = new JLabel("");
 		lblTemplateLicencia.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTemplateLicencia.setBackground(Colors.FONDO);
 		lblTemplateLicencia.setForeground(Colors.FONDO);
-		lblTemplateLicencia.setIcon(new ImageIcon(ImprimirLicencia.class.getResource("/res/images/template_licencia.jpg")));
-		lblTemplateLicencia.setBounds(172, 70, 471, 298);
+		GeneratePDF.generatePDF(titularDTO, licenseDTO, destino);
+		cargarPDF(lblTemplateLicencia,destino);
 		panelPDF.add(lblTemplateLicencia);
 		
 		btnCancelar = new JButton("CANCELAR");
@@ -93,21 +79,36 @@ public class ImprimirLicencia extends JFrame {
 		});
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnCancelar.setFocusable(false);
-		btnCancelar.setBounds(651, 517, 175, 40);
+		btnCancelar.setBounds(857, 517, 175, 40);
 		contentPane.add(btnCancelar);
 		
 		JButton btnImprimir = new JButton("IMPRIMIR");
 		btnImprimir.setEnabled(false);
 		btnImprimir.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnImprimir.setFocusable(false);
-		btnImprimir.setBounds(464, 517, 175, 40);
+		btnImprimir.setBounds(670, 517, 175, 40);
 		contentPane.add(btnImprimir);
 		
 		JButton btnGuardar = new JButton("GUARDAR");
 		btnGuardar.setEnabled(false);
 		btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnGuardar.setFocusable(false);
-		btnGuardar.setBounds(277, 517, 175, 40);
+		btnGuardar.setBounds(483, 517, 175, 40);
 		contentPane.add(btnGuardar);
+	}
+	
+	private void cargarPDF(JLabel lbl, String destino) {
+		//TODO abrir pdf
+		lbl.setBounds(12, 70, 1000, 306);
+		/*try{
+		     File file = new File(destino);
+		           RandomAccessFile raf = new RandomAccessFile(file, "r");
+		           FileChannel channel = raf.getChannel();
+		           ByteBuffer buf = channel.map(FileChannel.MapMode.READ_ONLY,0, channel.size());
+		           pdffile = new PDFFile(buf);
+		           PDFPage page = pdffile.getPage(indice);
+		           panelpdf.showPage(page);
+		           repaint();
+		}catch(IOException ioe){}*/
 	}
 }

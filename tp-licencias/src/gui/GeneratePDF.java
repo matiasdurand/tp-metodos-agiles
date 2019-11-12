@@ -1,9 +1,6 @@
-/*package gui;
+package gui;
 
-import java.awt.EventQueue;S
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.itextpdf.io.IOException;
@@ -16,145 +13,97 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Image;
-import com.itextpdf.layout.element.List;
 import com.itextpdf.layout.element.ListItem;
-import com.itextpdf.layout.element.Paragraph;
 
-import dto.PdfDTO;
-
-//import dto.LicenseDTO;
+import domain.LicenseType;
+import dto.LicenseDTO;
+import dto.TitularDTO;
 
 @SuppressWarnings("deprecation")
 public class GeneratePDF{
 	
-	private PdfFont fontInfo;
-	private static  String _DESTINO = "C:\\Users\\alan_\\Desktop\\licencia.pdf";
-	private String _TEMPLATE_LICENCIA_DOBLE = "C:/Users/alan_/eclipse-workspace/tp-metodos-agiles/tp-licencias/src/res/images/template_licencia_frente_dorso.jpg";
+	//TODO poner direcciones genericas
+	private static String _TEMPLATE_LICENCIA_DOBLE = "C:/Users/alan_/eclipse-workspace/tp-metodos-agiles/tp-licencias/src/res/images/template_licencia_frente_dorso.jpg";
+	private static String _FOTO_LICENCIA = "C:/Users/alan_/eclipse-workspace/tp-metodos-agiles/tp-licencias/src/res/images/bill-gates-licencia.jpg";
+	private static String _FIRMA_LICENCIA = "C:/Users/alan_/eclipse-workspace/tp-metodos-agiles/tp-licencias/src/res/images/firma-bill-gates.png";
 	
-	public static void main(String args[]) throws IOException, java.io.IOException {
-		new GeneratePDF(_DESTINO);
-	}
-	
-	public GeneratePDF(String destino) throws IOException, java.io.IOException{
-		try {
-			PdfWriter writer = new PdfWriter(destino);
-			PdfDocument pdf = new PdfDocument(writer);
-			Document doc = new Document(pdf,new PageSize(1020, 324)); //Tamaño doble
-			Image templateLicencia = new Image(ImageDataFactory.create(_TEMPLATE_LICENCIA_DOBLE));
-			templateLicencia.setFixedPosition(10, 10); //Posicion template doble
-			doc.add(templateLicencia);
-			fontInfo = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
-			doc.setFont(fontInfo);
-			doc.setFontSize(8);
-			doc.add(new ListItem("5. N° Licencia                                                                      9. Clase"
-					+"                                                                           Observaciones").setMarginLeft(150).setMarginTop(30)).setFontSize(14);
-			doc.add(new ListItem("123456789                                   "+dto.getLicenseType()
-					+ "                                        "+dto.getObservations()).setMarginLeft(150)).setFontSize(8);
-			doc.add(new ListItem("1. Apellido"
-					+ "                                                                                                       "
-					+"                                                             Donante").setMarginLeft(150)).setFontSize(14);
-			doc.add(new ListItem("BRAIDOT"
-					+ "                                                                   "
-					+"                     "+dto.getOrganDonnor().toString()).setMarginLeft(150)).setFontSize(8);
-			doc.add(new ListItem("2. Nombre"
-					+"                                                                                                        "
-					+"                                                             Grupo y factor").setMarginLeft(150)).setFontSize(14);
-			doc.add(new ListItem("ALAN NAHUEL"
-					+"                                                                    "
-					+"           A+").setMarginLeft(150)).setFontSize(8);
-			doc.add(new ListItem("8. Domicilio").setMarginLeft(150)).setFontSize(14);
-			doc.add(new ListItem("CALLE 316 N°240").setMarginLeft(150)).setFontSize(8);
-			doc.add(new ListItem("3. Fecha nac.").setMarginLeft(150)).setFontSize(14);
-			doc.add(new ListItem("17/04/1998").setMarginLeft(150)).setFontSize(8);
-			doc.add(new ListItem("4a. Otorgamiento                                                          4b. Vencimiento").setMarginLeft(150)).setFontSize(14);
-			doc.add(new ListItem("14/06/2018                                17/04/2020").setMarginLeft(150)).setFontSize(8);
-			//doc.add(getInfo());
-			doc.close();
-		}catch(IOException e) {}
-	}
-	
-	private List getLabels() throws java.io.IOException {
-		List datos = new List().setSymbolIndent(0).setListSymbol("");
-		datos.add(new ListItem("5. N° Licencia                                                                      9. Clase"))
-			 .add(new ListItem(""+'\n'))
-			 .add(new ListItem("1. Apellido"))
-			 .add(new ListItem(""+'\n'))
-			 .add(new ListItem("2. Nombre"))
-			 .add(new ListItem(""+'\n'))
-			 .add(new ListItem("8. Domicilio"))
-			 .add(new ListItem(""+'\n'))
-			 .add(new ListItem("3. Fecha nac."))
-			 .add(new ListItem(""+'\n'))
-			 .add(new ListItem("4a. Otorgamiento                                                          4b. Vencimiento"));
-		fontInfo = PdfFontFactory.createFont(FontConstants.HELVETICA);
-		datos.setFont(fontInfo);
-		datos.setFontSize(9);
-		datos.setMargins(50, 0, 0, 150);
-		return datos;
-	}
-	
-	private List getLabels() throws java.io.IOException {
-		List datos = new List().setSymbolIndent(0).setListSymbol("");
-		doc.add(new ListItem("5. N° Licencia                                                                      9. Clase")).setFontSize(8);
-		doc.add(new ListItem("123456789                                                                      A1, B1")).setFontSize(15);
-		doc.add(new ListItem("1. Apellido")).setFontSize(8);
-		doc.add(new ListItem("BRAIDOT")).setFontSize(15);
-		doc.add(new ListItem("2. Nombre")).setFontSize(8);
-		doc.add(new ListItem("ALAN NAHUEL")).setFontSize(15);
-		doc.add(new ListItem("8. Domicilio")).setFontSize(8);
-		doc.add(new ListItem("CALLE 316 N°240")).setFontSize(15);
-		doc.add(new ListItem("3. Fecha nac.")).setFontSize(8);
-		doc.add(new ListItem("17/04/1998")).setFontSize(15);
-		doc.add(new ListItem("4a. Otorgamiento                                                          4b. Vencimiento")).setFontSize(8);
-		doc.add(new ListItem("15/06/2018                                                          17/04/2020")).setFontSize(15);
-		fontInfo = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
-		datos.setFont(fontInfo);
-		datos.setMargins(50, 0, 0, 150);
-		return datos;
-	}
-	
-	private List getInfo() throws java.io.IOException {
-		List datos = new List().setSymbolIndent(0).setListSymbol("");
-		datos.add(new ListItem("123456789                                                                      A1, B1"))
-			 .add(new ListItem("BRAIDOT"))
-			 .add(new ListItem("ALAN NAHUEL"))
-			 .add(new ListItem("CALLE 316 N°240"))
-			 .add(new ListItem("17/04/1998"))
-			 .add(new ListItem("15/06/2018                                                          17/04/2020"));
-		fontInfo = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
-		datos.setFont(fontInfo);
-		datos.setFontSize(15);
-		datos.setMargins(75, 0, 0, 150);
-		return datos;
-	}
-
-
-	public GeneratePDF(PdfDTO dto, String destino) throws IOException, java.io.IOException{
-		try {
-			PdfWriter writer = new PdfWriter(destino);
-			PdfDocument pdf = new PdfDocument(writer);
-			//Document doc = new Document(pdf,new PageSize(499, 306)); //Tamaño solo frente
-			Document doc = new Document(pdf,new PageSize(1066, 324)); //Tamaño frente + dorso
-			Image templateLicencia = new Image(ImageDataFactory.create(_TEMPLATE_LICENCIA));
-			templateLicencia.setFixedPosition(14, 4);
-			doc.add(templateLicencia);
-			doc.add(getInfo(dto));
-			doc.close();
-		}catch(IOException e) {}
-	}
-	
-	private List getInfo(PdfDTO dto) throws java.io.IOException {
-		List datos = new List().setSymbolIndent(0).setListSymbol("");
-		datos.add(new ListItem("Licencia N°:	"+dto.getLicenseId()+"		Clase: "+dto.getLicenseType().toString()))
-			.add(new ListItem("Apellido:	"+dto.getSurname()))
-			.add(new ListItem("Nombre:		"+dto.getName()))
-			.add(new ListItem("Domicilio:	"+dto.getAdress()))
-			.add(new ListItem("Fecha nac.:	"+dto.getBirthday()))
-			.add(new ListItem("Fecha ven.:	"+dto.getExpiricyDate()))
-		fontInfo = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
-		datos.setFont(fontInfo);
-		datos.setMargins(50, 0, 0, 150);
-		return datos;
+	/*public static void main(String args[]) throws IOException, java.io.IOException {
+		//TODO crear titularDTO de prueba y licenseDTO
+		TitularDTO titularDTO = new TitularDTO();
+		titularDTO.setName("Alan Nahuel");
+		titularDTO.setAdress("Calle 316 Nro 240");
+		titularDTO.setOrganDonor(true);
+		titularDTO.setBirthdate(new Date());
+		titularDTO.setPersonalId("41057032");
+		titularDTO.setSurname("Braidot");
+		titularDTO.setBloodType("A+");
+		LicenseDTO licenseDTO = new LicenseDTO();
+		licenseDTO.setLicenseType(LicenseType.B);
+		licenseDTO.setObservation("Necesita anteojos.");
+		licenseDTO.setEmisionDate(new Date());
+		licenseDTO.setExpiricyDate(new Date());
+		new GeneratePDF(titularDTO, licenseDTO, _DESTINO);
 	}*/
+	
+	public static void generatePDF(TitularDTO titularDTO, LicenseDTO licenseDTO, String destino) throws IOException, java.io.IOException{
+		try {
+			PdfWriter writer = new PdfWriter(destino);
+			PdfDocument pdf = new PdfDocument(writer);
+			Document doc = new Document(pdf,new PageSize(1020, 324));
+			Image templateLicencia = new Image(ImageDataFactory.create(_TEMPLATE_LICENCIA_DOBLE));
+			templateLicencia.setFixedPosition(10, 10);
+			doc.add(templateLicencia);
+			Image fotoLicencia = new Image(ImageDataFactory.create(_FOTO_LICENCIA));
+			fotoLicencia.setFixedPosition(29, 74);
+			doc.add(fotoLicencia);
+			Image firmaLicencia = new Image(ImageDataFactory.create(_FIRMA_LICENCIA));
+			firmaLicencia.setFixedPosition(365, 118);
+			doc.add(firmaLicencia);
+			setLabels(doc);
+			setData(doc,titularDTO,licenseDTO);
+			doc.close();
+		}catch(IOException e) {}
+	}
+	
+	private static void setLabels(Document doc) throws java.io.IOException {
+		PdfFont fontLabel = PdfFontFactory.createFont(FontConstants.HELVETICA);
+		doc.setFont(fontLabel);
+		doc.setFontSize(8);
+		doc.add(new ListItem("5. N° Licencia / License N°").setMarginLeft(140).setMarginTop(35))
+			.add(new ListItem("9. Clase / Class").setMarginLeft(375).setMarginTop(-12))
+			.add(new ListItem("1. Apellido / Last name").setMarginLeft(140).setMarginTop(15))
+			.add(new ListItem("2. Nombre / First name").setMarginLeft(140).setMarginTop(15))
+			.add(new ListItem("8. Domicilio / Address").setMarginLeft(140).setMarginTop(15))
+			.add(new ListItem("3. Fecha de nac. / Date of Birth").setMarginLeft(140).setMarginTop(28))
+			.add(new ListItem("7. Firma del titular / Signature").setMarginLeft(326).setMarginTop(5))
+			.add(new ListItem("4a. Otorgamiento / Date of Issue").setMarginLeft(140).setMarginTop(0))
+			.add(new ListItem("4b. Vencimiento / Expires").setMarginLeft(340).setMarginTop(-12))
+			.add(new ListItem("Donante / Donor:").setMarginLeft(600).setMarginTop(-80))
+			.add(new ListItem("Grupo y factor / Blood type:").setMarginLeft(750).setMarginTop(-12))
+			.add(new ListItem("Observaciones / Observations:").setMarginLeft(600).setMarginTop(5));
+	}
+	
+	private static void setData(Document doc, TitularDTO titularDTO, LicenseDTO licenseDTO) throws java.io.IOException {
+		PdfFont fontInfo = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
+		doc.setFont(fontInfo);
+		doc.setFontSize(15);
+		SimpleDateFormat formatoFecha = new SimpleDateFormat("dd MMM yyyy");
+		doc.add(new ListItem(titularDTO.getPersonalId()).setMarginLeft(140).setMarginTop(-102))
+			.add(new ListItem(licenseDTO.getLicenseType().toString()).setMarginLeft(400).setMarginTop(-23))
+			.add(new ListItem(titularDTO.getSurname().toUpperCase()).setMarginLeft(140).setMarginTop(4))
+			.add(new ListItem(titularDTO.getName().toUpperCase()).setMarginLeft(140).setMarginTop(4))
+			.add(new ListItem(titularDTO.getAdress().toUpperCase()).setMarginLeft(140).setMarginTop(4))
+			.add(new ListItem(formatoFecha.format(titularDTO.getBirthdate()).toString().toUpperCase()).setMarginLeft(140).setMarginTop(18))
+			.add(new ListItem(formatoFecha.format(licenseDTO.getEmisionDate()).toString().toUpperCase()).setMarginLeft(140).setMarginTop(7))
+			.add(new ListItem(formatoFecha.format(licenseDTO.getExpiricyDate()).toString().toUpperCase()).setMarginLeft(340).setMarginTop(-23));
+		doc.setFontSize(9);
+		String donante = "NO";
+		if(titularDTO.getOrganDonor() == true)
+			donante="SI";
+		doc.add(new ListItem(donante).setMarginLeft(665).setMarginTop(-98))
+			.add(new ListItem(titularDTO.getBloodType().toUpperCase()).setMarginLeft(854).setMarginTop(-14))
+			.add(new ListItem(licenseDTO.getObservation()).setMarginLeft(600).setMarginTop(15));
+	}
+}
 
 

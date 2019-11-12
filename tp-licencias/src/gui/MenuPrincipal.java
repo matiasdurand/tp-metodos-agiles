@@ -278,7 +278,8 @@ public class MenuPrincipal extends JFrame{
 				break;
 			}
 			case PANEL_IMPRIMIR:{
-				PanelController.getImprimir().setVisible(true);
+				//TODO implementar un menu para que seleccione la licencia que desea imprimir
+				/*PanelController.getImprimir().setVisible(true);*/
 				break;
 			}
 			case PANEL_MENU_USUARIO:{
