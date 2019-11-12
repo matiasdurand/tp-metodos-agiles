@@ -55,11 +55,11 @@ public class PanelEmitir extends JPanel {
 	private JTextArea taObservaciones;
 	private JPanel panelEmitirLicencia;
 	
-	private TitularDTO titularDTO;
-	private TaxPayerDTO contribuyenteDTO;
-	private LicenseController controladorLicencia;
-	private TitularController controladorTitular;
-	private TaxPayerController controladorContribuyente;
+	private TitularDTO titularDTO = new TitularDTO();
+	private TaxPayerDTO contribuyenteDTO = new TaxPayerDTO();
+	private LicenseController controladorLicencia = LicenseController.getInstance();
+	private TitularController controladorTitular = TitularController.getInstance();
+	private TaxPayerController controladorContribuyente = TaxPayerController.getInstance();
 		
 	public PanelEmitir() {
 		super();
@@ -235,6 +235,7 @@ public class PanelEmitir extends JPanel {
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				altaTitular=false;
+				initializeEmitirLicencia();
 				MenuPrincipal.menuPrincipal.cancelar(MenuPrincipal.PANEL_EMITIR);
 			}
 		});
@@ -258,6 +259,10 @@ public class PanelEmitir extends JPanel {
 		ckbDonante.setBounds(703, 215, 129, 40);
 		this.add(ckbDonante);
 		
+		
+	}
+	
+	private void initializeEmitirLicencia() {
 		panelEmitirLicencia = new JPanel();
 		panelEmitirLicencia.setVisible(false);
 		panelEmitirLicencia.setBounds(0, 321, 844, 284);
@@ -293,7 +298,6 @@ public class PanelEmitir extends JPanel {
 				tfCosto.setText(sb.toString());
 			}
 		});
-
 		controladorLicencia.loadLicenseTypeComboBox(cbClase, titularDTO, altaTitular);
 		cbClase.setBounds(572, 53, 80, 40);
 		panelEmitirLicencia.add(cbClase);
@@ -326,7 +330,9 @@ public class PanelEmitir extends JPanel {
 		btnAceptarEmitir.setFocusable(false);
 		btnAceptarEmitir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				if(altaTitular) {
+					completarTitularDTO(contribuyenteDTO);
+				}
 				LicenseDTO licenciaDTO = new LicenseDTO();
 				licenciaDTO.setLicenseType((LicenseType) cbClase.getSelectedItem());
 				licenciaDTO.setObservation(taObservaciones.getText());
@@ -409,7 +415,7 @@ public class PanelEmitir extends JPanel {
 		aux.setOrganDonor(ckbDonante.isSelected());
 		return aux;
 	}
-	
+
 	public void reset() {
 		this.removeAll();
 		this.initialize();
