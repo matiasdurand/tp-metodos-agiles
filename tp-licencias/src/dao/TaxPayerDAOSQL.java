@@ -16,10 +16,25 @@ import dto.TaxPayerDTO;
  */
 public class TaxPayerDAOSQL implements TaxPayerDAO {
 
+	public TaxPayerDAOSQL(Class<TaxPayerDTO> class1) {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public TaxPayerDTO find(int id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public void save(TaxPayerDTO contribuyente) {
+		//creamos factory
+		SessionFactory factory = createFactory();
+		//creamos session BD
+		Session session = createSession(factory);
+	    session.save(contribuyente);
+		session.getTransaction().commit();
+		session.close();
+		factory.close();
 	}
 	
 	@Override
@@ -29,7 +44,7 @@ public class TaxPayerDAOSQL implements TaxPayerDAO {
 		//creamos session BD
 		Session session = createSession(factory);
 		//creamos consulta HQL
-		TaxPayerDTO contribuyente = (TaxPayerDTO) session.createQuery("from TaxPayer where typeId= '" + typeId +"' and personalId= '" + personalId + "'").getSingleResult();
+		TaxPayerDTO contribuyente = (TaxPayerDTO) session.createQuery("from TaxPayerDTO where typeId= '" + typeId +"' and personalId= '" + personalId + "'").getSingleResult();
 		session.getTransaction().commit();
 		session.close();
 		factory.close();
@@ -42,7 +57,7 @@ public class TaxPayerDAOSQL implements TaxPayerDAO {
 		SessionFactory factory = createFactory();
 		//creamos session BD
 		Session session = createSession(factory);
-		List<TaxPayerDTO> taxPayers = (List<TaxPayerDTO>) session.createQuery("from TaxPayer").getResultList();
+		List<TaxPayerDTO> taxPayers = (List<TaxPayerDTO>) session.createQuery("from TaxPayerDTO").getResultList();
 		session.getTransaction().commit();
 		session.close();
 		factory.close();

@@ -6,6 +6,7 @@ import java.util.List;
 
 import builders.Build;
 
+import javax.persistence.CascadeType;
 //import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,7 +28,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name="titular")
 public class Titular {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_titular")
@@ -52,9 +52,8 @@ public class Titular {
 	@Column (name="fecha_nacimiento")
 	private Date birthdate;
 	
-	/*@Enumerated(EnumType.STRING)
 	@Column (name="grupo_sanguineo")
-	private BloodType bloodType;*/
+	private String bloodType;
 	
 	@Column (name="es_donante")
 	private Boolean organDonor;
@@ -63,7 +62,7 @@ public class Titular {
 	@JoinColumn(name = "id_usuario")
 	private User usuarioCreador;*/
 	
-	@OneToMany
+	@OneToMany(mappedBy = "titular" , cascade = CascadeType.ALL)
 	private List<License> licenses = new ArrayList<License>(); 
 	
 	
@@ -109,12 +108,12 @@ public class Titular {
 	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
-	/*public String getBloodType() {
+	public String getBloodType() {
 		return bloodType;
 	}
 	public void setBloodType(String bloodType) {
 		this.bloodType = bloodType;
-	}*/
+	}
 	public Boolean getOrganDonor() {
 		return organDonor;
 	}
@@ -141,7 +140,7 @@ public class Titular {
 		private String surname;
 		private String adress;
 		private Date birthdate;
-		//private String bloodType;
+		private String bloodType;
 		private Boolean organDonor;
 		private List<License> licenses = new ArrayList<License>(); 
 		
@@ -179,10 +178,10 @@ public class Titular {
 			return this;
 		}
 		
-		/*public Builder setBloodType(String bloodType) { 
+		public Builder setBloodType(String bloodType) { 
 			this.bloodType = bloodType;
 			return this;
-		}*/
+		}
 		
 		public Builder setOrganDonor(Boolean organDonor) {
 			this.organDonor = organDonor;
@@ -203,7 +202,7 @@ public class Titular {
 			titular.setSurname(this.surname);
 			titular.setAdress(this.adress);
 			titular.setBirthdate(this.birthdate);
-			//titular.setBloodType(this.bloodType);
+			titular.setBloodType(this.bloodType);
 			titular.setOrganDonor(this.organDonor);
 			return titular;
 		}

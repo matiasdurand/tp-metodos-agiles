@@ -1,6 +1,21 @@
 package gui;
 
 import java.awt.EventQueue;
+import domain.License;
+import domain.User;
+import domain.Titular;
+import domain.TypeId;
+import dto.TaxPayerDTO;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import dao.LicenseDAO;
+import dao.LicenseDAOSQL;
+import dao.TaxPayerDAO;
+import dao.TaxPayerDAOSQL;
+import dao.TitularDAO;
+import dao.TitularDAOSQL;
+import dao.UserDAO;
+import dao.UserDAOSQL;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -52,6 +67,23 @@ public class MenuPrincipal extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					//TODO
+					LicenseDAO licenseDAO = new LicenseDAOSQL(License.class);
+					TaxPayerDAOSQL taxpayerDAO = new TaxPayerDAOSQL(TaxPayerDTO.class);
+					UserDAO userDAO = new UserDAOSQL(User.class);
+					TitularDAO titularDAO = new TitularDAOSQL(Titular.class);
+					
+					
+					TaxPayerDTO Juan = new TaxPayerDTO();
+					Juan.setAdress("Antonio Stronatti 2173");
+					Juan.setBirthdate(new Date());
+					Juan.setName("Juan");
+					Juan.setPersonalId((long) 26150806);
+					Juan.setSurname("Perez");
+					Juan.setTypeId(TypeId.DNI);
+					
+					taxpayerDAO.save(Juan);
+					//
 					MenuPrincipal window = new MenuPrincipal();
 					window.frmPrincipal.setVisible(true);
 				} catch (Exception e) {

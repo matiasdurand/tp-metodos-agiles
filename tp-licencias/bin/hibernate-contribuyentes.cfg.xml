@@ -25,7 +25,7 @@
 		<property name="current_session_context_class">thread</property>
 		
 			
- 		<mapping class="domain.TaxPayer"/>
+ 		<mapping class="dto.TaxPayerDTO"/>
     </session-factory>
 
 </hibernate-configuration>  

@@ -4,14 +4,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import org.apache.pdfbox.io.RandomAccessFile;
-
 import com.itextpdf.io.IOException;
-import com.itextpdf.kernel.xmp.impl.ByteBuffer;
 
 import dto.LicenseDTO;
 import dto.TitularDTO;
 import res.colors.Colors;
+import utils.ConvertPDFPagesToImages;
+import utils.GeneratePDF;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -21,11 +21,9 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.Toolkit;
+
 import javax.swing.ImageIcon;
-import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.nio.channels.FileChannel;
 import java.awt.event.ActionEvent;
 
 public class ImprimirLicencia extends JFrame {
@@ -97,18 +95,10 @@ public class ImprimirLicencia extends JFrame {
 		contentPane.add(btnGuardar);
 	}
 	
-	private void cargarPDF(JLabel lbl, String destino) {
-		//TODO abrir pdf
+	private void cargarPDF(JLabel lbl, String dirPDF) {
 		lbl.setBounds(12, 70, 1000, 306);
-		/*try{
-		     File file = new File(destino);
-		           RandomAccessFile raf = new RandomAccessFile(file, "r");
-		           FileChannel channel = raf.getChannel();
-		           ByteBuffer buf = channel.map(FileChannel.MapMode.READ_ONLY,0, channel.size());
-		           pdffile = new PDFFile(buf);
-		           PDFPage page = pdffile.getPage(indice);
-		           panelpdf.showPage(page);
-		           repaint();
-		}catch(IOException ioe){}*/
+		String dirImg = System.getProperty("user.home") + "\\Desktop\\";
+		ImageIcon imgLicencia = new ImageIcon(ConvertPDFPagesToImages.convertPDFPagesToImages(dirPDF, dirImg));
+		lbl.setIcon(imgLicencia);
 	}
 }

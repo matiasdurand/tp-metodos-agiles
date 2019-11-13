@@ -2,6 +2,8 @@ package dao;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -26,11 +28,20 @@ public class TitularDAOSQL extends GenericDAOSQL<Titular,Integer> implements Tit
 		//creamos session BD
 		Session session = createSession(factory);
 		//creamos consulta HQL
+		try {
+		
 		Titular titular = (Titular) session.createQuery("from Titular where typeId= '" + typeId +"' and personalId= '" + personalId + "'").getSingleResult();
-		session.getTransaction().commit();
-		session.close();
-		factory.close();
 		return titular;
+		}catch(NoResultException e) {
+			return null;
+		}
+		finally {
+			session.getTransaction().commit();
+			session.close();
+			factory.close();
+		}
+		
+		
 			
 	}
 	
