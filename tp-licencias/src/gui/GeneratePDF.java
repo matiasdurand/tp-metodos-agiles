@@ -23,12 +23,13 @@ import dto.TitularDTO;
 public class GeneratePDF{
 	
 	//TODO poner direcciones genericas
-	private static String _TEMPLATE_LICENCIA_DOBLE = "C:/Users/alan_/eclipse-workspace/tp-metodos-agiles/tp-licencias/src/res/images/template_licencia_frente_dorso.jpg";
-	private static String _FOTO_LICENCIA = "C:/Users/alan_/eclipse-workspace/tp-metodos-agiles/tp-licencias/src/res/images/bill-gates-licencia.jpg";
-	private static String _FIRMA_LICENCIA = "C:/Users/alan_/eclipse-workspace/tp-metodos-agiles/tp-licencias/src/res/images/firma-bill-gates.png";
+	private static String _TEMPLATE_LICENCIA_DOBLE = System.getProperty("user.home") + "\\eclipse-workspace\\tp-metodos-agiles\\tp-licencias\\src\\res\\images\\template_licencia_frente_dorso.jpg";
+	private static String _FOTO_LICENCIA = System.getProperty("user.home") + "\\eclipse-workspace\\tp-metodos-agiles\\tp-licencias\\src\\res\\images\\bill-gates-licencia.jpg";
+	private static String _FIRMA_LICENCIA = System.getProperty("user.home") + "\\eclipse-workspace\\tp-metodos-agiles\\tp-licencias\\src\\res\\images\\firma-bill-gates.png";
 	
+	//TODO borrar main
 	/*public static void main(String args[]) throws IOException, java.io.IOException {
-		//TODO crear titularDTO de prueba y licenseDTO
+		String destino = "C:\\Users\\alan_\\Desktop\\licencia.pdf";
 		TitularDTO titularDTO = new TitularDTO();
 		titularDTO.setName("Alan Nahuel");
 		titularDTO.setAdress("Calle 316 Nro 240");
@@ -42,7 +43,7 @@ public class GeneratePDF{
 		licenseDTO.setObservation("Necesita anteojos.");
 		licenseDTO.setEmisionDate(new Date());
 		licenseDTO.setExpiricyDate(new Date());
-		new GeneratePDF(titularDTO, licenseDTO, _DESTINO);
+		GeneratePDF.generatePDF(titularDTO, licenseDTO, destino);
 	}*/
 	
 	public static void generatePDF(TitularDTO titularDTO, LicenseDTO licenseDTO, String destino) throws IOException, java.io.IOException{
