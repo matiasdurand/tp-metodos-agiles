@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import javax.persistence.NoResultException;
 
 import domain.License;
 
@@ -25,11 +26,18 @@ public class LicenseDAOSQL extends GenericDAOSQL<License, Integer> implements Li
 		//creamos session BD
 		Session session = createSession(factory);
 		//creamos consulta HQL
-		List<License> licenses = (List<License>) session.createQuery("from License").getResultList(); 
-		session.getTransaction().commit();
-		session.close();
-		factory.close();
-		return licenses;
-	}
+		try {
+			List<License> licenses = (List<License>) session.createQuery("from License").getResultList(); 
+			return licenses;
+		}
+		catch(NoResultException e) {
+			return null;
+		}
+		finally {
+			session.getTransaction().commit();
+			session.close();
+			factory.close();
 	
+		}
+	}
 }

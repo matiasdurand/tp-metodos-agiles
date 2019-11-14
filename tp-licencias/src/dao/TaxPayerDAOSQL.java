@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import javax.persistence.NoResultException;
 
 import domain.TypeId;
 import dto.TaxPayerDTO;
@@ -44,11 +45,18 @@ public class TaxPayerDAOSQL implements TaxPayerDAO {
 		//creamos session BD
 		Session session = createSession(factory);
 		//creamos consulta HQL
-		TaxPayerDTO contribuyente = (TaxPayerDTO) session.createQuery("from TaxPayerDTO where typeId= '" + typeId +"' and personalId= '" + personalId + "'").getSingleResult();
-		session.getTransaction().commit();
-		session.close();
-		factory.close();
-		return contribuyente;	
+		try {
+			TaxPayerDTO contribuyente = (TaxPayerDTO) session.createQuery("from TaxPayerDTO where typeId= '" + typeId +"' and personalId= '" + personalId + "'").getSingleResult();
+			return contribuyente;
+		}
+		catch(NoResultException e) {
+			return null;
+		}
+		finally {
+			session.getTransaction().commit();
+			session.close();
+			factory.close();
+		}
 	}
 
 	@Override
@@ -57,12 +65,19 @@ public class TaxPayerDAOSQL implements TaxPayerDAO {
 		SessionFactory factory = createFactory();
 		//creamos session BD
 		Session session = createSession(factory);
-		List<TaxPayerDTO> taxPayers = (List<TaxPayerDTO>) session.createQuery("from TaxPayerDTO").getResultList();
-		session.getTransaction().commit();
-		session.close();
-		factory.close();
-		return taxPayers;
-		
+		//creamos consulta HQL
+		try {
+			List<TaxPayerDTO> taxPayers = (List<TaxPayerDTO>) session.createQuery("from TaxPayerDTO").getResultList();
+			return taxPayers;
+		}
+		catch(NoResultException e) {
+			return null;
+		}
+		finally {
+			session.getTransaction().commit();
+			session.close();
+			factory.close();
+		}
 	}
 
 	private SessionFactory createFactory() {

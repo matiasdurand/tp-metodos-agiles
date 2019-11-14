@@ -39,10 +39,7 @@ public class TitularDAOSQL extends GenericDAOSQL<Titular,Integer> implements Tit
 			session.getTransaction().commit();
 			session.close();
 			factory.close();
-		}
-		
-		
-			
+		}	
 	}
 	
 	@Override
@@ -51,12 +48,19 @@ public class TitularDAOSQL extends GenericDAOSQL<Titular,Integer> implements Tit
 		SessionFactory factory = createFactory();
 		//creamos session BD
 		Session session = createSession(factory);
-		List<Titular> titulares = (List<Titular>) session.createQuery("from Titular").getResultList(); 
-		session.getTransaction().commit();
-		session.close();
-		factory.close();
-		return titulares;
-		
+		//creamos consulta HQL
+		try {
+			List<Titular> titulares = (List<Titular>) session.createQuery("from Titular").getResultList(); 
+			return titulares;
+		}
+		catch(NoResultException e) {
+			return null;
+		}
+		finally {
+			session.getTransaction().commit();
+			session.close();
+			factory.close();
+		}
 	}
 	
 }
