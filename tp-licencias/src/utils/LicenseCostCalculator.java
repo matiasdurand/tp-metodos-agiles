@@ -35,7 +35,7 @@ public class LicenseCostCalculator {
 	}
 	
 	/**
-	 * Carha el HashMap asocionado a cada combinacion su costo.
+	 * Carga el HashMap asocionado a cada combinacion su costo.
 	 */
 	private void loadLicenseCosts() {
 	
