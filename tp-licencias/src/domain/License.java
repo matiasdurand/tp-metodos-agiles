@@ -39,10 +39,7 @@ public class License {
 	@Enumerated(EnumType.STRING)
 	@Column (name="clase")
 	private LicenseType licenseType;
-	
-	@Transient
-	private Boolean expirated;
-	
+
 	@Column (name="fecha_emision")
 	private Date emisionDate;
 	
@@ -71,12 +68,7 @@ public class License {
 	public void setLicenseType(LicenseType licenseType) {
 		this.licenseType = licenseType;
 	}
-	public Boolean getExpirated() {
-		return expirated;
-	}
-	public void setExpirated(Boolean expirated) {
-		this.expirated = expirated;
-	}
+	
 	public Date getEmisionDate() {
 		return emisionDate;
 	}
@@ -140,7 +132,6 @@ public class License {
 		public License build() {
 			License license = new License();
 			license.setLicenseType(this.licenseType);
-			license.setExpirated(this.expirated);
 			license.setEmisionDate(this.emisionDate);
 			license.setExpiryDate(this.expiryDate);
 			license.setObservation(this.observation);

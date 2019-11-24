@@ -6,6 +6,7 @@ import java.util.List;
 
 import builders.Build;
 
+import javax.persistence.CascadeType;
 //import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -59,7 +60,7 @@ public class Titular {
 	private Boolean organDonor;
 	
 	
-	@OneToMany
+	@OneToMany(mappedBy = "titular", cascade = CascadeType.ALL)
 	private List<License> licenses = new ArrayList<License>(); 
 	
 	
