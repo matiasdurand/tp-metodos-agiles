@@ -78,13 +78,8 @@ public class TitularController {
 				.setOrganDonor(titularDTO.getOrganDonor())
 				.addLicense(license)
 				.build();
+		
 		saveTitular(titular);
-				
-		/*Runnable r = () -> {
-			saveTitular(titular);
-		};
-		Thread thread = new Thread(r);
-		thread.start();*/
 		
 	}
 	
@@ -122,7 +117,7 @@ public class TitularController {
 		titularDTO.setSurname(titular.getSurname());
 		titularDTO.setAdress(titular.getAdress());
 		titularDTO.setBirthdate(titular.getBirthdate());
-		//titularDTO.setBloodType(titular.getBloodType());
+		titularDTO.setBloodType(titular.getBloodType());
 		titularDTO.setOrganDonor(titular.getOrganDonor());
 
 		return titularDTO;

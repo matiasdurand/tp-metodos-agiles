@@ -19,9 +19,10 @@ public class UserDAOSQL extends GenericDAOSQL<User,Integer> implements UserDAO {
 		//creamos factory
 		SessionFactory factory = createFactory();
 		//creamos session BD
-		Session session = createSession(factory)
+		Session session = createSession(factory);
 	    //creamos consulta HQL
 		try {
+			@SuppressWarnings("unchecked")
 			List<User> users = (List<User>) session.createQuery("from User").getResultList();
 			return users;
 		}

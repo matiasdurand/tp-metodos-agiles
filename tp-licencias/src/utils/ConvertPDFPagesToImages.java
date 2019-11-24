@@ -11,7 +11,6 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
-@SuppressWarnings("unchecked")
 public class ConvertPDFPagesToImages {
 	
     public static BufferedImage convertPDFPagesToImages(String dirPDF, String dirImg) {

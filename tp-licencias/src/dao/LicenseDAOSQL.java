@@ -27,6 +27,7 @@ public class LicenseDAOSQL extends GenericDAOSQL<License, Integer> implements Li
 		Session session = createSession(factory);
 		//creamos consulta HQL
 		try {
+			@SuppressWarnings("unchecked")
 			List<License> licenses = (List<License>) session.createQuery("from License").getResultList(); 
 			return licenses;
 		}

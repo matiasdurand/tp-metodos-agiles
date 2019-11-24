@@ -64,8 +64,9 @@ public class LicenseController {
 		License license = new License.Builder()
 				.setLicenseType(licenseDTO.getLicenseType())
 				.setObservation(licenseDTO.getObservation())
-				.setExpiryDate(licenseDTO.getExpiricyDate())
-				.build();	
+				.setExpiryDate(licenseDTO.getExpiryDate())
+				.build();
+		
 		if(cameFrom) {
 			TitularController.getInstance().registerTitular(titularDTO, license);
 		}
@@ -73,6 +74,7 @@ public class LicenseController {
 			Integer id = titularDTO.getId();
 			TitularController.getInstance().addTitularsLicense(id, license);
 		}
+		
 		saveLicense(license);
 	}
 	

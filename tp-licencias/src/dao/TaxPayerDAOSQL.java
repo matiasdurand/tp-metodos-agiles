@@ -67,6 +67,7 @@ public class TaxPayerDAOSQL implements TaxPayerDAO {
 		Session session = createSession(factory);
 		//creamos consulta HQL
 		try {
+			@SuppressWarnings("unchecked")
 			List<TaxPayerDTO> taxPayers = (List<TaxPayerDTO>) session.createQuery("from TaxPayerDTO").getResultList();
 			return taxPayers;
 		}

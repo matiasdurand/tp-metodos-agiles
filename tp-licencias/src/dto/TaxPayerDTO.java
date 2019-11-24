@@ -1,11 +1,5 @@
 package dto;
 
-/**
- * Clase tipo POJO utilizada para transferencia de datos de contribuyente con la interfaz. 
- * Patron data transfer object. 
- * @author Juan Suppicich & Matias Durand
- *
- */
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -17,9 +11,16 @@ import javax.persistence.Table;
 
 import domain.TypeId;
 
+/**
+ * Clase tipo POJO utilizada para transferencia de datos de contribuyente con la interfaz. 
+ * Patron data transfer object. 
+ * @author Juan Suppicich & Matias Durand
+ *
+ */
 @Entity
 @Table(name="contribuyente")
 public class TaxPayerDTO {
+	
 	@Id
 	@Column (name="nro_documento")
 	private Long personalId;

@@ -95,7 +95,7 @@ public class GeneratePDF{
 			.add(new ListItem(titularDTO.getAdress().toUpperCase()).setMarginLeft(140).setMarginTop(4))
 			.add(new ListItem(formatoFecha.format(titularDTO.getBirthdate()).toString().toUpperCase()).setMarginLeft(140).setMarginTop(18))
 			.add(new ListItem(formatoFecha.format(licenseDTO.getEmisionDate()).toString().toUpperCase()).setMarginLeft(140).setMarginTop(7))
-			.add(new ListItem(formatoFecha.format(licenseDTO.getExpiricyDate()).toString().toUpperCase()).setMarginLeft(340).setMarginTop(-23));
+			.add(new ListItem(formatoFecha.format(licenseDTO.getExpiryDate()).toString().toUpperCase()).setMarginLeft(340).setMarginTop(-23));
 		doc.setFontSize(9);
 		String donante = "NO";
 		if(titularDTO.getOrganDonor() == true)

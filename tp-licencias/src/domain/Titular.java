@@ -28,6 +28,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="titular")
 public class Titular {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_titular")

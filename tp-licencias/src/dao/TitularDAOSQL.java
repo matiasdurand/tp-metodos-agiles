@@ -50,6 +50,7 @@ public class TitularDAOSQL extends GenericDAOSQL<Titular,Integer> implements Tit
 		Session session = createSession(factory);
 		//creamos consulta HQL
 		try {
+			@SuppressWarnings("unchecked")
 			List<Titular> titulares = (List<Titular>) session.createQuery("from Titular").getResultList(); 
 			return titulares;
 		}
