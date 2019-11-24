@@ -52,16 +52,12 @@ public class Titular {
 	@Column (name="fecha_nacimiento")
 	private Date birthdate;
 	
-	/*@Enumerated(EnumType.STRING)
 	@Column (name="grupo_sanguineo")
-	private BloodType bloodType;*/
+	private String bloodType;
 	
 	@Column (name="es_donante")
 	private Boolean organDonor;
 	
-	/*@ManyToOne
-	@JoinColumn(name = "id_usuario")
-	private User usuarioCreador;*/
 	
 	@OneToMany
 	private List<License> licenses = new ArrayList<License>(); 
@@ -109,12 +105,12 @@ public class Titular {
 	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
-	/*public String getBloodType() {
+	public String getBloodType() {
 		return bloodType;
 	}
 	public void setBloodType(String bloodType) {
 		this.bloodType = bloodType;
-	}*/
+	}
 	public Boolean getOrganDonor() {
 		return organDonor;
 	}

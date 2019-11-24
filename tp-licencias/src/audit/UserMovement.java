@@ -2,6 +2,17 @@ package audit;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import builders.Build;
 import domain.User;
 
@@ -10,6 +21,9 @@ import domain.User;
  * @author LENOVO
  *
  */
+
+@Entity
+@Table(name="UserMovement")
 public class UserMovement {
 
 	private enum Action {
@@ -17,10 +31,24 @@ public class UserMovement {
 		MODIFICACION
 	}
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_UserMovement")
 	private int id; 
+	
+	@Enumerated(EnumType.STRING)
+	@Column (name="Action")
 	private Action action;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_user")
 	private User user;
+	
+	@Column (name="LocalDate")
 	private LocalDate dateTime;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_userModified")
 	private User userModified;
 	
 	

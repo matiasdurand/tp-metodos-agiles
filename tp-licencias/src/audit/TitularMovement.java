@@ -2,6 +2,17 @@ package audit;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import builders.Build;
 import domain.Titular;
 import domain.User;
@@ -11,6 +22,9 @@ import domain.User;
  * @author LENOVO
  *
  */
+
+@Entity
+@Table(name="TitularMovement")
 public class TitularMovement {
 	
 	private enum Action {
@@ -18,10 +32,24 @@ public class TitularMovement {
 		MODIFICACION
 	}
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_TitularMovement")
 	private int id;
+	
+	@Enumerated(EnumType.STRING)
+	@Column (name="Action")
 	private Action action;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_usuario")
 	private User user; 
+	
+	@Column (name="LocalDate")
 	private LocalDate dateTime; //GUARDA FECHA Y HORA(hora,min,seg)
+	
+	@ManyToOne
+	@JoinColumn(name = "id_titular")
 	private Titular titular;
 	
 	

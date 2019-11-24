@@ -31,6 +31,9 @@
  		<mapping class="domain.Titular"/>
  		<mapping class="domain.BloodType"/>
  		<mapping class="domain.TypeId"/>
+ 		<mapping class="audit.LicenseMovement"/>
+ 		<mapping class="audit.TitularMovement"/>
+ 		<mapping class="audit.UserMovement"/>
  		
     </session-factory>
 

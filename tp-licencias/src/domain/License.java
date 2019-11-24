@@ -36,10 +36,6 @@ public class License {
 	@JoinColumn(name = "id_titular")
 	private Titular titular;
 	
-	/*@ManyToOne
-	@JoinColumn(name = "id_usuario")
-	private User usuariocreador;*/
-	
 	@Enumerated(EnumType.STRING)
 	@Column (name="clase")
 	private LicenseType licenseType;
@@ -52,23 +48,11 @@ public class License {
 	
 	@Column (name="fecha_vencimiento")
 	private Date expiryDate;
-	
-	/*@Transient
-	private Integer validity;*/
 
 	@Column (name="observaciones")
 	private String observation;
 	
-	/*@Column (name="motivo_emision")
-	private String emmisionMotive;*/
 	
-	
-	/*public User getUsuario() {
-		return usuariocreador;
-	}
-	public void setUsuario(User usuario) {
-		this.usuariocreador=usuario;
-	}*/
 	public Integer getId() {
 		return id;
 	}
