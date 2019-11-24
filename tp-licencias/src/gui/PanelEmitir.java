@@ -7,8 +7,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -21,21 +23,24 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import res.colors.Colors;
-import java.awt.Insets;
 
 import controllers.TitularController;
 import domain.LicenseType;
 import domain.TypeId;
 import controllers.TaxPayerController;
 import controllers.LicenseController;
+import controllers.PanelController;
 import dto.TitularDTO;
-import res.colors.Colors;
 import dto.TaxPayerDTO;
 import dto.LicenseDTO;
+import java.awt.Color;
 
 public class PanelEmitir extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	
+	//Direccion donde se guarda el pdf de la licencia emitida
+	private static  String _DESTINO = System.getProperty("user.home") + "\\Desktop\\" + "licencia.pdf";
 
 	private JComboBox<String> cbTipoSangre;
 	private JComboBox<TypeId> cbTipoDoc;
@@ -55,11 +60,13 @@ public class PanelEmitir extends JPanel {
 	private JTextArea taObservaciones;
 	private JPanel panelEmitirLicencia;
 	
-	private TitularDTO titularDTO;
-	private TaxPayerDTO contribuyenteDTO;
-	private LicenseController controladorLicencia;
-	private TitularController controladorTitular;
-	private TaxPayerController controladorContribuyente;
+	private SimpleDateFormat formatoFecha = new SimpleDateFormat("dd MMMM yyyy");
+	
+	private TitularDTO titularDTO = new TitularDTO();
+	private TaxPayerDTO contribuyenteDTO = new TaxPayerDTO();
+	private LicenseController controladorLicencia = LicenseController.getInstance();
+	private TitularController controladorTitular = TitularController.getInstance();
+	private TaxPayerController controladorContribuyente = TaxPayerController.getInstance();
 		
 	public PanelEmitir() {
 		super();
@@ -84,7 +91,6 @@ public class PanelEmitir extends JPanel {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(validarDoc(tfNroDoc.getText())) {
-					btnAceptar.setEnabled(true);
 					titularDTO = controladorTitular.titularLocator((TypeId) cbTipoDoc.getSelectedItem(), Long.valueOf(tfNroDoc.getText()));
 					if(titularDTO == null) {
 						//Como el titular no existe, consultamos si desea darlo de alta
@@ -93,13 +99,14 @@ public class PanelEmitir extends JPanel {
 						{
 							contribuyenteDTO = controladorContribuyente.taxPayerLocator((TypeId) cbTipoDoc.getSelectedItem(), Long.valueOf(tfNroDoc.getText()));
 							if(contribuyenteDTO == null){
-								// TODO JOptionPane.showMessageDialog(this, "El documento ingresado no se corresponde a ningún contribuyente registrado", "Contribuyente no encontrado", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(null, "El documento ingresado no se corresponde a ningún contribuyente registrado");
 							}
 							else{
 								altaTitular=true;
 								bloquearComponentes(altaTitular);
 								cargarDatosContribuyente(contribuyenteDTO);
-								panelEmitirLicencia.setVisible(true);
+								btnAceptar.setEnabled(true);
+								//panelEmitirLicencia.setVisible(true);
 							}
 						}
 					}
@@ -107,7 +114,8 @@ public class PanelEmitir extends JPanel {
 						altaTitular=false;
 						bloquearComponentes(altaTitular);
 						cargarDatosTitular(titularDTO);
-						panelEmitirLicencia.setVisible(true);
+						btnAceptar.setEnabled(true);
+						//panelEmitirLicencia.setVisible(true);
 					}
 				}
 				else {
@@ -126,6 +134,7 @@ public class PanelEmitir extends JPanel {
 		this.add(lblTipoDoc);
 		
 		cbTipoDoc = new JComboBox<>();
+		cbTipoDoc.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		cbTipoDoc.setFocusable(false);
 		controladorTitular.loadTypeIdComboBox(cbTipoDoc);
 		cbTipoDoc.setBounds(132, 109, 80, 40);
@@ -143,6 +152,7 @@ public class PanelEmitir extends JPanel {
 		
 		tfNroDoc = new JTextField();
 		tfNroDoc.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		tfNroDoc.setDisabledTextColor(Color.GRAY);
 		tfNroDoc.setBounds(274, 109, 177, 40);
 		
 		//Configuramos que solo permita ingresar digitos
@@ -172,6 +182,7 @@ public class PanelEmitir extends JPanel {
 		this.add(lblApellido);
 		
 		tfNombre = new JTextField();
+		tfNombre.setDisabledTextColor(Color.GRAY);
 		tfNombre.setEnabled(false);
 		tfNombre.setEditable(false);
 		tfNombre.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -180,6 +191,7 @@ public class PanelEmitir extends JPanel {
 		this.add(tfNombre);
 		
 		tfApellido = new JTextField();
+		tfApellido.setDisabledTextColor(Color.GRAY);
 		tfApellido.setEnabled(false);
 		tfApellido.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		tfApellido.setEditable(false);
@@ -192,11 +204,12 @@ public class PanelEmitir extends JPanel {
 		lblFechaNac.setBounds(15, 215, 119, 40);
 		this.add(lblFechaNac);
 		tfFechaNac = new JTextField();
+		tfFechaNac.setDisabledTextColor(Color.GRAY);
 		tfFechaNac.setEnabled(false);
 		tfFechaNac.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		tfFechaNac.setEditable(false);
 		tfFechaNac.setColumns(10);
-		tfFechaNac.setBounds(132, 215, 80, 40);
+		tfFechaNac.setBounds(132, 215, 319, 40);
 		this.add(tfFechaNac);
 		
 		JLabel lblDireccion = new JLabel("Direcci\u00F3n:");
@@ -205,6 +218,7 @@ public class PanelEmitir extends JPanel {
 		this.add(lblDireccion);
 		
 		tfDireccion = new JTextField();
+		tfDireccion.setDisabledTextColor(Color.GRAY);
 		tfDireccion.setEnabled(false);
 		tfDireccion.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		tfDireccion.setEditable(false);
@@ -221,7 +235,11 @@ public class PanelEmitir extends JPanel {
 		btnAceptar.setFocusable(false);
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				cargarTitularDTO(contribuyenteDTO);
+				initializeEmitirLicencia();
 				panelEmitirLicencia.setVisible(true);
+				cbTipoSangre.setEnabled(false);
+				ckbDonante.setEnabled(false);
 				btnAceptar.setVisible(false);
 				btnCancelar.setVisible(false);
 			}
@@ -243,6 +261,7 @@ public class PanelEmitir extends JPanel {
 		this.add(btnCancelar);
 		
 		cbTipoSangre = new JComboBox<>();
+		cbTipoSangre.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		cbTipoSangre.setFocusable(false);
 		controladorTitular.loadBloodTypeComboBox(cbTipoSangre);
 		cbTipoSangre.setEnabled(false);
@@ -257,7 +276,21 @@ public class PanelEmitir extends JPanel {
 		ckbDonante.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		ckbDonante.setBounds(703, 215, 129, 40);
 		this.add(ckbDonante);
-		
+	}
+	
+	private void cargarTitularDTO(TaxPayerDTO dto) {
+		titularDTO = new TitularDTO();
+		titularDTO.setPersonalId(dto.getPersonalId().toString());
+		titularDTO.setTypeId(dto.getTypeId());
+		titularDTO.setAdress(dto.getAdress());
+		titularDTO.setBirthdate(dto.getBirthdate());
+		titularDTO.setBloodType(cbTipoSangre.getSelectedItem().toString());
+		titularDTO.setName(dto.getName());
+		titularDTO.setOrganDonor(ckbDonante.isSelected());
+		titularDTO.setSurname(dto.getSurname());
+	}
+	
+	private void initializeEmitirLicencia(){
 		panelEmitirLicencia = new JPanel();
 		panelEmitirLicencia.setVisible(false);
 		panelEmitirLicencia.setBounds(0, 321, 844, 284);
@@ -271,11 +304,19 @@ public class PanelEmitir extends JPanel {
 		lblObservaciones.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		
 		taObservaciones = new JTextArea();
-		taObservaciones.setMargin(new Insets(5, 5, 5, 5));
 		taObservaciones.setBounds(15, 53, 433, 146);
+		taObservaciones.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), 
+	            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		panelEmitirLicencia.add(taObservaciones);
 		taObservaciones.setLineWrap(true);
 		taObservaciones.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		
+		tfCosto = new JTextField();
+		tfCosto.setBounds(572, 159, 260, 40);
+		panelEmitirLicencia.add(tfCosto);
+		tfCosto.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		tfCosto.setEditable(false);
+		tfCosto.setColumns(10);
 		
 		JLabel lblClase = new JLabel("Clase:");
 		lblClase.setBounds(460, 53, 119, 40);
@@ -284,18 +325,16 @@ public class PanelEmitir extends JPanel {
 		
 		cbClase = new JComboBox<>();
 		Date expiryDate = controladorLicencia.calculateExpiryDate(titularDTO);
-		tfVigencia.setText(expiryDate.toString());
 		cbClase.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
-				StringBuffer sb = new StringBuffer("$ ");
+				StringBuffer sb = new StringBuffer("$");
 				sb.append(String.valueOf(controladorLicencia.calculateLicenseCost((LicenseType)cbClase.getSelectedItem(), expiryDate)));
-				sb.append(".");
 				tfCosto.setText(sb.toString());
 			}
 		});
-
 		controladorLicencia.loadLicenseTypeComboBox(cbClase, titularDTO, altaTitular);
 		cbClase.setBounds(572, 53, 80, 40);
+		cbClase.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		panelEmitirLicencia.add(cbClase);
 		
 		JLabel lblVigencia = new JLabel("Vigencia:");
@@ -306,6 +345,7 @@ public class PanelEmitir extends JPanel {
 		tfVigencia = new JTextField();
 		tfVigencia.setBounds(572, 105, 260, 40);
 		panelEmitirLicencia.add(tfVigencia);
+		tfVigencia.setText(formatoFecha.format(expiryDate));
 		tfVigencia.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		tfVigencia.setEditable(false);
 		tfVigencia.setColumns(10);
@@ -315,29 +355,26 @@ public class PanelEmitir extends JPanel {
 		panelEmitirLicencia.add(lblCosto);
 		lblCosto.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		
-		tfCosto = new JTextField();
-		tfCosto.setBounds(572, 159, 260, 40);
-		panelEmitirLicencia.add(tfCosto);
-		tfCosto.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		tfCosto.setEditable(false);
-		tfCosto.setColumns(10);
-		
 		JButton btnAceptarEmitir = new JButton("ACEPTAR");
 		btnAceptarEmitir.setFocusable(false);
 		btnAceptarEmitir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				if(altaTitular) {
+					completarTitularDTO(contribuyenteDTO);
+				}
 				LicenseDTO licenciaDTO = new LicenseDTO();
 				licenciaDTO.setLicenseType((LicenseType) cbClase.getSelectedItem());
 				licenciaDTO.setObservation(taObservaciones.getText());
+				licenciaDTO.setEmisionDate(new Date());
 				licenciaDTO.setExpiricyDate(expiryDate);
-				controladorLicencia.registerLicense(titularDTO, licenciaDTO, altaTitular);
-				controladorLicencia.registerLicense(titularDTO, licenciaDTO, altaTitular);
-				
+				controladorLicencia.registerLicense(titularDTO, licenciaDTO, altaTitular);				
 				if(JOptionPane.showConfirmDialog(null, "Licencia emitida exitosamente, ¿Desea imprimirla ahora?", "Éxito", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
 					//TODO pasar a imprimir licencia
-					 //Pasar dto y ruta a generarPdf
+					try {
+						PanelController.getImprimir(titularDTO, licenciaDTO, _DESTINO);
+					}catch(Exception ex) {}
 				}
+				MenuPrincipal.menuPrincipal.cancelar(MenuPrincipal.PANEL_EMITIR);
 			}
 		});
 		btnAceptarEmitir.setBounds(463, 231, 175, 40);
@@ -374,7 +411,7 @@ public class PanelEmitir extends JPanel {
 		tfNombre.setText(dto.getName());
 		tfApellido.setText(dto.getSurname());
 		tfDireccion.setText(dto.getAdress());
-		tfFechaNac.setText(dto.getBirthdate().toString());
+		tfFechaNac.setText(formatoFecha.format(dto.getBirthdate()));
 		cbTipoSangre.setSelectedItem(dto.getBloodType());
 		ckbDonante.setSelected(dto.getOrganDonor());
 	}
@@ -383,11 +420,12 @@ public class PanelEmitir extends JPanel {
 		tfNombre.setText(dto.getName());
 		tfApellido.setText(dto.getSurname());
 		tfDireccion.setText(dto.getAdress());
-		tfFechaNac.setText(dto.getBirthdate().toString());
+		tfFechaNac.setText(formatoFecha.format(dto.getBirthdate()));
 	}
 	
 	private void bloquearComponentes(Boolean altaTitular) {
 		cbTipoDoc.setEnabled(false);
+		tfNroDoc.setEnabled(false);
 		tfNroDoc.setEditable(false);
 		btnBuscar.setEnabled(false);
 		btnAceptar.setEnabled(true);
@@ -409,7 +447,7 @@ public class PanelEmitir extends JPanel {
 		aux.setOrganDonor(ckbDonante.isSelected());
 		return aux;
 	}
-	
+
 	public void reset() {
 		this.removeAll();
 		this.initialize();

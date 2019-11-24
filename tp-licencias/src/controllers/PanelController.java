@@ -4,6 +4,10 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.itextpdf.io.IOException;
+
+import dto.LicenseDTO;
+import dto.TitularDTO;
 import gui.ImprimirLicencia;
 import gui.Login;
 import gui.PanelEmitir;
@@ -27,9 +31,9 @@ public class PanelController {
 		
 	}
 	
-	public static JFrame getImprimir() {
+	public static JFrame getImprimir(TitularDTO titularDTO, LicenseDTO licenseDTO, String destino) throws IOException, java.io.IOException {
 		if(imprimir == null)
-			imprimir = new ImprimirLicencia();
+			imprimir = new ImprimirLicencia(titularDTO,licenseDTO,destino);
 		return imprimir;
 	}
 
