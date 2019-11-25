@@ -16,7 +16,7 @@ import dto.TaxPayerDTO;
 public class TaxPayerController {
 	
 	private static TaxPayerController _INSTANCE = new TaxPayerController();
-	private TaxPayerDAO taxPayerDAO = new TaxPayerDAOSQL(); 
+	private TaxPayerDAO taxPayerDAO = new TaxPayerDAOSQL(TaxPayerDTO.class); 
 	
 	private TaxPayerController () { 
 	}

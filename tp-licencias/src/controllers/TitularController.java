@@ -74,16 +74,12 @@ public class TitularController {
 				.setSurname(titularDTO.getSurname())
 				.setAdress(titularDTO.getAdress())
 				.setBirthdate(titularDTO.getBirthdate())
-				//.setBloodType(titularDTO.getBloodType())
+				.setBloodType(titularDTO.getBloodType())
 				.setOrganDonor(titularDTO.getOrganDonor())
 				.addLicense(license)
 				.build();
-				
-		Runnable r = () -> {
-			saveTitular(titular);
-		};
-		Thread thread = new Thread(r);
-		thread.start();
+		
+		saveTitular(titular);
 		
 	}
 	
@@ -98,8 +94,11 @@ public class TitularController {
 		
 		Titular titular = titularDAO.findByPersonalId(typeId, personalId);
 		
-		return createTitularDTO(titular);
-	
+		if (titular!=null) {
+			return createTitularDTO(titular);
+		}else {
+			return null;
+		}
 	}
 	
 	/**
@@ -118,7 +117,7 @@ public class TitularController {
 		titularDTO.setSurname(titular.getSurname());
 		titularDTO.setAdress(titular.getAdress());
 		titularDTO.setBirthdate(titular.getBirthdate());
-		//titularDTO.setBloodType(titular.getBloodType());
+		titularDTO.setBloodType(titular.getBloodType());
 		titularDTO.setOrganDonor(titular.getOrganDonor());
 
 		return titularDTO;

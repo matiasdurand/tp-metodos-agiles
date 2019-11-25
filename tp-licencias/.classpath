@@ -25,5 +25,19 @@
 	<classpathentry kind="lib" path="lib/jaxb-core-2.3.0.jar"/>
 	<classpathentry kind="lib" path="lib/jaxb-impl-2.3.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="lib" path="lib/pdfbox-app-2.0.17.jar"/>
+	<classpathentry kind="lib" path="lib/barcodes-7.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/font-asian-7.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/forms-7.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/hyph-7.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/io-7.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/iText-5.0.5.jar"/>
+	<classpathentry kind="lib" path="lib/kernel-7.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/layout-7.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/pdfa-7.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/pdftest-7.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/sign-7.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.25.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

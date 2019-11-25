@@ -14,9 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-//import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * Clase de dominio Licencia. Corresponde a una entidad de base de datos.
@@ -87,12 +85,6 @@ public class License {
 	public void setObservation(String observation) {
 		this.observation = observation;
 	}
-	/*public String getEmmisionMotive() {
-		return emmisionMotive;
-	}
-	public void setEmmisionMotive(String emmisionMotive) {
-		this.emmisionMotive = emmisionMotive;
-	}*/
 	
 	/**
 	 * Clase estatica constructora de licencia.
@@ -103,26 +95,21 @@ public class License {
 	public static class Builder implements Build<License>{
 		
 		private LicenseType licenseType;
-		private Boolean expirated;
 		private Date emisionDate;
 		private Date expiryDate;
 		private String observation;
 		
 		public Builder() {
-			this.expirated = false;
 			this.emisionDate = new Date();
 		}
-		
 		public Builder setLicenseType(LicenseType licenseType) {
 			this.licenseType = licenseType;
 			return this;
 		}
-		
 		public Builder setExpiryDate(Date expiryDate) {
 			this.expiryDate = expiryDate;
 			return this;
 		}
-		
 		public Builder setObservation(String observation) {
 			this.observation = observation;
 			return this;

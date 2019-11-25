@@ -15,14 +15,21 @@ public class LicenseDTO {
 	private Integer id;
 	private LicenseType licenseType;
 	private String observation;
-	private Date expiricyDate;
+	private Date expiryDate;
+	private Date emisionDate;
 	
 	
-	public Date getExpiricyDate() {
-		return expiricyDate;
+	public Date getEmisionDate() {
+		return emisionDate;
 	}
-	public void setExpiricyDate(Date expiricyDate) {
-		this.expiricyDate = expiricyDate;
+	public void setEmisionDate(Date emisionDate) {
+		this.emisionDate = emisionDate;
+	}
+	public Date getExpiryDate() {
+		return expiryDate;
+	}
+	public void setExpiryDate(Date expiryDate) {
+		this.expiryDate = expiryDate;
 	}
 	public Integer getId() {
 		return id;
