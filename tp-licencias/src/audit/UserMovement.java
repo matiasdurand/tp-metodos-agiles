@@ -26,7 +26,7 @@ import domain.User;
 @Table(name="UserMovement")
 public class UserMovement {
 
-	private enum Action {
+	public enum Action {
 		ALTA,
 		MODIFICACION
 	}
