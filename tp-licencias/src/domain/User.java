@@ -24,6 +24,8 @@ public class User {
 	@Column (name="password")
 	private String password;
 	
+	private Boolean superUser;
+	
 	
 	public Integer getId() {
 		return id;
@@ -43,12 +45,19 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public Boolean getsuperUser() {
+		return superUser;
+	}
+	public void setSuperUser(Boolean superUser) {
+		this.superUser = superUser;
+	}
 	
 	public static class Builder implements Build<User>{
 
 		private String username;
 		private String password;
-
+		private Boolean superUser;
+		
 		
 		public Builder setUsername(String username) {
 			this.username = username;
@@ -59,12 +68,18 @@ public class User {
 			this.password = password;
 			return this;
 		}
+		
+		public Builder setSuperUser(Boolean superUser) {
+			this.superUser = superUser;
+			return this;
+		}
 
 		@Override
 		public User build() {
 			User user = new User();
 			user.setUsername(username);
 			user.setPassword(password);
+			user.setSuperUser(superUser);
 			return user;
 		}
 		

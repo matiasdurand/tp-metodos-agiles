@@ -5,6 +5,7 @@ public class UserDTO {
 	private Integer idUser;
 	private String username;
 	private String password;
+	private Boolean superUser;
 	
 
 	public Integer getIdUser() {
@@ -24,6 +25,12 @@ public class UserDTO {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public Boolean getSuperUser() {
+		return superUser;
+	}
+	public void setSuperUser(Boolean superUser) {
+		this.superUser = superUser;
 	}
 	
 }
