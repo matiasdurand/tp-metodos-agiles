@@ -53,20 +53,45 @@ public class UserController {
 	}
 	
 	/**
-	 * Este metodo registra un nuevo usuario y el movimiento asociado al alta del mismo.
+	 * Este metodo registra un nuevo usuario y llama al registo del movimiento
+	 * asociado al alta del nuevo usuario.
 	 * Perdura la informacion en la base de datos.
 	 * @param userDTO datos del usuario a dar de alta, provenientes de GUI.
 	 * @param superUserDTO datos del super usuario que realiza el alta, proveniente de GUI. 
 	 */
 	public void registerUser(UserDTO userDTO, UserDTO superUserDTO) {
+		
 		User newUser = new User.Builder().setUsername(userDTO.getUsername())
-									  .setPassword(userDTO.getPassword())
-									  .setSuperUser(userDTO.getSuperUser())
-									  .build();
+									  	 .setPassword(userDTO.getPassword())
+									     .setSuperUser(userDTO.getSuperUser())
+									     .build();
+		
+		userDAO.save(newUser);
 		
 		registerUserMovement(newUser, superUserDTO, UserMovement.Action.ALTA);
 		
-		userDAO.save(newUser);
+	}
+	
+	/**
+	 * Este metodo modifica los datos de un usuario existente y llama al registro
+	 * del movimiento asociado a la modificacion del usuario.
+	 * Perdura la informacion en la base de datos.
+	 * @param userDTO datos nuevos del usuario, provenientes de GUI.
+	 * @param superUserDTO datos del super usuario que realiza el alta, proveniente de GUI. 
+	 */
+	public void modifyUser(UserDTO userDTO, UserDTO superUserDTO) {
+		
+		User modifiedUser = new User.Builder().setUsername(userDTO.getUsername())
+			  	 						 	  .setPassword(userDTO.getPassword())
+			  	 						 	  .setSuperUser(userDTO.getSuperUser())
+			  	 						 	  .build();
+		
+		modifiedUser.setId(userDTO.getIdUser());
+		
+		userDAO.update(modifiedUser);
+
+		registerUserMovement(modifiedUser, superUserDTO, UserMovement.Action.MODIFICACION);
+		
 	}
 	
 	/**
@@ -98,9 +123,9 @@ public class UserController {
 	private void registerUserMovement(User user, UserDTO superUserDTO, UserMovement.Action action) {
 		
 		User superUser = new User.Builder().setUsername(superUserDTO.getUsername())
-									   .setPassword(superUserDTO.getPassword())
-									   .setSuperUser(superUserDTO.getSuperUser())
-									   .build();
+									       .setPassword(superUserDTO.getPassword())
+									       .setSuperUser(superUserDTO.getSuperUser())
+									       .build();
 		
 		superUser.setId(superUserDTO.getIdUser());
 		
@@ -112,5 +137,5 @@ public class UserController {
 		userMovementDAO.save(userMovement);
 		
 	}
-
+	
 }
