@@ -6,6 +6,7 @@ import domain.User;
 import domain.Titular;
 import domain.TypeId;
 import dto.TaxPayerDTO;
+import dto.UserDTO;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import dao.LicenseDAO;
@@ -22,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import controllers.PanelController;
+import controllers.UserController;
 import res.colors.Colors;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -60,14 +62,13 @@ public class MenuPrincipal extends JFrame{
 	private JPanel panelMenuUsuario;
 	private JPanel panel; //En este puntero se asigna el JPanel que se debe visualizar en pantalla
 	private JLabel lblNombreUsuario;
-	private String user=null;
-	
+	protected UserDTO usuarioDTO=null;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//TODO
+					/*//TODO
 					LicenseDAO licenseDAO = new LicenseDAOSQL(License.class);
 					TaxPayerDAOSQL taxpayerDAO = new TaxPayerDAOSQL(TaxPayerDTO.class);
 					UserDAO userDAO = new UserDAOSQL(User.class);
@@ -83,7 +84,7 @@ public class MenuPrincipal extends JFrame{
 					Juan.setTypeId(TypeId.DNI);
 					
 					taxpayerDAO.save(Juan);
-					//
+					//*/
 					MenuPrincipal window = new MenuPrincipal();
 					window.frmPrincipal.setVisible(true);
 				} catch (Exception e) {
@@ -120,7 +121,7 @@ public class MenuPrincipal extends JFrame{
 		armarPanelMenuLicencia();
 		
 		//Inicializamos la vista en panelPrincipal
-		if(user==null)
+		if(usuarioDTO==null)
 			mostrarPanel(PANEL_LOGIN);
 		else
 			mostrarPanel(PANEL_INICIAL);
@@ -167,7 +168,7 @@ public class MenuPrincipal extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				btnCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 17));
 				if(JOptionPane.showConfirmDialog(null, "¿Está seguro que desea cerrar sesión?", "Cerrar sesión", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-					user=null;
+					usuarioDTO=null;
 					lblNombreUsuario.setText("nombreUsuario");
 					barraLateral.repaint();
 					mostrarPanel(PANEL_LOGIN);
@@ -335,9 +336,9 @@ public class MenuPrincipal extends JFrame{
 		}
 	}
 	
-	protected void ingresar(String user) {
-		this.user=user;
-		lblNombreUsuario.setText(user);
+	protected void ingresar(UserDTO dto) {
+		usuarioDTO=dto;
+		lblNombreUsuario.setText(usuarioDTO.getUsername());
 		barraLateral.repaint();
 		mostrarPanel(PANEL_INICIAL);
 	}
