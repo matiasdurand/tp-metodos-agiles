@@ -1,10 +1,14 @@
 package gui;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 
 import res.colors.Colors;
+
+import dto.UserDTO;
+import controllers.UserController;
 
 import java.awt.Font;
 
@@ -26,6 +30,8 @@ public class Login extends JDialog{
 	private JTextField tfUser;
 	private JTextField tfPassword;
 	private JButton btnIngresar;
+	private UserDTO usuarioDTO = null;
+	private UserController controladorUsuario = UserController.getInstance();
 
 	
 	public Login() {
@@ -95,9 +101,14 @@ public class Login extends JDialog{
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!tfUser.getText().isEmpty() && !tfPassword.getText().isEmpty()) {
-					//TODO validar usuario/contraseña
-					MenuPrincipal.menuPrincipal.ingresar(tfUser.getText());
-					dispose();
+					usuarioDTO = controladorUsuario.userLocator(tfUser.getText(), tfPassword.getText());
+					if(usuarioDTO!=null) {
+						MenuPrincipal.menuPrincipal.ingresar(usuarioDTO);
+						dispose();
+					}
+					else
+						JOptionPane.showMessageDialog(null, "El nombre de usuario y la contraseña ingresada no coinciden con nuestros registros. Por favor, revisa e inténtalo de nuevo.");
+					
 				}
 			}
 		});

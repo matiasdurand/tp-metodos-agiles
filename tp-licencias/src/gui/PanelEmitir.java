@@ -357,7 +357,7 @@ public class PanelEmitir extends JPanel {
 				licenciaDTO.setObservation(taObservaciones.getText());
 				licenciaDTO.setEmisionDate(new Date());
 				licenciaDTO.setExpiryDate(expiryDate);
-				controladorLicencia.registerLicense(titularDTO, licenciaDTO, altaTitular);				
+				controladorLicencia.registerLicense(titularDTO, licenciaDTO, MenuPrincipal.menuPrincipal.usuarioDTO, altaTitular);				
 				if(JOptionPane.showConfirmDialog(null, "Licencia emitida exitosamente, ¿Desea imprimirla ahora?", "Éxito", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
 					//TODO pasar a imprimir licencia
 					try {
