@@ -41,7 +41,6 @@ public class PanelUsuario extends JPanel {
 	private JTextField tfNroDoc;
 	private JTextField tfNombre;
 	private JTextField tfApellido;
-	private JCheckBox ckbSuperUser;
 	private JButton btnBuscar;
 	private JButton btnAceptar;
 	private JButton btnCancelar;
@@ -121,7 +120,6 @@ public class PanelUsuario extends JPanel {
 		tfNroDoc.setEnabled(activar);
 		tfPassword.setEnabled(activar);
 		tfRepeatPassword.setEnabled(activar);
-		ckbSuperUser.setEnabled(activar);
 	}
 
 	private void configurarInterfazAlta() {
@@ -159,7 +157,6 @@ public class PanelUsuario extends JPanel {
 		nuevoUsuarioDTO.setSurname(tfApellido);
 		nuevoUsuarioDTO.setTypeId(cmbTipoDoc.getSelectedItem());
 		nuevoUsuarioDTO.setPersonalId(tfNroDoc.getText());
-		nuevoUsuarioDTO.setSuperUser(ckbSuperUser.isSelected());
 		nuevoUsuarioDTO.setUsername(tfUser.getText());
 		nuevoUsuarioDTO.setPassword(tfPassword);
 	}
@@ -177,30 +174,30 @@ public class PanelUsuario extends JPanel {
 		
 		JLabel lblDocumento = new JLabel("Ingrese el documento:");
 		lblDocumento.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblDocumento.setBounds(12, 212, 436, 40);
+		lblDocumento.setBounds(12, 212, 210, 40);
 		add(lblDocumento);
 		
 		JLabel lblTipoDoc = new JLabel("Tipo:");
 		lblTipoDoc.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblTipoDoc.setBounds(12, 265, 53, 40);
+		lblTipoDoc.setBounds(234, 212, 53, 40);
 		add(lblTipoDoc);
 		
 		cmbTipoDoc = new JComboBox<TypeId>();
 		cmbTipoDoc.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		cmbTipoDoc.setFocusable(false);
-		cmbTipoDoc.setBounds(129, 265, 80, 40);
+		cmbTipoDoc.setBounds(299, 213, 149, 40);
 		add(cmbTipoDoc);
 		
-		JLabel lblNroDoc = new JLabel("Nro:");
+		JLabel lblNroDoc = new JLabel("N\u00FAmero:");
 		lblNroDoc.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNroDoc.setBounds(221, 265, 74, 40);
+		lblNroDoc.setBounds(460, 212, 96, 40);
 		add(lblNroDoc);
 		
 		tfNroDoc = new JTextField();
 		tfNroDoc.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		tfNroDoc.setDisabledTextColor(Color.GRAY);
 		tfNroDoc.setColumns(10);
-		tfNroDoc.setBounds(271, 265, 177, 40);
+		tfNroDoc.setBounds(568, 212, 261, 40);
 		add(tfNroDoc);
 		
 		btnBuscar = new JButton("BUSCAR");
@@ -212,26 +209,26 @@ public class PanelUsuario extends JPanel {
 		
 		JLabel lblNombre = new JLabel("Nombre/s:");
 		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNombre.setBounds(12, 318, 119, 40);
+		lblNombre.setBounds(12, 264, 119, 40);
 		add(lblNombre);
 		
 		tfNombre = new JTextField();
 		tfNombre.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		tfNombre.setDisabledTextColor(Color.GRAY);
 		tfNombre.setColumns(10);
-		tfNombre.setBounds(129, 319, 319, 40);
+		tfNombre.setBounds(129, 265, 319, 40);
 		add(tfNombre);
 		
 		JLabel lblApellido = new JLabel("Apellido/s:");
 		lblApellido.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblApellido.setBounds(460, 318, 119, 40);
+		lblApellido.setBounds(460, 264, 119, 40);
 		add(lblApellido);
 		
 		tfApellido = new JTextField();
 		tfApellido.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		tfApellido.setDisabledTextColor(Color.GRAY);
 		tfApellido.setColumns(10);
-		tfApellido.setBounds(569, 319, 260, 40);
+		tfApellido.setBounds(569, 265, 260, 40);
 		add(tfApellido);
 		
 		JLabel lblNombreDeUsuario = new JLabel("Nombre de usuario:");
@@ -251,15 +248,6 @@ public class PanelUsuario extends JPanel {
 		tfUser.setColumns(10);
 		tfUser.setBounds(198, 107, 250, 40);
 		add(tfUser);
-		
-		ckbSuperUser = new JCheckBox(" Conceder permiso de administrador");
-		ckbSuperUser.setHorizontalAlignment(SwingConstants.LEFT);
-		ckbSuperUser.setSelected(false);
-		ckbSuperUser.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		ckbSuperUser.setFocusable(false);
-		ckbSuperUser.setBackground(new Color(232, 234, 246));
-		ckbSuperUser.setBounds(460, 265, 366, 40);
-		add(ckbSuperUser);
 		
 		JLabel lblContraseña = new JLabel("Contrase\u00F1a:");
 		lblContraseña.setFont(new Font("Tahoma", Font.PLAIN, 20));
