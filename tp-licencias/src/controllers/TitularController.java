@@ -79,6 +79,8 @@ public class TitularController {
 				.addLicense(license)
 				.build();
 		
+		license.setTitular(titular);
+		
 		saveTitular(titular);
 		
 	}
@@ -171,20 +173,15 @@ public class TitularController {
 	
 	/**
 	 * Este metodo agrega una licencia a la listas de licencias de un titular y delega la 
-	 * actualizacion de base de datos a la capa DAO, en un hilo secundario.
+	 * actualizacion de base de datos a la capa DAO.
 	 * @param id entero que corresponde a la primary key de un titular.
 	 * @param license licencia que sera añdida a la lista.
 	 */
 	public void addTitularsLicense(Integer id, License license) {
-		
-		Runnable r = () -> {
-			Titular titular = findTitular(id);
-			titular.getLicenses().add(license);
-			titularDAO.update(titular);
-		};
-		Thread thread = new Thread(r);
-		thread.start();
-		
+		Titular titular = findTitular(id);
+		titular.getLicenses().add(license);
+		license.setTitular(titular);
+		titularDAO.update(titular);
 	}
 	
 	/**

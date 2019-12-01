@@ -71,11 +71,9 @@ public class LicenseController {
 			TitularController.getInstance().registerTitular(titularDTO, license);
 		}
 		else { 
-			Integer id = titularDTO.getId();
-			TitularController.getInstance().addTitularsLicense(id, license);
+			TitularController.getInstance().addTitularsLicense(titularDTO.getId(), license);
 		}
 		
-		saveLicense(license);
 	}
 	
 	/**
@@ -99,6 +97,10 @@ public class LicenseController {
 		else {
 		
 			Titular titular = TitularController.getInstance().findTitular(titularDTO.getId());
+			
+			//PARA PROBAR LA RECUPERACION CORRECTA DE LAS LICENCIAS DEL TITULAR.
+			System.out.println(titular.getLicenses());
+			
 			List<Validator<LicenseType,Titular>> validators = new ArrayList<Validator<LicenseType,Titular>>();
 			validators.add(new ClassAValidator());
 			validators.add(new ClassBValidator());

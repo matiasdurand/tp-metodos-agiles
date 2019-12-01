@@ -33,7 +33,8 @@ public class ClassEValidator implements Validator<LicenseType,Titular> {
 		if(licensesTypeE.isEmpty()) {
 			
 			List<License> oneYearOldLicensesTypeB = info.getLicenses().stream()
-					.filter(l -> ChronoUnit.YEARS.between(l.getEmisionDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),actual)>1)
+					.filter(l -> ChronoUnit.YEARS.between(l.getEmisionDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),actual)>1
+							&& l.getLicenseType().equals(LicenseType.B))
 								.collect(Collectors.toList());
 			
 			if(!oneYearOldLicensesTypeB.isEmpty()) {

@@ -1,10 +1,11 @@
 package domain;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 import builders.Build;
 
-//import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -19,12 +20,11 @@ import javax.persistence.Table;
 /**
  * Clase de dominio Licencia. Corresponde a una entidad de base de datos.
  * @author Juan Suppicich & Matias Durand
- *
  */
 @Entity
 @Table(name="licencia")
 public class License {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_licencia")
@@ -51,18 +51,23 @@ public class License {
 	public Integer getId() {
 		return id;
 	}
+	
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
 	public Titular getTitular() {
 		return titular;
 	}
+	
 	public void setTitular(Titular titular) {
 		this.titular = titular;
 	}
+	
 	public LicenseType getLicenseType() {
 		return licenseType;
 	}
+	
 	public void setLicenseType(LicenseType licenseType) {
 		this.licenseType = licenseType;
 	}
@@ -70,20 +75,31 @@ public class License {
 	public Date getEmisionDate() {
 		return emisionDate;
 	}
+	
 	public void setEmisionDate(Date emisionDate) {
 		this.emisionDate = emisionDate;
 	}
+	
 	public Date getExpiryDate() {
 		return expiryDate;
 	}
+	
 	public void setExpiryDate(Date expiryDate) {
 		this.expiryDate = expiryDate;
 	}
+	
 	public String getObservation() {
 		return observation;
 	}
+	
 	public void setObservation(String observation) {
 		this.observation = observation;
+	}
+	
+	@Override
+	public String toString() {
+		return "License [id=" + id + ", titular=" + titular + ", licenseType=" + licenseType + ", emisionDate="
+				+ emisionDate + ", expiryDate=" + expiryDate + ", observation=" + observation + "]";
 	}
 	
 	/**
@@ -92,7 +108,7 @@ public class License {
 	 * Por defecto contruye una licencia con atributo expirated = false
 	 * y emisionDate = fecha actual.
 	 */
-	public static class Builder implements Build<License>{
+	public static class Builder implements Build<License> {
 		
 		private LicenseType licenseType;
 		private Date emisionDate;
@@ -101,15 +117,22 @@ public class License {
 		
 		public Builder() {
 			this.emisionDate = new Date();
+			
+			//PARA PROBAR LA CARGA DE LICENCIAS PROFESIONALES EN EL COMBOBOX
+			/*LocalDate ld = LocalDate.of(2017, 8, 2);
+			this.emisionDate = Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant());*/
 		}
+		
 		public Builder setLicenseType(LicenseType licenseType) {
 			this.licenseType = licenseType;
 			return this;
 		}
+		
 		public Builder setExpiryDate(Date expiryDate) {
 			this.expiryDate = expiryDate;
 			return this;
 		}
+		
 		public Builder setObservation(String observation) {
 			this.observation = observation;
 			return this;
@@ -124,7 +147,7 @@ public class License {
 			license.setObservation(this.observation);
 			return license;
 		}
+		
 	}
-	
 
 }

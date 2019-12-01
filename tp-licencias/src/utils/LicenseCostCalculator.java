@@ -14,7 +14,7 @@ public class LicenseCostCalculator {
 
 	private static LicenseCostCalculator _INSTANCE = new LicenseCostCalculator();
 	private Map<Combination, Double> licenseCosts = new HashMap<Combination, Double>();
-	
+	private Double administrativeCost = 8.0;
 	
 	private LicenseCostCalculator() {
 		loadLicenseCosts();
@@ -31,7 +31,7 @@ public class LicenseCostCalculator {
 	 * @return el costo de la licencia.
 	 */
 	public Double getLicenseCost(Combination combination) {
-		return licenseCosts.get(combination);
+		return licenseCosts.get(combination)+administrativeCost;
 	}
 	
 	/**

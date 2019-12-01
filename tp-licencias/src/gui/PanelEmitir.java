@@ -1,4 +1,4 @@
-package gui;
+ package gui;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -235,7 +235,9 @@ public class PanelEmitir extends JPanel {
 		btnAceptar.setFocusable(false);
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cargarTitularDTO(contribuyenteDTO);
+				if(altaTitular) {
+					completarTitularDTO(contribuyenteDTO);
+				}
 				initializeEmitirLicencia();
 				panelEmitirLicencia.setVisible(true);
 				cbTipoSangre.setEnabled(false);
@@ -278,18 +280,6 @@ public class PanelEmitir extends JPanel {
 		this.add(ckbDonante);
 	}
 	
-	private void cargarTitularDTO(TaxPayerDTO dto) {
-		titularDTO = new TitularDTO();
-		titularDTO.setPersonalId(dto.getPersonalId().toString());
-		titularDTO.setTypeId(dto.getTypeId());
-		titularDTO.setAdress(dto.getAdress());
-		titularDTO.setBirthdate(dto.getBirthdate());
-		titularDTO.setBloodType(cbTipoSangre.getSelectedItem().toString());
-		titularDTO.setName(dto.getName());
-		titularDTO.setOrganDonor(ckbDonante.isSelected());
-		titularDTO.setSurname(dto.getSurname());
-	}
-	
 	private void initializeEmitirLicencia(){
 		panelEmitirLicencia = new JPanel();
 		panelEmitirLicencia.setVisible(false);
@@ -306,7 +296,7 @@ public class PanelEmitir extends JPanel {
 		taObservaciones = new JTextArea();
 		taObservaciones.setBounds(15, 53, 433, 146);
 		taObservaciones.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), 
-	            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+	    BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		panelEmitirLicencia.add(taObservaciones);
 		taObservaciones.setLineWrap(true);
 		taObservaciones.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -359,9 +349,9 @@ public class PanelEmitir extends JPanel {
 		btnAceptarEmitir.setFocusable(false);
 		btnAceptarEmitir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(altaTitular) {
+				/*if(altaTitular) {
 					completarTitularDTO(contribuyenteDTO);
-				}
+				}*/
 				LicenseDTO licenciaDTO = new LicenseDTO();
 				licenciaDTO.setLicenseType((LicenseType) cbClase.getSelectedItem());
 				licenciaDTO.setObservation(taObservaciones.getText());
@@ -435,17 +425,16 @@ public class PanelEmitir extends JPanel {
 		}
 	}
 	
-	private TitularDTO completarTitularDTO(TaxPayerDTO dto) {
-		TitularDTO aux = new TitularDTO();
-		aux.setTypeId(dto.getTypeId());
-		aux.setPersonalId(dto.getPersonalId().toString());
-		aux.setName(dto.getName());
-		aux.setSurname(dto.getSurname());
-		aux.setAdress(dto.getAdress());
-		aux.setBirthdate(dto.getBirthdate());
-		aux.setBloodType(cbTipoSangre.getSelectedItem().toString());
-		aux.setOrganDonor(ckbDonante.isSelected());
-		return aux;
+	private void completarTitularDTO(TaxPayerDTO dto) {
+		titularDTO = new TitularDTO();
+		titularDTO.setTypeId(dto.getTypeId());
+		titularDTO.setPersonalId(dto.getPersonalId().toString());
+		titularDTO.setName(dto.getName());
+		titularDTO.setSurname(dto.getSurname());
+		titularDTO.setAdress(dto.getAdress());
+		titularDTO.setBirthdate(dto.getBirthdate());
+		titularDTO.setBloodType(cbTipoSangre.getSelectedItem().toString());
+		titularDTO.setOrganDonor(ckbDonante.isSelected());
 	}
 
 	public void reset() {

@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,7 +38,7 @@ public class Titular {
 	@Enumerated(EnumType.STRING)
 	@Column (name="tipo_documento")
 	private TypeId typeId;
-	
+
 	@Column (name="numero_documento")
 	private Long personalId;
 	
@@ -59,69 +60,86 @@ public class Titular {
 	@Column (name="es_donante")
 	private Boolean organDonor;
 	
-	
-
-	@OneToMany(mappedBy = "titular", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "titular", cascade = CascadeType.ALL)
 	private List<License> licenses = new ArrayList<License>(); 
 	
 	
 	public Integer getId() {
 		return id;
 	}
+	
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
 	public TypeId getTypeId() {
 		return typeId;
 	}
+	
 	public void setTypeId(TypeId typeId) {
 		this.typeId = typeId;
 	}
+	
 	public Long getPersonalId() {
 		return personalId;
 	}
+	
 	public void setPersonalId(Long personalId) {
 		this.personalId = personalId;
 	}
+	
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public String getSurname() {
 		return surname;
 	}
+	
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
+	
 	public String getAdress() {
 		return adress;
 	}
+	
 	public void setAdress(String adress) {
 		this.adress = adress;
 	}
+	
 	public Date getBirthdate() {
 		return birthdate;
 	}
+	
 	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
+	
 	public String getBloodType() {
 		return bloodType;
 	}
+	
 	public void setBloodType(String bloodType) {
 		this.bloodType = bloodType;
 	}
+	
 	public Boolean getOrganDonor() {
 		return organDonor;
 	}
+	
 	public void setOrganDonor(Boolean organDonor) {
 		this.organDonor = organDonor;
 	}
+	
 	public List<License> getLicenses() {
 		return licenses;
 	}
+	
 	public void setLicenses(List<License> licenses) {
 		this.licenses = licenses;
 	} 
@@ -129,9 +147,8 @@ public class Titular {
 	/**
 	 * Clase estatica constructora de Titular. 
 	 * @author Juan Suppicich & Matias Durand
-	 *
 	 */
-	public static class Builder implements Build<Titular>{
+	public static class Builder implements Build<Titular> {
 
 		private TypeId typeId;
 		private Long personalId;
@@ -145,6 +162,7 @@ public class Titular {
 		
 		
 		public Builder() {	
+			
 		}
 		
 		public Builder setTypeId(TypeId typeId) {
@@ -203,8 +221,10 @@ public class Titular {
 			titular.setBirthdate(this.birthdate);
 			titular.setBloodType(this.bloodType);
 			titular.setOrganDonor(this.organDonor);
+			titular.setLicenses(this.licenses);
 			return titular;
 		}
 		
 	}
+	
 }

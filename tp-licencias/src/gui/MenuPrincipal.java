@@ -1,27 +1,15 @@
 package gui;
 
 import java.awt.EventQueue;
-import domain.License;
-import domain.User;
-import domain.Titular;
-import domain.TypeId;
-import dto.TaxPayerDTO;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import dao.LicenseDAO;
-import dao.LicenseDAOSQL;
-import dao.TaxPayerDAO;
-import dao.TaxPayerDAOSQL;
-import dao.TitularDAO;
-import dao.TitularDAOSQL;
-import dao.UserDAO;
-import dao.UserDAOSQL;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import controllers.PanelController;
+import dao.TaxPayerDAOSQL;
+import domain.TypeId;
+import dto.TaxPayerDTO;
 import res.colors.Colors;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,6 +20,9 @@ import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -67,23 +58,20 @@ public class MenuPrincipal extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//TODO
-					LicenseDAO licenseDAO = new LicenseDAOSQL(License.class);
-					TaxPayerDAOSQL taxpayerDAO = new TaxPayerDAOSQL(TaxPayerDTO.class);
-					UserDAO userDAO = new UserDAOSQL(User.class);
-					TitularDAO titularDAO = new TitularDAOSQL(Titular.class);
+					//PARA REGISTRAR UN CONTRIBUYENTE
+					/*TaxPayerDTO taxPayer = new TaxPayerDTO();
+					taxPayer.setTypeId(TypeId.DNI);
+					taxPayer.setPersonalId((long) 22222222);
+					taxPayer.setName("Adam");
+					taxPayer.setSurname("Smith");
+					taxPayer.setAdress("Calle Falsa 123");
 					
+					LocalDate ld = LocalDate.of(1997, 12, 11);
+				
+					taxPayer.setBirthdate(Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 					
-					TaxPayerDTO Juan = new TaxPayerDTO();
-					Juan.setAdress("Antonio Stronatti 2173");
-					Juan.setBirthdate(new Date());
-					Juan.setName("Juan");
-					Juan.setPersonalId((long) 26150806);
-					Juan.setSurname("Perez");
-					Juan.setTypeId(TypeId.DNI);
+					new TaxPayerDAOSQL(TaxPayerDTO.class).save(taxPayer);*/
 					
-					taxpayerDAO.save(Juan);
-					//
 					MenuPrincipal window = new MenuPrincipal();
 					window.frmPrincipal.setVisible(true);
 				} catch (Exception e) {
