@@ -27,7 +27,7 @@ import domain.User;
 @Table(name="LicenseMovement")
 public class LicenseMovement {
 
-	private enum Action {
+	public enum Action {
 		ALTA,
 		RENOVACION,
 	}

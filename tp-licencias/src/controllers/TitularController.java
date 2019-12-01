@@ -5,12 +5,18 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 
+import audit.LicenseMovement;
+import audit.TitularMovement;
 import dao.TitularDAO;
 import dao.TitularDAOSQL;
+import dao.TitularMovementDAO;
+import dao.TitularMovementDAOSQL;
 import domain.License;
 import domain.Titular;
 import domain.TypeId;
+import domain.User;
 import dto.TitularDTO;
+import dto.UserDTO;
 import validators.AdressValidator;
 import validators.BirthdateValidator;
 import validators.BloodValidator;
@@ -30,7 +36,7 @@ public class TitularController {
 	
 	private static TitularController _INSTANCE = new TitularController();
 	private TitularDAO titularDAO = new TitularDAOSQL(Titular.class);
-	
+	private TitularMovementDAO titularMovementDAO = new TitularMovementDAOSQL(TitularMovement.class);
 	
 	private TitularController () { 
 	}
@@ -65,7 +71,7 @@ public class TitularController {
 	 * @param titularDTO datos del titular.
 	 * @param license licencia que ha sido emitida y corresponde al nuevo titular.
 	 */
-	public void registerTitular(TitularDTO titularDTO, License license) {
+	public void registerTitular(TitularDTO titularDTO, License license, UserDTO userDTO) {
 		
 		Titular titular = new Titular.Builder()
 				.setTypeId(titularDTO.getTypeId())
@@ -82,6 +88,24 @@ public class TitularController {
 		license.setTitular(titular);
 		
 		saveTitular(titular);
+		
+		User user = UserController.getInstance().buildUser(userDTO);
+		
+		registerTitularMovement(titular, user, TitularMovement.Action.ALTA);
+		
+		LicenseController.getInstance().registerLicenseMovement(license, user, LicenseMovement.Action.ALTA);
+	
+	}
+	
+	public void registerTitularMovement(Titular titular, User user, TitularMovement.Action action) {
+		
+		TitularMovement titularMovement = new TitularMovement.Builder()
+				.setAction(action)
+				.setUser(user)
+				.setTitular(titular)
+				.build();
+		
+		titularMovementDAO.save(titularMovement);
 		
 	}
 	
@@ -177,11 +201,20 @@ public class TitularController {
 	 * @param id entero que corresponde a la primary key de un titular.
 	 * @param license licencia que sera añdida a la lista.
 	 */
-	public void addTitularsLicense(Integer id, License license) {
+	public void addTitularsLicense(Integer id, License license, UserDTO userDTO) {
+		
 		Titular titular = findTitular(id);
+		
 		titular.getLicenses().add(license);
+		
 		license.setTitular(titular);
+		
 		titularDAO.update(titular);
+		
+		User user = UserController.getInstance().buildUser(userDTO);
+		
+		LicenseController.getInstance().registerLicenseMovement(license, user, LicenseMovement.Action.ALTA);
+		
 	}
 	
 	/**

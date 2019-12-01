@@ -9,14 +9,19 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 
+import audit.LicenseMovement;
 import dao.LicenseDAO;
 import dao.LicenseDAOSQL;
+import dao.LicenseMovementDAO;
+import dao.LicenseMovementDAOSQL;
 import domain.License;
 import domain.LicenseType;
 import domain.Titular;
 import domain.TypeId;
+import domain.User;
 import dto.LicenseDTO;
 import dto.TitularDTO;
+import dto.UserDTO;
 import utils.Combination;
 import utils.ExpiryDateCalculator;
 import utils.LicenseCostCalculator;
@@ -44,6 +49,7 @@ public class LicenseController {
 	private LicenseCostCalculator licenseCostCalculator = LicenseCostCalculator.getInstance();
 	private ExpiryDateCalculator expiryDateCalculator = ExpiryDateCalculator.getInstance();
 	private LicenseDAO licenseDAO = new LicenseDAOSQL(License.class);
+	private LicenseMovementDAO licenseMovementDAO = new LicenseMovementDAOSQL(LicenseMovement.class);
 	
 	
 	private LicenseController () { 
@@ -59,7 +65,7 @@ public class LicenseController {
 	 * @param licenseDTO datos de la licencia, proveniente de GUI.
 	 * @param registerTitular valor booleano que indica si hay o no que dar de alta un titular. 
 	 */
-	public void registerLicense(TitularDTO titularDTO, LicenseDTO licenseDTO, Boolean cameFrom) { 
+	public void registerLicense(TitularDTO titularDTO, LicenseDTO licenseDTO, UserDTO userDTO, Boolean cameFrom) { 
 		
 		License license = new License.Builder()
 				.setLicenseType(licenseDTO.getLicenseType())
@@ -68,11 +74,23 @@ public class LicenseController {
 				.build();
 		
 		if(cameFrom) {
-			TitularController.getInstance().registerTitular(titularDTO, license);
+			TitularController.getInstance().registerTitular(titularDTO, license, userDTO);
 		}
 		else { 
-			TitularController.getInstance().addTitularsLicense(titularDTO.getId(), license);
+			TitularController.getInstance().addTitularsLicense(titularDTO.getId(), license, userDTO);
 		}
+		
+	}
+	
+	public void registerLicenseMovement(License license, User user, LicenseMovement.Action action) {
+		
+		LicenseMovement licenseMovement = new LicenseMovement.Builder()
+				.setAction(action)
+				.setUser(user)
+				.setLicense(license)
+				.build();
+		
+		licenseMovementDAO.save(licenseMovement);
 		
 	}
 	
