@@ -11,7 +11,7 @@ import dto.TitularDTO;
  * @author Suppicich Juan & Matias Durand
  *
  */
-public class IdValidator implements Validator<String,TitularDTO> {
+public class IdValidator implements Validator<String, TitularDTO> {
 
 	@Override
 	public List<String> validate(TitularDTO info) {

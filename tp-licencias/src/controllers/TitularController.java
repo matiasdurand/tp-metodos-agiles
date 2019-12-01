@@ -46,7 +46,7 @@ public class TitularController {
 	 * @return Lista de Strings con todos los errores encontrados.
 	 */
 	public List<String> validate(TitularDTO info) {
-		List<Validator<String,TitularDTO>> validators = new ArrayList<Validator<String,TitularDTO>>();
+		List<Validator<String, TitularDTO>> validators = new ArrayList<Validator<String, TitularDTO>>();
 		
 		validators.add(new IdValidator());
 		validators.add(new NameValidator());
