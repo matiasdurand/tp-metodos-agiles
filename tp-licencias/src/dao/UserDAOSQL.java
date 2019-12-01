@@ -55,4 +55,24 @@ public class UserDAOSQL extends GenericDAOSQL<User,Integer> implements UserDAO {
 			factory.close();
 		}
 	}
+	
+	public User findByUsername(String username) {
+		//creamos factory
+		SessionFactory factory = createFactory();
+		//creamos session BD
+		Session session = createSession(factory);
+		//creamos consulta HQL
+		try {
+			User user = (User) session.createQuery("from User where username= '" + username + "'").getSingleResult();
+			return user;
+		}
+		catch(NoResultException e) {
+			return null;
+		}
+		finally {
+			session.getTransaction().commit();
+			session.close();
+			factory.close();
+		}
+	}
 }
