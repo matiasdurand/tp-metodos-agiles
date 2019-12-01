@@ -24,14 +24,20 @@ public class User {
 	@Column (name="password")
 	private String password;
 	
+	@Column (name="es_root")
 	private Boolean superUser;
 	
+	@Enumerated(EnumType.STRING)
+	@Column (name="tipo_documento")
 	private TypeId typeId;
-
+	
+	@Column (name="numero_documento")
 	private Long personalId;
 	
+	@Column (name="nombre")
 	private String name;
 
+	@Column (name="apellido")
 	private String surname;
 	
 	
