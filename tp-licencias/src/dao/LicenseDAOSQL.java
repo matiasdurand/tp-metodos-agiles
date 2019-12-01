@@ -41,4 +41,13 @@ public class LicenseDAOSQL extends GenericDAOSQL<License, Integer> implements Li
 	
 		}
 	}
+
+	@Override
+	public List<License> findValidLicensesOfTitular(Integer id) {
+		// TODO Auto-generated method stub
+		/**
+		 * Este metodo debe devolver una lista con las licencias vigentes del titular. 
+		 */
+		return null;
+	}
 }

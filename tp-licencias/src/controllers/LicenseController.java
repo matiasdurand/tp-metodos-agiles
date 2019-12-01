@@ -204,4 +204,14 @@ public class LicenseController {
 		
 	}
 	
+	/**
+	 * Este metodo se comunica con la capa DAO para recuperar una lista de las licencias 
+	 * vigentes que posee un titular
+	 * @param id entero que corresponde a la primary key de un titular.
+	 * @return lista de licencias.
+	 */
+	public List<License> findValidLicensesOfTitular(Integer id) { 
+		return LicenseDAO.findValidLicensesOfTitular(id);
+	}
+	
 }

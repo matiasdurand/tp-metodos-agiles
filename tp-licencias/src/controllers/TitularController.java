@@ -1,5 +1,6 @@
 package controllers;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -242,4 +243,41 @@ public class TitularController {
 		comboBox.addItem("O-");
 		comboBox.addItem("O+");
 	}
+	
+	/**
+	 * Este metodo modifica los datos de un titular. 
+	 * @param titularDTO datos del titular que se desea modificar, proveniente de GUI. 
+	 * @param userDTO datos del usario que esta llevando a cabo dicha accion.
+	 */
+	public void modifyTitular(TitularDTO titularDTO, UserDTO userDTO) {
+		
+		Date todaysDate = new Date();
+		Titular titular = findTitular(titularDTO.getId());
+		
+		titular.setTypeId(titularDTO.getTypeId());
+		titular.setPersonalId(Long.parseLong(titularDTO.getPersonalId()));
+		titular.setName(titularDTO.getName());
+		titular.setSurname(titularDTO.getSurname());
+		titular.setAdress(titularDTO.getAdress());
+		titular.setBirthdate(titularDTO.getBirthdate()); 
+		titular.setBloodType(titularDTO.getBloodType());
+		titular.setOrganDonor(titularDTO.getOrganDonor());
+		
+		updateTitular(titular);
+		
+		List<License> licenses = LicenseController.getInstance()
+				.findValidLicensesOfTitular(titularDTO.getId());
+		
+		for(License l : licenses) { 
+			l.setExpiryDate(todaysDate);
+		}
+		
+		User user = UserController.getInstance().buildUser(userDTO);
+		
+		registerTitularMovement(titular,user, TitularMovement.Action.MODIFICACION);
+	}
+	
+	
+	
+	
 }
