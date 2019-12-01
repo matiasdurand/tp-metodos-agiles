@@ -59,8 +59,6 @@ public class Titular {
 	@Column (name="es_donante")
 	private Boolean organDonor;
 	
-	
-
 	@OneToMany(mappedBy = "titular", cascade = CascadeType.ALL)
 	private List<License> licenses = new ArrayList<License>(); 
 	
@@ -203,6 +201,7 @@ public class Titular {
 			titular.setBirthdate(this.birthdate);
 			titular.setBloodType(this.bloodType);
 			titular.setOrganDonor(this.organDonor);
+			titular.setLicenses(this.licenses);
 			return titular;
 		}
 		

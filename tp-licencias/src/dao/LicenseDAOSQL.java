@@ -41,4 +41,21 @@ public class LicenseDAOSQL extends GenericDAOSQL<License, Integer> implements Li
 	
 		}
 	}
+
+	@Override
+	public List<License> findLastLicensesOfTitular(Integer id) {
+		// TODO Auto-generated method stub
+		/*Este metodo tiene que devolver una lista de licencias que posee el titular
+		la lista debe tener UNA licencia de cada tipo que posea el titular, ya sea vigente 
+		o expirada, en el caso de que tenga una licencia expirada debe ser la ULTIMA expirada 
+		Por ejemplo, si el titular tiene una licencia tipo A vigente y dos tipo B expiradas 
+		la lista resultante debe estar compuesta por la licencia tipo A vigente y la ultima licencia 
+		tipo B expirada. 
+		Borrar este comentario, por mas informacion comunicarse de inmediato al grupo :p 
+		 * */
+		 
+		return null;
+	}
+	
+	
 }

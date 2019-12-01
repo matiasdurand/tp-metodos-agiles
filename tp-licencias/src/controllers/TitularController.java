@@ -159,6 +159,14 @@ public class TitularController {
 	}
 	
 	/**
+	 * Este metodo se comunica con la capa DAO para actualizar un titular en la base de datos.
+	 * @param titular titular a ser actualizado en la base de datos. 
+	 */
+	public void updateTitular(Titular titular) {
+		titularDAO.update(titular);
+	}
+	
+	/**
 	 * Este metodo se comunica con la capa DAO para recuperar un titular de la base de datos
 	 * por tipo y numero de documento.
 	 * @param typeId tipo de documento del titular.
@@ -180,7 +188,7 @@ public class TitularController {
 		Runnable r = () -> {
 			Titular titular = findTitular(id);
 			titular.getLicenses().add(license);
-			titularDAO.update(titular);
+			updateTitular(titular);
 		};
 		Thread thread = new Thread(r);
 		thread.start();
@@ -212,4 +220,6 @@ public class TitularController {
 		comboBox.addItem("O-");
 		comboBox.addItem("O+");
 	}
+	
+	
 }
