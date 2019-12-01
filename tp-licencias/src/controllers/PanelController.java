@@ -10,6 +10,7 @@ import dto.LicenseDTO;
 import dto.TitularDTO;
 import gui.ImprimirLicencia;
 import gui.Login;
+import gui.PanelUsuario;
 import gui.PanelEmitir;
 import gui.PanelInicial;
 
@@ -19,6 +20,7 @@ public class PanelController {
 	private static PanelEmitir panelEmitir;
 	private static PanelInicial panelInicial;
 	private static ImprimirLicencia imprimir;
+	private static PanelUsuario panelUsuario;
 	private static Login login;
 	
 	public static PanelController getInstance() {
@@ -51,6 +53,14 @@ public class PanelController {
 		else
 			panelInicial.reset();
 		return panelInicial;
+	}
+	
+	public static JPanel getPanelUsuario(int tipo) {
+		if(panelUsuario == null)
+			panelUsuario = new PanelUsuario(tipo);
+		else
+			panelUsuario.reset();
+		return panelUsuario;
 	}
 	
 	public static JDialog getLogin() {

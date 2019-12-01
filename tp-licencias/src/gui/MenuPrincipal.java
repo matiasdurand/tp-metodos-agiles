@@ -49,6 +49,8 @@ public class MenuPrincipal extends JFrame{
 	public final static int PANEL_EMITIR=3;
 	public final static int PANEL_RENOVAR=4;
 	public final static int PANEL_IMPRIMIR=5;
+	public final static int PANEL_ALTA_USUARIO=10;
+	public final static int PANEL_MODIFICAR_USUARIO=11;
 	
 	protected static MenuPrincipal menuPrincipal;
 	private JFrame frmPrincipal;
@@ -282,6 +284,38 @@ public class MenuPrincipal extends JFrame{
 		panelMenuUsuario.setBounds(150, 60, 844, 605);
 		panelMenuUsuario.setBackground(Colors.FONDO);
 		panelMenuUsuario.setLayout(null);
+		
+		JButton btnAltaUsuario = new JButton("");
+		btnAltaUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mostrarPanel(PANEL_ALTA_USUARIO);
+			}
+		});
+		btnAltaUsuario.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/alta_usuario_100px.png")));
+		btnAltaUsuario.setBounds(132, 151, 105, 105);
+		panelMenuLicencia.add(btnAltaUsuario);
+		
+		JLabel lblAltaUsuario = new JLabel("DAR DE ALTA");
+		lblAltaUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAltaUsuario.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblAltaUsuario.setBounds(132, 260, 105, 16);
+		panelMenuLicencia.add(lblAltaUsuario);
+		
+		JButton btnModificarUsuario = new JButton("");
+		btnModificarUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mostrarPanel(PANEL_MODIFICAR_USUARIO);
+			}
+		});
+		btnModificarUsuario.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/modificar_usuario_100px.png")));
+		btnModificarUsuario.setBounds(132, 151, 105, 105);
+		panelMenuLicencia.add(btnModificarUsuario);
+		
+		JLabel lblModificarUsuario = new JLabel("MODIFICAR");
+		lblModificarUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+		lblModificarUsuario.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblModificarUsuario.setBounds(132, 260, 105, 16);
+		panelMenuLicencia.add(lblModificarUsuario);
 	}
 	
 	//Muestra el panel solicitado ocultando los demas
@@ -320,6 +354,13 @@ public class MenuPrincipal extends JFrame{
 				panel=panelMenuUsuario;
 				break;
 			}
+			case PANEL_ALTA_USUARIO:{
+				panel=PanelController.getPanelAltaUsuario(PANEL_ALTA_USUARIO);
+				break;
+			}
+			case PANEL_MODIFICAR_USUARIO:{
+				panel=PanelController.getPanelUsuario(PANEL_MODIFICAR_USUARIO);				
+			}
 		}
 		frmPrincipal.getContentPane().add(panel);
 		frmPrincipal.pack();
@@ -327,10 +368,19 @@ public class MenuPrincipal extends JFrame{
 		frmPrincipal.repaint();
 	}
 	
+	//Este metodo identifica de que panel se cancelo para determinar que menu debe mostrar
 	protected void cancelar(Integer aux) {
 		switch(aux){
 			case PANEL_EMITIR:{
 				mostrarPanel(PANEL_MENU_LICENCIA);
+				break;
+			}
+			case PANEL_ALTA_USUARIO:{
+				mostrarPanel(PANEL_MENU_USUARIO);
+				break;
+			}
+			case PANEL_MODIFICAR_USUARIO:{
+				mostrarPanel(PANEL_MENU_USUARIO);
 				break;
 			}
 		}
@@ -339,6 +389,7 @@ public class MenuPrincipal extends JFrame{
 	protected void ingresar(UserDTO dto) {
 		usuarioDTO=dto;
 		lblNombreUsuario.setText(usuarioDTO.getUsername());
+		btnUsuario.setEnabled(usuarioDTO.getSuperUser());
 		barraLateral.repaint();
 		mostrarPanel(PANEL_INICIAL);
 	}

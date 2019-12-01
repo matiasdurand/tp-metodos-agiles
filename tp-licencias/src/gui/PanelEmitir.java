@@ -123,9 +123,9 @@ public class PanelEmitir extends JPanel {
 				}
 			}
 		});
-		btnBuscar.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnBuscar.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnBuscar.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/find_user_filled_30px.png")));
-		btnBuscar.setBounds(572, 111, 130, 40);
+		btnBuscar.setBounds(572, 111, 175, 40);
 		this.add(btnBuscar);
 		
 		JLabel lblTipoDoc = new JLabel("Tipo:");
@@ -235,7 +235,6 @@ public class PanelEmitir extends JPanel {
 		btnAceptar.setFocusable(false);
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cargarTitularDTO(contribuyenteDTO);
 				initializeEmitirLicencia();
 				panelEmitirLicencia.setVisible(true);
 				cbTipoSangre.setEnabled(false);
@@ -276,18 +275,6 @@ public class PanelEmitir extends JPanel {
 		ckbDonante.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		ckbDonante.setBounds(703, 215, 129, 40);
 		this.add(ckbDonante);
-	}
-	
-	private void cargarTitularDTO(TaxPayerDTO dto) {
-		titularDTO = new TitularDTO();
-		titularDTO.setPersonalId(dto.getPersonalId().toString());
-		titularDTO.setTypeId(dto.getTypeId());
-		titularDTO.setAdress(dto.getAdress());
-		titularDTO.setBirthdate(dto.getBirthdate());
-		titularDTO.setBloodType(cbTipoSangre.getSelectedItem().toString());
-		titularDTO.setName(dto.getName());
-		titularDTO.setOrganDonor(ckbDonante.isSelected());
-		titularDTO.setSurname(dto.getSurname());
 	}
 	
 	private void initializeEmitirLicencia(){
@@ -395,6 +382,17 @@ public class PanelEmitir extends JPanel {
 		btnCancelarEmitir.setFont(new Font("Tahoma", Font.BOLD, 20));
 	}
 	
+	private void completarTitularDTO(TaxPayerDTO dto) {
+		titularDTO.setPersonalId(dto.getPersonalId().toString());
+		titularDTO.setTypeId(dto.getTypeId());
+		titularDTO.setAdress(dto.getAdress());
+		titularDTO.setBirthdate(dto.getBirthdate());
+		titularDTO.setBloodType(cbTipoSangre.getSelectedItem().toString());
+		titularDTO.setName(dto.getName());
+		titularDTO.setOrganDonor(ckbDonante.isSelected());
+		titularDTO.setSurname(dto.getSurname());
+	}
+	
 	//Validamos el numero de doc ingresado
 	private boolean validarDoc(String doc) {
         boolean resultado;
@@ -433,19 +431,6 @@ public class PanelEmitir extends JPanel {
 			cbTipoSangre.setEnabled(true);
 			ckbDonante.setEnabled(true);
 		}
-	}
-	
-	private TitularDTO completarTitularDTO(TaxPayerDTO dto) {
-		TitularDTO aux = new TitularDTO();
-		aux.setTypeId(dto.getTypeId());
-		aux.setPersonalId(dto.getPersonalId().toString());
-		aux.setName(dto.getName());
-		aux.setSurname(dto.getSurname());
-		aux.setAdress(dto.getAdress());
-		aux.setBirthdate(dto.getBirthdate());
-		aux.setBloodType(cbTipoSangre.getSelectedItem().toString());
-		aux.setOrganDonor(ckbDonante.isSelected());
-		return aux;
 	}
 
 	public void reset() {
