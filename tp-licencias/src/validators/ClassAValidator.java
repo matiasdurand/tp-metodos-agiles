@@ -17,7 +17,7 @@ import domain.Titular;
  * @author Suppicich Juan & Matias Durand
  *
  */
-public class ClassAValidator implements Validator<LicenseType,Titular> {
+public class ClassAValidator implements Validator<LicenseType, Titular> {
 
 	@Override
 	public List<LicenseType> validate(Titular info) {

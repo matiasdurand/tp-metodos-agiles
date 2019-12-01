@@ -1,0 +1,12 @@
+/audit/
+/builders/
+/controllers/
+/dao/
+/domain/
+/dto/
+/gui/
+/hibernate-contribuyentes.cfg.xml
+/hibernate-sistema.cfg.xml
+/res/
+/utils/
+/validators/
