@@ -9,8 +9,6 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
@@ -27,7 +25,6 @@ import javax.swing.JComboBox;
 import domain.LicenseType;
 import domain.TypeId;
 import dto.LicenseDTO;
-import dto.TaxPayerDTO;
 import dto.TitularDTO;
 
 import javax.swing.JTextField;
@@ -47,6 +44,8 @@ public class PanelRenovar extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private static  String _DESTINO = System.getProperty("user.home") + "\\Desktop\\" + "licencia.pdf";
+	
 	private JComboBox<String> cmbTipoSangre;
 	private JComboBox<TypeId> cmbTipoDoc;
 	private JComboBox<LicenseType> cmbClase;
@@ -55,6 +54,7 @@ public class PanelRenovar extends JPanel {
 	private JTextField tfApellido;
 	private JTextField tfFechaNac;
 	private JTextField tfDireccion;
+	private JCheckBox ckbDonante;
 	private JTable tLicencias;
 	private JPanel panelTablaLicencias;
 	private JPanel panelRenovarLicencia;
@@ -205,7 +205,7 @@ public class PanelRenovar extends JPanel {
 		cmbTipoSangre.setBounds(607, 212, 80, 40);
 		add(cmbTipoSangre);
 		
-		JCheckBox ckbDonante = new JCheckBox(" Donante");
+		ckbDonante = new JCheckBox(" Donante");
 		ckbDonante.setSelected(true);
 		ckbDonante.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		ckbDonante.setFocusable(false);
@@ -313,24 +313,24 @@ public class PanelRenovar extends JPanel {
 		panelRenovarLicencia.add(lblCosto);
 		lblCosto.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		
-		JButton btnAceptar = new JButton("ACEPTAR");
+		btnAceptar = new JButton("ACEPTAR");
 		btnAceptar.setFocusable(false);
 		btnAceptar.addActionListener(new ActionListener() {
-			/*public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				LicenseDTO licenciaDTO = new LicenseDTO();
 				licenciaDTO.setLicenseType((LicenseType) cmbClase.getSelectedItem());
 				licenciaDTO.setObservation(taObservaciones.getText());
 				licenciaDTO.setEmisionDate(new Date());
 				licenciaDTO.setExpiryDate(expiryDate);
-				controladorLicencia.registerLicense(titularDTO, licenciaDTO, altaTitular);				
-				if(JOptionPane.showConfirmDialog(null, "Licencia emitida exitosamente, ¿Desea imprimirla ahora?", "Éxito", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-					//TODO pasar a imprimir licencia
+				//TODO solicitar al controlador de licencia una renovacion
+							
+				if(JOptionPane.showConfirmDialog(null, "Licencia renovada exitosamente, ¿Desea imprimirla ahora?", "Éxito", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
 					try {
 						PanelController.getImprimir(titularDTO, licenciaDTO, _DESTINO);
 					}catch(Exception ex) {}
 				}
-				MenuPrincipal.menuPrincipal.cancelar(MenuPrincipal.PANEL_EMITIR);
-			}*/
+				MenuPrincipal.menuPrincipal.cancelar(MenuPrincipal.PANEL_RENOVAR);
+			}
 		});
 		btnAceptar.setBounds(463, 231, 175, 40);
 		panelRenovarLicencia.add(btnAceptar);
@@ -349,6 +349,15 @@ public class PanelRenovar extends JPanel {
 		btnCancelar.setBounds(657, 231, 175, 40);
 		panelRenovarLicencia.add(btnCancelar);
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 20));
+	}
+	
+	private void cargarDatosTitular(TitularDTO dto) {
+		tfNombre.setText(dto.getName());
+		tfApellido.setText(dto.getSurname());
+		tfDireccion.setText(dto.getAdress());
+		tfFechaNac.setText(formatoFecha.format(dto.getBirthdate()));
+		cmbTipoSangre.setSelectedItem(dto.getBloodType());
+		ckbDonante.setSelected(dto.getOrganDonor());
 	}
 	
 	//Validamos el numero de doc ingresado

@@ -4,6 +4,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 
 import res.colors.Colors;
 
@@ -22,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.Color;
 
 
 public class Login extends JDialog{
@@ -30,6 +32,7 @@ public class Login extends JDialog{
 	private JTextField tfUser;
 	private JTextField tfPassword;
 	private JButton btnIngresar;
+	private JLabel lblError;
 	private UserDTO usuarioDTO = null;
 	private UserController controladorUsuario = UserController.getInstance();
 
@@ -75,25 +78,25 @@ public class Login extends JDialog{
 		JLabel lblUser = new JLabel("Usuario:");
 		lblUser.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblUser.setIcon(new ImageIcon(Login.class.getResource("/res/images/user_filled_30px.png")));
-		lblUser.setBounds(41, 179, 145, 40);
+		lblUser.setBounds(35, 179, 145, 40);
 		this.getContentPane().add(lblUser);
 		
 		JLabel lblPassword = new JLabel("Contrase\u00F1a:");
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblPassword.setIcon(new ImageIcon(Login.class.getResource("/res/images/password_filled_30px.png")));
-		lblPassword.setBounds(41, 232, 145, 40);
+		lblPassword.setBounds(35, 232, 145, 40);
 		this.getContentPane().add(lblPassword);
 		
 		tfUser = new JTextField();
 		tfUser.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		tfUser.setBounds(220, 187, 265, 30);
+		tfUser.setBounds(210, 187, 285, 30);
 		this.getContentPane().add(tfUser);
 		tfUser.setColumns(10);
 		
 		tfPassword = new JPasswordField();
 		tfPassword.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		tfPassword.setColumns(10);
-		tfPassword.setBounds(220, 240, 265, 30);
+		tfPassword.setBounds(210, 240, 285, 30);
 		this.getContentPane().add(tfPassword);
 		
 		btnIngresar = new JButton("INGRESAR");
@@ -106,15 +109,32 @@ public class Login extends JDialog{
 						MenuPrincipal.menuPrincipal.ingresar(usuarioDTO);
 						dispose();
 					}
-					else
-						JOptionPane.showMessageDialog(null, "El nombre de usuario y la contraseña ingresada no coinciden con nuestros registros. Por favor, revisa e inténtalo de nuevo.");
+					else {
+						lblError.setVisible(true);
+						tfPassword.setText("");
+						Timer timer = new Timer(5000, new ActionListener() {
+
+				            @Override
+				            public void actionPerformed(ActionEvent e) {
+				                lblError.setVisible(false);
+				            }
+				        });
+				        timer.start();
+					}
 					
 				}
 			}
 		});
 		btnIngresar.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnIngresar.setBounds(41, 295, 444, 40);
+		btnIngresar.setBounds(35, 295, 460, 40);
 		this.getContentPane().add(btnIngresar);
+		
+		lblError = new JLabel("*El usuario y contraseña no son válidos. Vuelva a intentarlo.");
+		lblError.setVisible(false);
+		lblError.setForeground(Color.RED);
+		lblError.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblError.setBounds(35, 275, 370, 15);
+		getContentPane().add(lblError);
 	}
 	
 	public void reset() {
