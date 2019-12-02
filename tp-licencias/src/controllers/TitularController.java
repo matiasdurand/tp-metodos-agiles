@@ -91,6 +91,8 @@ public class TitularController {
 		
 		User user = UserController.getInstance().buildUser(userDTO);
 		
+		user.setId(userDTO.getId());
+		
 		registerTitularMovement(titular, user, TitularMovement.Action.ALTA);
 		
 		LicenseController.getInstance().registerLicenseMovement(license, user, LicenseMovement.Action.ALTA);
@@ -212,6 +214,8 @@ public class TitularController {
 		titularDAO.update(titular);
 		
 		User user = UserController.getInstance().buildUser(userDTO);
+		
+		user.setId(userDTO.getId());
 		
 		LicenseController.getInstance().registerLicenseMovement(license, user, LicenseMovement.Action.ALTA);
 		

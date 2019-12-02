@@ -53,20 +53,6 @@ public class MenuPrincipal extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//PARA REGISTRAR UN CONTRIBUYENTE
-					/*TaxPayerDTO taxPayer = new TaxPayerDTO();
-					taxPayer.setTypeId(TypeId.DNI);
-					taxPayer.setPersonalId((long) 22222222);
-					taxPayer.setName("Adam");
-					taxPayer.setSurname("Smith");
-					taxPayer.setAdress("Calle Falsa 123");
-					
-					LocalDate ld = LocalDate.of(1997, 12, 11);
-				
-					taxPayer.setBirthdate(Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-					
-					new TaxPayerDAOSQL(TaxPayerDTO.class).save(taxPayer);*/
-					
 					MenuPrincipal window = new MenuPrincipal();
 					window.frmPrincipal.setVisible(true);
 				} catch (Exception e) {

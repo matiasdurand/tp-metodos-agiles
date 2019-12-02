@@ -6,9 +6,13 @@ import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 
 import res.colors.Colors;
-
+import dto.TaxPayerDTO;
 import dto.UserDTO;
 import controllers.UserController;
+import dao.TaxPayerDAOSQL;
+import dao.UserDAOSQL;
+import domain.TypeId;
+import domain.User;
 
 import java.awt.Font;
 
@@ -22,6 +26,9 @@ import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 
 public class Login extends JDialog{
@@ -39,6 +46,31 @@ public class Login extends JDialog{
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
+				//PARA PROBAR REGISTRO UN USUARIO Y UN CONTRIBUYENTE
+				/*TaxPayerDTO taxPayer = new TaxPayerDTO();
+				taxPayer.setTypeId(TypeId.DNI);
+				taxPayer.setPersonalId((long) 12345678);
+				taxPayer.setName("Adam");
+				taxPayer.setSurname("Smith");
+				taxPayer.setAdress("Calle Falsa 123");
+				
+				LocalDate ld = LocalDate.of(1997, 12, 11);
+			
+				taxPayer.setBirthdate(Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+				
+				new TaxPayerDAOSQL(TaxPayerDTO.class).save(taxPayer);
+				
+				User user = new User();
+				user.setUsername("admin");
+				user.setPassword("admin");
+				user.setSuperUser(true);
+				user.setTypeId(TypeId.DNI);
+				user.setPersonalId((long) 40406072);
+				user.setName("Matias");
+				user.setSurname("Durand");
+				
+				new UserDAOSQL(User.class).save(user);*/
+				
 				MenuPrincipal.menuPrincipal.cerrar();
 			}
 		});
