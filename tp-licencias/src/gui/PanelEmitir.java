@@ -83,7 +83,7 @@ public class PanelEmitir extends JPanel {
 		JLabel lblTituloBuscarTitular = new JLabel("Emitir licencia");
 		lblTituloBuscarTitular.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTituloBuscarTitular.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lblTituloBuscarTitular.setBounds(12, 15, 817, 25);
+		lblTituloBuscarTitular.setBounds(12, 15, 820, 25);
 		this.add(lblTituloBuscarTitular);
 		
 		btnBuscar = new JButton("BUSCAR");
@@ -196,7 +196,7 @@ public class PanelEmitir extends JPanel {
 		tfApellido.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		tfApellido.setEditable(false);
 		tfApellido.setColumns(10);
-		tfApellido.setBounds(572, 164, 260, 40);
+		tfApellido.setBounds(572, 163, 260, 40);
 		this.add(tfApellido);
 		
 		JLabel lblFechaNac = new JLabel("Fecha nac.:");

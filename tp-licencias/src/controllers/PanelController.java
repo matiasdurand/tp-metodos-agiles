@@ -13,6 +13,7 @@ import gui.Login;
 import gui.PanelUsuario;
 import gui.PanelEmitir;
 import gui.PanelInicial;
+import gui.PanelModificarTitular;
 
 public class PanelController {
 	
@@ -21,6 +22,7 @@ public class PanelController {
 	private static PanelInicial panelInicial;
 	private static ImprimirLicencia imprimir;
 	private static PanelUsuario panelUsuario;
+	private static PanelModificarTitular panelTitular;
 	private static Login login;
 	
 	public static PanelController getInstance() {
@@ -53,6 +55,14 @@ public class PanelController {
 		else
 			panelInicial.reset();
 		return panelInicial;
+	}
+	
+	public static JPanel getPanelTitular(int tipo) {
+		if(panelTitular == null)
+			panelTitular = new PanelModificarTitular(tipo);
+		else
+			panelTitular.reset();
+		return panelTitular;
 	}
 	
 	public static JPanel getPanelUsuario(int tipo) {

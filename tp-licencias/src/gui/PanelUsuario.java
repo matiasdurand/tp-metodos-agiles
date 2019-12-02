@@ -116,8 +116,8 @@ public class PanelUsuario extends JPanel {
 		btnAceptar.setEnabled(activar);
 		tfNombre.setEnabled(activar);
 		tfApellido.setEnabled(activar);
-		cmbTipoDoc.setEnabled(activar);
-		tfNroDoc.setEnabled(activar);
+		cmbTipoDoc.setEnabled(false);
+		tfNroDoc.setEnabled(false);
 		tfPassword.setEnabled(activar);
 		tfRepeatPassword.setEnabled(activar);
 	}

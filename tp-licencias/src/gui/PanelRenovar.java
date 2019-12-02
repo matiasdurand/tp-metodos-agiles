@@ -58,7 +58,7 @@ public class PanelRenovar extends JPanel {
 	private JTextField tfFechaNac;
 	private JTextField tfDireccion;
 	private JCheckBox ckbDonante;
-	private JTable tLicencias;
+	private JTable tableLicencias;
 	private JPanel panelTablaLicencias;
 	private JPanel panelRenovarLicencia;
 	private JTextField tfVigencia;
@@ -273,17 +273,17 @@ public class PanelRenovar extends JPanel {
 			}
 		});
 		
-		tLicencias = new JTable();
-		tLicencias.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		tLicencias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		controladorLicencia.loadRenewLicenceTable(titularDTO,tLicencias);
+		tableLicencias = new JTable();
+		tableLicencias.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		tableLicencias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		controladorLicencia.loadRenewLicenceTable(titularDTO,tableLicencias);
 		JScrollPane scroll = new JScrollPane();
-		scroll.setViewportView(tLicencias);
+		scroll.setViewportView(tableLicencias);
 		scroll.setBounds(12, 0, 820, 218);
-		tLicencias.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+		tableLicencias.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {     
-	        	if(tLicencias.getSelectedRow()>=0) {
-	        		filaSeleccionada = (Integer)tLicencias.getValueAt(tLicencias.getSelectedRow(), 0);	        		
+	        	if(tableLicencias.getSelectedRow()>=0) {
+	        		filaSeleccionada = (Integer)tableLicencias.getValueAt(tableLicencias.getSelectedRow(), 0);	        		
 	        	}
 	        	if(filaSeleccionada!=-1)
 	        		btnRenovar.setEnabled(true);
@@ -295,7 +295,7 @@ public class PanelRenovar extends JPanel {
 	private void cargarDatosLicencia() {
 		taObservaciones.setText("");
 		expiryDate = controladorLicencia.calculateExpiryDate(titularDTO);
-		cmbClase.setSelectedItem(tLicencias.getValueAt(tLicencias.getSelectedRow(),1));
+		cmbClase.setSelectedItem(tableLicencias.getValueAt(tableLicencias.getSelectedRow(),1));
 		StringBuffer sb = new StringBuffer("$");
 		sb.append(String.valueOf(controladorLicencia.calculateLicenseCost((LicenseType)cmbClase.getSelectedItem(), expiryDate)));
 		tfCosto.setText(sb.toString());
