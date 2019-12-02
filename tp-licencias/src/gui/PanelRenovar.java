@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import res.colors.Colors;
 import javax.swing.JLabel;
@@ -15,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import controllers.LicenseController;
 import controllers.PanelController;
@@ -63,6 +66,8 @@ public class PanelRenovar extends JPanel {
 	private JTextArea taObservaciones;
 	private JButton btnRenovar;
 	private JButton btnAceptar;
+	private Date expiryDate;
+	private Integer filaSeleccionada=-1;
 	
 	private TitularDTO titularDTO = new TitularDTO();
 	private LicenseController controladorLicencia = LicenseController.getInstance();
@@ -73,8 +78,9 @@ public class PanelRenovar extends JPanel {
 	public PanelRenovar() {
 		super();
 		initialize();
-		inicializarPanelRenovarLicencia();
 		inicializarPanelTablaLicencias();
+		inicializarPanelRenovarLicencia();
+
 	}
 
 	private void initialize() {
@@ -88,15 +94,15 @@ public class PanelRenovar extends JPanel {
 		lblTitulo.setBounds(12, 15, 820, 25);
 		add(lblTitulo);
 		
-		JLabel label_1 = new JLabel("Ingrese el documento:");
-		label_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		label_1.setBounds(12, 53, 436, 40);
-		add(label_1);
+		JLabel lblDoc = new JLabel("Ingrese el documento:");
+		lblDoc.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblDoc.setBounds(12, 53, 436, 40);
+		add(lblDoc);
 		
-		JLabel label_2 = new JLabel("Tipo:");
-		label_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		label_2.setBounds(15, 106, 53, 40);
-		add(label_2);
+		JLabel lblTipoDoc = new JLabel("Tipo:");
+		lblTipoDoc.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTipoDoc.setBounds(15, 106, 53, 40);
+		add(lblTipoDoc);
 		
 		cmbTipoDoc = new JComboBox<TypeId>();
 		cmbTipoDoc.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -123,10 +129,10 @@ public class PanelRenovar extends JPanel {
 		});
 		add(tfNroDoc);
 		
-		JLabel label_3 = new JLabel("Nro:");
-		label_3.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		label_3.setBounds(224, 106, 74, 40);
-		add(label_3);
+		JLabel lblNroDoc = new JLabel("Nro:");
+		lblNroDoc.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNroDoc.setBounds(224, 106, 74, 40);
+		add(lblNroDoc);
 		
 		JButton btnBuscar = new JButton("BUSCAR");
 		btnBuscar.setIcon(new ImageIcon(PanelRenovar.class.getResource("/res/images/find_user_filled_30px.png")));
@@ -142,6 +148,9 @@ public class PanelRenovar extends JPanel {
 					else{
 						cargarDatosTitular(titularDTO);
 						btnRenovar.setEnabled(true);
+						cmbTipoDoc.setEnabled(false);
+						tfNroDoc.setEnabled(false);
+						btnBuscar.setEnabled(false);
 					}
 				}
 				else {
@@ -151,10 +160,10 @@ public class PanelRenovar extends JPanel {
 		});
 		add(btnBuscar);
 		
-		JLabel label_4 = new JLabel("Nombre/s:");
-		label_4.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		label_4.setBounds(15, 159, 119, 40);
-		add(label_4);
+		JLabel lblNombre = new JLabel("Nombre/s:");
+		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNombre.setBounds(15, 159, 119, 40);
+		add(lblNombre);
 		
 		tfNombre = new JTextField();
 		tfNombre.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -165,10 +174,10 @@ public class PanelRenovar extends JPanel {
 		tfNombre.setBounds(132, 159, 319, 40);
 		add(tfNombre);
 		
-		JLabel label_5 = new JLabel("Apellido/s:");
-		label_5.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		label_5.setBounds(463, 161, 119, 40);
-		add(label_5);
+		JLabel lblApellido = new JLabel("Apellido/s:");
+		lblApellido.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblApellido.setBounds(463, 161, 119, 40);
+		add(lblApellido);
 		
 		tfApellido = new JTextField();
 		tfApellido.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -179,10 +188,10 @@ public class PanelRenovar extends JPanel {
 		tfApellido.setBounds(572, 160, 260, 40);
 		add(tfApellido);
 		
-		JLabel label_6 = new JLabel("Fecha nac.:");
-		label_6.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		label_6.setBounds(15, 212, 119, 40);
-		add(label_6);
+		JLabel lblFechaNac = new JLabel("Fecha nac.:");
+		lblFechaNac.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblFechaNac.setBounds(15, 212, 119, 40);
+		add(lblFechaNac);
 		
 		tfFechaNac = new JTextField();
 		tfFechaNac.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -193,10 +202,10 @@ public class PanelRenovar extends JPanel {
 		tfFechaNac.setBounds(132, 212, 319, 40);
 		add(tfFechaNac);
 		
-		JLabel label_7 = new JLabel("Tipo de sangre:");
-		label_7.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		label_7.setBounds(463, 212, 170, 40);
-		add(label_7);
+		JLabel lblTipoSangre = new JLabel("Tipo de sangre:");
+		lblTipoSangre.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTipoSangre.setBounds(463, 212, 170, 40);
+		add(lblTipoSangre);
 		
 		cmbTipoSangre = new JComboBox<String>();
 		cmbTipoSangre.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -214,10 +223,10 @@ public class PanelRenovar extends JPanel {
 		ckbDonante.setBounds(703, 212, 129, 40);
 		add(ckbDonante);
 		
-		JLabel label_8 = new JLabel("Direcci\u00F3n:");
-		label_8.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		label_8.setBounds(15, 265, 119, 40);
-		add(label_8);
+		JLabel lblDireccion = new JLabel("Direcci\u00F3n:");
+		lblDireccion.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblDireccion.setBounds(15, 265, 119, 40);
+		add(lblDireccion);
 		
 		tfDireccion = new JTextField();
 		tfDireccion.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -237,23 +246,60 @@ public class PanelRenovar extends JPanel {
 		panelTablaLicencias.setLayout(null);
 		
 		JButton btnRenovar = new JButton("RENOVAR");
-		btnRenovar.setBounds(451, 234, 175, 40);
+		btnRenovar.setBounds(463, 231, 175, 40);
 		panelTablaLicencias.add(btnRenovar);
 		btnRenovar.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnRenovar.setFocusable(false);
 		btnRenovar.setEnabled(false);
+		btnRenovar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(filaSeleccionada>=0) {
+					cargarDatosLicencia();
+					panelRenovarLicencia.setVisible(true);
+				}
+				else
+					System.out.println("btnRenovar -> filaSeleccionada="+filaSeleccionada);
+			}
+		});
 		
 		JButton btnCancelar = new JButton("CANCELAR");
-		btnCancelar.setBounds(645, 234, 175, 40);
+		btnCancelar.setBounds(657, 231, 175, 40);
 		panelTablaLicencias.add(btnCancelar);
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnCancelar.setFocusable(false);
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MenuPrincipal.menuPrincipal.cancelar(MenuPrincipal.PANEL_RENOVAR);
+			}
+		});
 		
 		tLicencias = new JTable();
 		tLicencias.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		tLicencias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tLicencias.setBounds(0, 0, 820, 218);
-		panelTablaLicencias.add(tLicencias);
+		controladorLicencia.loadRenewLicenceTable(titularDTO,tLicencias);
+		JScrollPane scroll = new JScrollPane();
+		scroll.setViewportView(tLicencias);
+		scroll.setBounds(12, 0, 820, 218);
+		tLicencias.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {     
+	        	if(tLicencias.getSelectedRow()>=0) {
+	        		filaSeleccionada = (Integer)tLicencias.getValueAt(tLicencias.getSelectedRow(), 0);	        		
+	        	}
+	        	if(filaSeleccionada!=-1)
+	        		btnRenovar.setEnabled(true);
+	        }
+	    });
+		panelTablaLicencias.add(scroll);
+	}
+	
+	private void cargarDatosLicencia() {
+		taObservaciones.setText("");
+		expiryDate = controladorLicencia.calculateExpiryDate(titularDTO);
+		cmbClase.setSelectedItem(tLicencias.getValueAt(tLicencias.getSelectedRow(),1));
+		StringBuffer sb = new StringBuffer("$");
+		sb.append(String.valueOf(controladorLicencia.calculateLicenseCost((LicenseType)cmbClase.getSelectedItem(), expiryDate)));
+		tfCosto.setText(sb.toString());
+		tfVigencia.setText(formatoFecha.format(expiryDate));
 	}
 	
 	private void inicializarPanelRenovarLicencia() {
@@ -290,7 +336,6 @@ public class PanelRenovar extends JPanel {
 		
 		cmbClase = new JComboBox<>();
 		cmbClase.setEnabled(false);
-		Date expiryDate = controladorLicencia.calculateExpiryDate(titularDTO);
 		cmbClase.setBounds(572, 53, 80, 40);
 		cmbClase.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		panelRenovarLicencia.add(cmbClase);
@@ -303,7 +348,6 @@ public class PanelRenovar extends JPanel {
 		tfVigencia = new JTextField();
 		tfVigencia.setBounds(572, 105, 260, 40);
 		panelRenovarLicencia.add(tfVigencia);
-		tfVigencia.setText(formatoFecha.format(expiryDate));
 		tfVigencia.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		tfVigencia.setEditable(false);
 		tfVigencia.setColumns(10);
@@ -322,8 +366,7 @@ public class PanelRenovar extends JPanel {
 				licenciaDTO.setObservation(taObservaciones.getText());
 				licenciaDTO.setEmisionDate(new Date());
 				licenciaDTO.setExpiryDate(expiryDate);
-				//TODO solicitar al controlador de licencia una renovacion
-							
+				controladorLicencia.renewLicense(titularDTO, licenciaDTO, MenuPrincipal.menuPrincipal.usuarioDTO);
 				if(JOptionPane.showConfirmDialog(null, "Licencia renovada exitosamente, ¿Desea imprimirla ahora?", "Éxito", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
 					try {
 						PanelController.getImprimir(titularDTO, licenciaDTO, _DESTINO);
@@ -340,10 +383,8 @@ public class PanelRenovar extends JPanel {
 		btnCancelar.setFocusable(false);
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(JOptionPane.showConfirmDialog(null, "¿Está seguro que desea cancelar?", "Cancelar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-					panelRenovarLicencia.setVisible(false);
-					panelTablaLicencias.setVisible(true);
-				}
+				panelRenovarLicencia.setVisible(false);
+				panelTablaLicencias.setVisible(true);
 			}
 		});
 		btnCancelar.setBounds(657, 231, 175, 40);
@@ -377,3 +418,4 @@ public class PanelRenovar extends JPanel {
 		this.initialize();
 	}
 }
+
