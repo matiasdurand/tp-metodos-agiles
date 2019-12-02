@@ -32,9 +32,9 @@ public class PanelInicial extends JPanel {
 		this.setBackground(Colors.FONDO);
 		this.setLayout(null);
 		
-		JLabel lblTituloPrincipal = new JLabel("Licencias");
+		JLabel lblTituloPrincipal = new JLabel("Listado de licencias");
 		lblTituloPrincipal.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblTituloPrincipal.setBounds(15, 15, 100, 25);
+		lblTituloPrincipal.setBounds(12, 15, 240, 25);
 		this.add(lblTituloPrincipal);
 		
 		JCheckBox ckbxVencidas = new JCheckBox(" Vencidas");
@@ -48,7 +48,7 @@ public class PanelInicial extends JPanel {
 		tableLicencias = new JTable();
 		tableLicencias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		JScrollPane scroll = new JScrollPane();
-		scroll.setBounds(15, 55, 817, 537);
+		scroll.setBounds(12, 55, 820, 537);
 		scroll.setViewportView(tableLicencias);
 		tableLicencias.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
