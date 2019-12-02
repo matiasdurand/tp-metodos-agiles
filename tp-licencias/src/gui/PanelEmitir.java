@@ -38,9 +38,6 @@ import java.awt.Color;
 public class PanelEmitir extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	
-	//Direccion donde se guarda el pdf de la licencia emitida
-	private static  String _DESTINO = System.getProperty("user.home") + "\\Desktop\\" + "licencia.pdf";
 
 	private JComboBox<String> cbTipoSangre;
 	private JComboBox<TypeId> cbTipoDoc;
@@ -61,6 +58,10 @@ public class PanelEmitir extends JPanel {
 	private JPanel panelEmitirLicencia;
 	
 	private SimpleDateFormat formatoFecha = new SimpleDateFormat("dd MMMM yyyy");
+	private static SimpleDateFormat formatoFechaNombreArchivo = new SimpleDateFormat("dd_MM_yyyy_hh_mm_ss");
+	
+	//Direccion donde se guarda el pdf de la licencia emitida
+	private static String _DESTINO = System.getProperty("user.home") + "\\Desktop\\" + "licencia" + formatoFechaNombreArchivo.format(new Date()) + ".pdf";
 	
 	private TitularDTO titularDTO = new TitularDTO();
 	private TaxPayerDTO contribuyenteDTO = new TaxPayerDTO();
@@ -106,7 +107,6 @@ public class PanelEmitir extends JPanel {
 								bloquearComponentes(altaTitular);
 								cargarDatosContribuyente(contribuyenteDTO);
 								btnAceptar.setEnabled(true);
-								//panelEmitirLicencia.setVisible(true);
 							}
 						}
 					}
@@ -115,7 +115,6 @@ public class PanelEmitir extends JPanel {
 						bloquearComponentes(altaTitular);
 						cargarDatosTitular(titularDTO);
 						btnAceptar.setEnabled(true);
-						//panelEmitirLicencia.setVisible(true);
 					}
 				}
 				else {
@@ -349,22 +348,22 @@ public class PanelEmitir extends JPanel {
 		btnAceptarEmitir.setFocusable(false);
 		btnAceptarEmitir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*if(altaTitular) {
-					completarTitularDTO(contribuyenteDTO);
-				}*/
-				LicenseDTO licenciaDTO = new LicenseDTO();
-				licenciaDTO.setLicenseType((LicenseType) cbClase.getSelectedItem());
-				licenciaDTO.setObservation(taObservaciones.getText());
-				licenciaDTO.setEmisionDate(new Date());
-				licenciaDTO.setExpiryDate(expiryDate);
-				controladorLicencia.registerLicense(titularDTO, licenciaDTO, MenuPrincipal.menuPrincipal.usuarioDTO, altaTitular);				
-				if(JOptionPane.showConfirmDialog(null, "Licencia emitida exitosamente, ¿Desea imprimirla ahora?", "Éxito", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-					//TODO pasar a imprimir licencia
-					try {
-						PanelController.getImprimir(titularDTO, licenciaDTO, _DESTINO);
-					}catch(Exception ex) {}
+				if(cbClase.getSelectedItem()==null)
+					JOptionPane.showMessageDialog(null, "El titular ingresado no posee clases de licencia disponibles para emitir");
+				else {
+					LicenseDTO licenciaDTO = new LicenseDTO();
+					licenciaDTO.setLicenseType((LicenseType) cbClase.getSelectedItem());
+					licenciaDTO.setObservation(taObservaciones.getText());
+					licenciaDTO.setEmisionDate(new Date());
+					licenciaDTO.setExpiryDate(expiryDate);
+					controladorLicencia.registerLicense(titularDTO, licenciaDTO, MenuPrincipal.menuPrincipal.usuarioDTO, altaTitular);				
+					if(JOptionPane.showConfirmDialog(null, "Licencia emitida exitosamente, ¿Desea imprimirla ahora?", "Éxito", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+						try {
+							(PanelController.getImprimir(titularDTO, licenciaDTO, _DESTINO)).setVisible(true);
+						}catch(Exception ex) {System.out.println("No se pudo mostrar el panel imprimir");}
+					}
+					MenuPrincipal.menuPrincipal.cancelar(MenuPrincipal.PANEL_EMITIR);
 				}
-				MenuPrincipal.menuPrincipal.cancelar(MenuPrincipal.PANEL_EMITIR);
 			}
 		});
 		btnAceptarEmitir.setBounds(463, 231, 175, 40);

@@ -1,9 +1,9 @@
 package gui;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 
 import res.colors.Colors;
 import dto.TaxPayerDTO;
@@ -23,6 +23,7 @@ import javax.swing.JDialog;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -37,6 +38,7 @@ public class Login extends JDialog{
 	private JTextField tfUser;
 	private JTextField tfPassword;
 	private JButton btnIngresar;
+	private JLabel lblError;
 	private UserDTO usuarioDTO = null;
 	private UserController controladorUsuario = UserController.getInstance();
 
@@ -138,15 +140,32 @@ public class Login extends JDialog{
 						MenuPrincipal.menuPrincipal.ingresar(usuarioDTO);
 						dispose();
 					}
-					else
-						JOptionPane.showMessageDialog(null, "El nombre de usuario y la contraseña ingresada no coinciden con nuestros registros. Por favor, revisa e inténtalo de nuevo.");
+					else {
+						lblError.setVisible(true);
+						tfPassword.setText("");
+						Timer timer = new Timer(5000, new ActionListener() {
+
+				            @Override
+				            public void actionPerformed(ActionEvent e) {
+				                lblError.setVisible(false);
+				            }
+				        });
+				        timer.start();
+					}
 					
 				}
 			}
 		});
 		btnIngresar.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnIngresar.setBounds(41, 295, 444, 40);
+		btnIngresar.setBounds(35, 295, 460, 40);
 		this.getContentPane().add(btnIngresar);
+		
+		lblError = new JLabel("*El usuario y contraseña no son válidos. Vuelva a intentarlo.");
+		lblError.setVisible(false);
+		lblError.setForeground(Color.RED);
+		lblError.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblError.setBounds(35, 275, 370, 15);
+		getContentPane().add(lblError);
 	}
 	
 	public void reset() {

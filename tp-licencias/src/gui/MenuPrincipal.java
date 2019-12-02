@@ -211,6 +211,7 @@ public class MenuPrincipal extends JFrame{
 		panelMenuLicencia.add(btnEmitir);
 		
 		JButton btnImprimir = new JButton("");
+		btnImprimir.setEnabled(false);
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mostrarPanel(PANEL_IMPRIMIR);
@@ -233,6 +234,7 @@ public class MenuPrincipal extends JFrame{
 		panelMenuLicencia.add(lblImprimir);
 		
 		JButton btnRenovar = new JButton("");
+		btnRenovar.setEnabled(false);
 		btnRenovar.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/renovar_licencia_100px.png")));
 		btnRenovar.setBounds(369, 151, 105, 105);
 		panelMenuLicencia.add(btnRenovar);

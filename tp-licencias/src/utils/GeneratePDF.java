@@ -1,7 +1,6 @@
 package utils;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import com.itextpdf.io.IOException;
 import com.itextpdf.io.font.FontConstants;
@@ -15,7 +14,6 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.ListItem;
 
-import domain.LicenseType;
 import dto.LicenseDTO;
 import dto.TitularDTO;
 
@@ -25,25 +23,6 @@ public class GeneratePDF{
 	private static String _TEMPLATE_LICENCIA_DOBLE = System.getProperty("user.home") + "\\eclipse-workspace\\tp-metodos-agiles\\tp-licencias\\src\\res\\images\\template_licencia_frente_dorso.jpg";
 	private static String _FOTO_LICENCIA = System.getProperty("user.home") + "\\eclipse-workspace\\tp-metodos-agiles\\tp-licencias\\src\\res\\images\\bill-gates-licencia.jpg";
 	private static String _FIRMA_LICENCIA = System.getProperty("user.home") + "\\eclipse-workspace\\tp-metodos-agiles\\tp-licencias\\src\\res\\images\\firma-bill-gates.png";
-	
-	//TODO borrar main
-	/*public static void main(String args[]) throws IOException, java.io.IOException {
-		String destino = "C:\\Users\\alan_\\Desktop\\licencia.pdf";
-		TitularDTO titularDTO = new TitularDTO();
-		titularDTO.setName("Alan Nahuel");
-		titularDTO.setAdress("Calle 316 Nro 240");
-		titularDTO.setOrganDonor(true);
-		titularDTO.setBirthdate(new Date());
-		titularDTO.setPersonalId("41057032");
-		titularDTO.setSurname("Braidot");
-		titularDTO.setBloodType("A+");
-		LicenseDTO licenseDTO = new LicenseDTO();
-		licenseDTO.setLicenseType(LicenseType.B);
-		licenseDTO.setObservation("Necesita anteojos.");
-		licenseDTO.setEmisionDate(new Date());
-		licenseDTO.setExpiricyDate(new Date());
-		GeneratePDF.generatePDF(titularDTO, licenseDTO, destino);
-	}*/
 	
 	public static void generatePDF(TitularDTO titularDTO, LicenseDTO licenseDTO, String destino) throws IOException, java.io.IOException{
 		try {
