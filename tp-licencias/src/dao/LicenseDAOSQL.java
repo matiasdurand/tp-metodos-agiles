@@ -41,4 +41,50 @@ public class LicenseDAOSQL extends GenericDAOSQL<License, Integer> implements Li
 	
 		}
 	}
+	
+	@Override
+	public List<License> findExpiredLicenses() {
+		//creamos factory
+		SessionFactory factory = createFactory();
+		//creamos session BD
+		Session session = createSession(factory);
+		//creamos consulta HQL
+		try {
+			@SuppressWarnings("unchecked")
+			List<License> licenses = (List<License>) session.createQuery("from License where fecha_vencimiento < current_date").getResultList(); 
+			return licenses;
+		}
+		catch(NoResultException e) {
+			return null;
+		}
+		finally {
+			session.getTransaction().commit();
+			session.close();
+			factory.close();
+	
+		}
+	}
+	
+	@Override
+	public List<License> findActiveLicenses() {
+		//creamos factory
+		SessionFactory factory = createFactory();
+		//creamos session BD
+		Session session = createSession(factory);
+		//creamos consulta HQL
+		try {
+			@SuppressWarnings("unchecked")
+			List<License> licenses = (List<License>) session.createQuery("from License where fecha_vencimiento > current_date").getResultList(); 
+			return licenses;
+		}
+		catch(NoResultException e) {
+			return null;
+		}
+		finally {
+			session.getTransaction().commit();
+			session.close();
+			factory.close();
+	
+		}
+	}
 }
