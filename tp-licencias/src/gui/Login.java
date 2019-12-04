@@ -80,6 +80,7 @@ public class Login extends JDialog{
 	}
 
 	private void initialize() {
+		
 		this.setTitle("Iniciar sesi\u00F3n");
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		this.setModal(true);
@@ -166,6 +167,8 @@ public class Login extends JDialog{
 		lblError.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblError.setBounds(35, 275, 370, 15);
 		getContentPane().add(lblError);
+		
+		controladorUsuario.userLocator(tfUser.getText(), tfPassword.getText());
 	}
 	
 	public void reset() {
