@@ -1,12 +1,23 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import audit.UserMovement;
+
 import dao.UserDAO;
 import dao.UserDAOSQL;
-
+import dao.UserMovementDAO;
+import dao.UserMovementDAOSQL;
 import domain.User;
 
+import dto.TitularDTO;
 import dto.UserDTO;
 
+import validators.CompositeValidator;
+import validators.IdValidator;
+import validators.NameValidator;
+import validators.Validator;
 
 /**
  * Esta es la clase controladora de Usuarios. Singleton.
@@ -18,6 +29,7 @@ public class UserController {
 
 	public static UserController INSTANCE = new UserController();
 	private UserDAO userDAO = new UserDAOSQL(User.class);
+	private UserMovementDAO userMovementDAO = new UserMovementDAOSQL(UserMovement.class);
 	
 	
 	private UserController() {
@@ -38,7 +50,6 @@ public class UserController {
 	 * no coinciden con algun usuario.
 	 */
 	public UserDTO userLocator(String username, String password) {
-		
 		UserDTO userDTO = null;
 		
 		User user = userDAO.findByUsernameAndPassword(username, password);
@@ -73,5 +84,103 @@ public class UserController {
 				.setSurname(userDTO.getSurname())
 				.build();
 	}
+	
+	/**
+	 * Este metodo valida los datos del nuevo usuario ingresados por pantalla.
+	 * Verifica que los mismos no pertenezcan a otro usuario y que tengan un formato valido.
+	 * @param userDTO datos del usuario a dar de alta, provenientes de GUI.
+	 * @return true o false, true si los datos son validos, falso en caso contrario.
+	 */
+	public Boolean validate(UserDTO userDTO) {
+		Boolean valid = true;
+		
+		User user = userLocatorByUsername(userDTO.getUsername());
+		
+		if (user != null) {
+			valid = false;
+		}
+		else {
+			TitularDTO titularDTO = new TitularDTO();
+			titularDTO.setTypeId(userDTO.getTypeId());
+			titularDTO.setPersonalId(userDTO.getPersonalId());
+			titularDTO.setName(userDTO.getName());
+			titularDTO.setSurname(userDTO.getSurname());
+			
+			List<Validator<String, TitularDTO>> validators = new ArrayList<Validator<String, TitularDTO>>();
+			
+			validators.add(new IdValidator());
+			validators.add(new NameValidator());;
+			
+			Validator<String, TitularDTO> validator = new CompositeValidator<String, TitularDTO>(validators);
+			
+			List<String> errors = validator.validate(titularDTO);
+			
+			if (!errors.isEmpty()) {
+				valid = false;
+			}
+		}
+		
+		return valid;
+	}
+	
+	public User userLocatorByUsername(String username) {
+		return userDAO.findByUsername(username);
+	}
+	
+	/**
+	 * Este metodo registra un nuevo usuario y llama al registo del movimiento
+	 * asociado al alta del nuevo usuario.
+	 * Perdura la informacion en la base de datos.
+	 * @param userDTO datos del usuario a dar de alta, provenientes de GUI.
+	 * @param superUserDTO datos del super usuario que realiza el alta, proveniente de GUI. 
+	 */
+	public void registerUser(UserDTO userDTO, UserDTO superUserDTO) {
+		User user = buildUser(userDTO);
+		
+		userDAO.save(user);
+		
+		registerUserMovement(user, superUserDTO, UserMovement.Action.ALTA);
+	}
+	
+	/**
+	 * Este metodo registra los datos del movimiento asociado al alta
+	 * o modificacion de datos de un usuario, para posteriores auditorias del sistema.
+	 * Perdura la informacion en la base de datos.
+	 * @param user usuario a dar de alta o usuario existente con datos modificados.
+	 * @param superUserDTO datos del super usuario que realiza el alta o modificacion
+	 * de los datos de un usuario.
+	 * @param action representa el tipo de accion que se esta realizando.
+	 */
+	private void registerUserMovement(User user, UserDTO superUserDTO, UserMovement.Action action) {
+		User superUser = buildUser(superUserDTO);
+		
+		superUser.setId(superUserDTO.getId());
+		
+		UserMovement userMovement = new UserMovement.Builder()
+				.setAction(action)
+				.setUser(superUser)
+				.setUserModified(user)
+				.build();
+		
+		userMovementDAO.save(userMovement);
+	}
+	
+	/**
+	 * Este metodo modifica los datos de un usuario existente y llama al registro
+	 * del movimiento asociado a la modificacion del usuario.
+	 * Perdura la informacion en la base de datos.
+	 * @param userDTO datos nuevos del usuario, provenientes de GUI.
+	 * @param superUserDTO datos del super usuario que realiza el alta, proveniente de GUI. 
+	 */
+	public void modifyUser(UserDTO userDTO, UserDTO superUserDTO) {
+		User modifiedUser = buildUser(userDTO);
+		
+		modifiedUser.setId(userDTO.getId());
+		
+		userDAO.update(modifiedUser);
+
+		registerUserMovement(modifiedUser, superUserDTO, UserMovement.Action.MODIFICACION);
+	}
+
 
 }
