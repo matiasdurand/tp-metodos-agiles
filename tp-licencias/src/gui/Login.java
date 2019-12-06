@@ -51,12 +51,12 @@ public class Login extends JDialog{
 				//PARA PROBAR REGISTRO UN USUARIO Y UN CONTRIBUYENTE
 				/*TaxPayerDTO taxPayer = new TaxPayerDTO();
 				taxPayer.setTypeId(TypeId.DNI);
-				taxPayer.setPersonalId((long) 12345678);
-				taxPayer.setName("Adam");
-				taxPayer.setSurname("Smith");
+				taxPayer.setPersonalId((long) 42000001);
+				taxPayer.setName("Nombre");
+				taxPayer.setSurname("Apellido");
 				taxPayer.setAdress("Calle Falsa 123");
 				
-				LocalDate ld = LocalDate.of(1997, 12, 11);
+				LocalDate ld = LocalDate.of(2000, 12, 11);
 			
 				taxPayer.setBirthdate(Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 				
