@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
@@ -13,6 +14,9 @@ import dao.TaxPayerDAOSQL;
 import dao.UserDAOSQL;
 import domain.TypeId;
 import domain.User;
+
+import dto.UserDTO;
+import controllers.UserController;
 
 import java.awt.Font;
 
@@ -30,6 +34,7 @@ import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+
 
 
 public class Login extends JDialog{
@@ -110,25 +115,25 @@ public class Login extends JDialog{
 		JLabel lblUser = new JLabel("Usuario:");
 		lblUser.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblUser.setIcon(new ImageIcon(Login.class.getResource("/res/images/user_filled_30px.png")));
-		lblUser.setBounds(41, 179, 145, 40);
+		lblUser.setBounds(35, 179, 145, 40);
 		this.getContentPane().add(lblUser);
 		
 		JLabel lblPassword = new JLabel("Contrase\u00F1a:");
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblPassword.setIcon(new ImageIcon(Login.class.getResource("/res/images/password_filled_30px.png")));
-		lblPassword.setBounds(41, 232, 145, 40);
+		lblPassword.setBounds(35, 232, 145, 40);
 		this.getContentPane().add(lblPassword);
 		
 		tfUser = new JTextField();
 		tfUser.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		tfUser.setBounds(220, 187, 265, 30);
+		tfUser.setBounds(210, 187, 285, 30);
 		this.getContentPane().add(tfUser);
 		tfUser.setColumns(10);
 		
 		tfPassword = new JPasswordField();
 		tfPassword.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		tfPassword.setColumns(10);
-		tfPassword.setBounds(220, 240, 265, 30);
+		tfPassword.setBounds(210, 240, 285, 30);
 		this.getContentPane().add(tfPassword);
 		
 		btnIngresar = new JButton("INGRESAR");
@@ -169,6 +174,7 @@ public class Login extends JDialog{
 		getContentPane().add(lblError);
 		
 		controladorUsuario.userLocator(tfUser.getText(), tfPassword.getText());
+
 	}
 	
 	public void reset() {

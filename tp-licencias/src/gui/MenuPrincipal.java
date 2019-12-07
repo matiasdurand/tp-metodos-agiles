@@ -1,26 +1,26 @@
 package gui;
 
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
-import controllers.PanelController;
-import dto.UserDTO;
-import res.colors.Colors;
 import java.awt.Color;
 import java.awt.Dimension;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Insets;
 import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.ImageIcon;
+
+import controllers.PanelController;
+import dto.UserDTO;
+import res.colors.Colors;
+
 
 public class MenuPrincipal extends JFrame{
 	
@@ -29,21 +29,27 @@ public class MenuPrincipal extends JFrame{
 	private final int PANEL_LOGIN=-1;
 	private final int PANEL_INICIAL=0;
 	private final int PANEL_MENU_LICENCIA=1;
-	private final int PANEL_MENU_USUARIO=2;
-	public final static int PANEL_EMITIR=3;
-	public final static int PANEL_RENOVAR=4;
-	public final static int PANEL_IMPRIMIR=5;
+	private final int PANEL_MENU_TITULAR=2;
+	private final int PANEL_MENU_USUARIO=3;
+	public final static int PANEL_EMITIR=10;
+	public final static int PANEL_RENOVAR=11;
+	public final static int PANEL_IMPRIMIR=12;
+	public final static int PANEL_MODIFICAR_TITULAR=20;
+	public final static int PANEL_ALTA_USUARIO=30;
+	public final static int PANEL_MODIFICAR_USUARIO=31;
 	
 	protected static MenuPrincipal menuPrincipal;
 	private JFrame frmPrincipal;
 	private JButton btnUsuario;
 	private JButton btnLicencia;
+	private JButton btnTitular;
 	private JButton btnInicio;
 	private JButton btnCerrarSesion;
 	private JPanel barraLateral;
 	private JPanel panelTitulo;
 	private JPanel panelMenuLicencia;
 	private JPanel panelMenuUsuario;
+	private JPanel panelMenuTitular;
 	private JPanel panel; //En este puntero se asigna el JPanel que se debe visualizar en pantalla
 	private JLabel lblNombreUsuario;
 	protected UserDTO usuarioDTO=null;
@@ -87,6 +93,7 @@ public class MenuPrincipal extends JFrame{
 		armarPanelTitulo();
 		armarPanelMenuUsuario();
 		armarPanelMenuLicencia();
+		armarPanelMenuTitular();
 		
 		//Inicializamos la vista en panelPrincipal
 		if(usuarioDTO==null)
@@ -116,6 +123,19 @@ public class MenuPrincipal extends JFrame{
 		btnLicencia.setBounds(0, 169, 150, 40);
 		barraLateral.add(btnLicencia);
 		
+		btnTitular =  new JButton("TITULAR");
+		btnTitular.setFocusPainted(false);
+		btnTitular.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mostrarPanel(PANEL_MENU_TITULAR);
+			}
+		});
+		btnTitular.setForeground(Colors.MENU_LATERAL);
+		btnTitular.setBackground(Colors.FONDO);
+		btnTitular.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		btnTitular.setBounds(0, 209, 150, 40);
+		barraLateral.add(btnTitular);
+		
 		btnUsuario = new JButton("USUARIO");
 		btnUsuario.setFocusPainted(false);
 		btnUsuario.addActionListener(new ActionListener() {
@@ -126,7 +146,7 @@ public class MenuPrincipal extends JFrame{
 		btnUsuario.setForeground(Colors.MENU_LATERAL);
 		btnUsuario.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnUsuario.setBackground(Colors.FONDO);
-		btnUsuario.setBounds(0, 209, 150, 40);
+		btnUsuario.setBounds(0, 249, 150, 40);
 		barraLateral.add(btnUsuario);
 		
 		btnCerrarSesion = new JButton("CERRAR SESI\u00D3N");
@@ -234,7 +254,7 @@ public class MenuPrincipal extends JFrame{
 		panelMenuLicencia.add(lblImprimir);
 		
 		JButton btnRenovar = new JButton("");
-		btnRenovar.setEnabled(false);
+		btnRenovar.setEnabled(true);
 		btnRenovar.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/renovar_licencia_100px.png")));
 		btnRenovar.setBounds(369, 151, 105, 105);
 		panelMenuLicencia.add(btnRenovar);
@@ -246,12 +266,68 @@ public class MenuPrincipal extends JFrame{
 		panelMenuLicencia.add(lblRenovar);
 	}
 	
+	//Crea la interfaz y elementos del JPanel PanelTitular
+	private void armarPanelMenuTitular(){
+		panelMenuTitular = new JPanel();
+		panelMenuTitular.setBounds(150, 60, 844, 605);
+		panelMenuTitular.setBackground(Colors.FONDO);
+		panelMenuTitular.setLayout(null);
+		
+		JButton btnModificarTitular = new JButton("");
+		btnModificarTitular.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mostrarPanel(PANEL_MODIFICAR_TITULAR);
+			}
+		});
+		btnModificarTitular.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/modificar_usuario_100px.png")));
+		btnModificarTitular.setBounds(132, 151, 105, 105);
+		panelMenuTitular.add(btnModificarTitular);
+		
+		JLabel lblModificarTitular = new JLabel("MODIFICAR");
+		lblModificarTitular.setHorizontalAlignment(SwingConstants.CENTER);
+		lblModificarTitular.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblModificarTitular.setBounds(132, 260, 105, 16);
+		panelMenuTitular.add(lblModificarTitular);
+	}
+	
 	//Crea la interfaz y elementos del JPanel PanelUsuario
 	private void armarPanelMenuUsuario() {
 		panelMenuUsuario = new JPanel();
 		panelMenuUsuario.setBounds(150, 60, 844, 605);
 		panelMenuUsuario.setBackground(Colors.FONDO);
 		panelMenuUsuario.setLayout(null);
+		
+		JButton btnAltaUsuario = new JButton("");
+		btnAltaUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mostrarPanel(PANEL_ALTA_USUARIO);
+			}
+		});
+		btnAltaUsuario.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/alta_usuario_100px.png")));
+		btnAltaUsuario.setBounds(132, 151, 105, 105);
+		panelMenuLicencia.add(btnAltaUsuario);
+		
+		JLabel lblAltaUsuario = new JLabel("DAR DE ALTA");
+		lblAltaUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAltaUsuario.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblAltaUsuario.setBounds(132, 260, 105, 16);
+		panelMenuLicencia.add(lblAltaUsuario);
+		
+		JButton btnModificarUsuario = new JButton("");
+		btnModificarUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mostrarPanel(PANEL_MODIFICAR_USUARIO);
+			}
+		});
+		btnModificarUsuario.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/modificar_usuario_100px.png")));
+		btnModificarUsuario.setBounds(369, 151, 105, 105);
+		panelMenuLicencia.add(btnModificarUsuario);
+		
+		JLabel lblModificarUsuario = new JLabel("MODIFICAR");
+		lblModificarUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+		lblModificarUsuario.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblModificarUsuario.setBounds(369, 260, 105, 16);
+		panelMenuLicencia.add(lblModificarUsuario);
 	}
 	
 	//Muestra el panel solicitado ocultando los demas
@@ -259,6 +335,7 @@ public class MenuPrincipal extends JFrame{
 		btnInicio.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnLicencia.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnUsuario.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		btnTitular.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnCerrarSesion.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		frmPrincipal.getContentPane().remove(panel);
 		switch(opcion) {
@@ -290,6 +367,22 @@ public class MenuPrincipal extends JFrame{
 				panel=panelMenuUsuario;
 				break;
 			}
+			case PANEL_ALTA_USUARIO:{
+				panel=PanelController.getPanelUsuario(PANEL_ALTA_USUARIO);
+				break;
+			}
+			case PANEL_MODIFICAR_USUARIO:{
+				panel=PanelController.getPanelUsuario(PANEL_MODIFICAR_USUARIO);				
+			}
+			case PANEL_MENU_TITULAR:{
+				btnTitular.setFont(new Font("Tahoma", Font.BOLD, 18));
+				panel=panelMenuTitular;
+				break;
+			}
+			case PANEL_MODIFICAR_TITULAR:{
+				panel=PanelController.getPanelTitular(PANEL_MODIFICAR_TITULAR);
+				break;	
+			}
 		}
 		frmPrincipal.getContentPane().add(panel);
 		frmPrincipal.pack();
@@ -297,10 +390,27 @@ public class MenuPrincipal extends JFrame{
 		frmPrincipal.repaint();
 	}
 	
+	//Este metodo identifica de que panel se cancelo para determinar que menu debe mostrar
 	protected void cancelar(Integer aux) {
 		switch(aux){
 			case PANEL_EMITIR:{
 				mostrarPanel(PANEL_MENU_LICENCIA);
+				break;
+			}
+			case PANEL_RENOVAR:{
+				mostrarPanel(PANEL_MENU_LICENCIA);
+				break;
+			}
+			case PANEL_ALTA_USUARIO:{
+				mostrarPanel(PANEL_MENU_USUARIO);
+				break;
+			}
+			case PANEL_MODIFICAR_USUARIO:{
+				mostrarPanel(PANEL_MENU_USUARIO);
+				break;
+			}
+			case PANEL_MODIFICAR_TITULAR:{
+				mostrarPanel(PANEL_MENU_TITULAR);
 				break;
 			}
 		}
@@ -309,6 +419,7 @@ public class MenuPrincipal extends JFrame{
 	protected void ingresar(UserDTO dto) {
 		usuarioDTO=dto;
 		lblNombreUsuario.setText(usuarioDTO.getUsername());
+		btnUsuario.setEnabled(usuarioDTO.getSuperUser());
 		barraLateral.repaint();
 		mostrarPanel(PANEL_INICIAL);
 	}

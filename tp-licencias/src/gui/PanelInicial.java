@@ -5,10 +5,14 @@ import java.awt.Font;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 
 import res.colors.Colors;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class PanelInicial extends JPanel {
 	
@@ -28,9 +32,9 @@ public class PanelInicial extends JPanel {
 		this.setBackground(Colors.FONDO);
 		this.setLayout(null);
 		
-		JLabel lblTituloPrincipal = new JLabel("Licencias");
+		JLabel lblTituloPrincipal = new JLabel("Listado de licencias");
 		lblTituloPrincipal.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblTituloPrincipal.setBounds(15, 15, 100, 25);
+		lblTituloPrincipal.setBounds(12, 15, 240, 25);
 		this.add(lblTituloPrincipal);
 		
 		JCheckBox ckbxVencidas = new JCheckBox(" Vencidas");
@@ -42,8 +46,16 @@ public class PanelInicial extends JPanel {
 		this.add(ckbxVencidas);
 		
 		tableLicencias = new JTable();
-		tableLicencias.setBounds(15, 55, 817, 537);
-		this.add(tableLicencias);
+		tableLicencias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		JScrollPane scroll = new JScrollPane();
+		scroll.setBounds(12, 55, 820, 537);
+		scroll.setViewportView(tableLicencias);
+		tableLicencias.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+	        	//TODO comportamiento al seleccionar una fila
+	        }
+		});
+		this.add(scroll);
 		
 		JLabel lblFiltrarPor = new JLabel("Filtrar por:");
 		lblFiltrarPor.setFont(new Font("Tahoma", Font.PLAIN, 20));
