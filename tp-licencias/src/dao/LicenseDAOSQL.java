@@ -93,8 +93,24 @@ public class LicenseDAOSQL extends GenericDAOSQL<License, Integer> implements Li
 	
 	@Override
 	public List<License> findValidLicensesOfTitular(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		//creamos factory
+		SessionFactory factory = createFactory();
+		//creamos session BD
+		Session session = createSession(factory);
+		//creamos consulta HQL
+		try {
+			@SuppressWarnings("unchecked")				
+			List<License> licenses = (List<License>) session.createQuery("from License where fecha_vencimiento > current_date and id_titular='"+id+"'").getResultList(); 
+			return licenses;
+		}
+		catch(NoResultException e) {
+			return null;
+		}
+		finally {
+			session.getTransaction().commit();
+			session.close();
+			factory.close();
+		}
 	}
 	
 	@Override
