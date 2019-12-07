@@ -6,8 +6,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JComboBox;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import audit.LicenseMovement;
 import dao.LicenseDAO;
@@ -116,9 +120,6 @@ public class LicenseController {
 		
 			Titular titular = TitularController.getInstance().findTitular(titularDTO.getId());
 			
-			//PARA PROBAR LA RECUPERACION CORRECTA DE LAS LICENCIAS DEL TITULAR.
-			System.out.println(titular.getLicenses());
-			
 			List<Validator<LicenseType,Titular>> validators = new ArrayList<Validator<LicenseType,Titular>>();
 			validators.add(new ClassAValidator());
 			validators.add(new ClassBValidator());
@@ -171,6 +172,14 @@ public class LicenseController {
 	}
 	
 	/**
+	 * Este metodo se comunica con la capa DAO para actualizar una licencia en la base de datos.
+	 * @param license licencia a ser actualizada en base de datos. 
+	 */
+	public void updateLicense(License license) {
+		licenseDAO.update(license);
+	}
+	
+	/**
 	 * Este metodo delega el calculo del costo de una licencia a la clase calculadora de costo. 
 	 * @param licenseType tipo de licencia.
 	 * @param expiryDate fecha de vencimiento de la licencia.
@@ -214,4 +223,79 @@ public class LicenseController {
 		return LicenseDAO.findValidLicensesOfTitular(id);
 	}
 	
+	/**
+	 * Este metodo crea una nueva instancia de licencia que sera renovada y delega la perduracion 
+	 * en base de datos.
+	 * @param titularDTO datos del titualr, provenientes de GUI.
+	 * @param licenseDTO datos de la licencia, provenientes de GUI.
+	 */
+	public void renewLicense(TitularDTO titularDTO, LicenseDTO licenseDTO, UserDTO userDTO) {
+		
+		License license = new License.Builder()
+				.setLicenseType(licenseDTO.getLicenseType())
+				.setObservation(licenseDTO.getObservation())
+				.setExpiryDate(licenseDTO.getExpiryDate())
+				.build();
+		
+		TitularController.getInstance().addTitularsLicense(titularDTO.getId(), license);
+		
+		User user = UserController.getInstance().buildUser(userDTO);
+		registerLicenseMovement(license,user, LicenseMovement.Action.RENOVACION);
+			
+	}
+	
+	/**
+	 * Este metodo recibe un JTable y carga los datos de las licencias que el titular esta 
+	 * habilitado a renovar. Asigna el TableModel al JTable.
+	 * @param titularDTO datos del titular que desea renovar una licencia.
+	 * @param table JTable proveniente de GUI a la cual se cargaran los datos. 
+	 */
+	public void loadRenewLicenceTable(TitularDTO titularDTO, JTable table) {
+		
+		List<License> result = new ArrayList<License>();
+		List<License> licenses = findLastLicensesOfTitular(titularDTO.getId());
+		Date todaysDate = new Date();
+		DefaultTableModel model = new DefaultTableModel();
+		ArrayList<Object> columnsName = new ArrayList<Object>();
+		
+		columnsName.add("Tipo Licencia");
+		columnsName.add("Fecha Emision"); 
+		columnsName.add("Fecha Expiracion");
+		columnsName.add("Observacion");
+		
+		for(Object o : columnsName) { //Agrego las columnas al TableModel
+			model.addColumn(o);
+		}
+		
+		for(License l : licenses) { //Me quedo con las licencias vencidas
+			if(l.getExpiryDate().compareTo(todaysDate) <= 0) {
+				result.add(l);
+			}
+		}
+		
+		for(License l : result) { //Agrego la informacion de cada licencia al TableModel
+			Object[] object = new Object [] {
+					l.getLicenseType().toString(), 
+					l.getEmisionDate().toString(),
+					l.getExpiryDate().toString(),
+					l.getObservation().toString()
+			};
+			model.addRow(object);
+		}
+		
+		table.setModel(model);
+		
+	}
+	
+	/**
+	 * Este metodo se comunica con la capa DAO para recuperar una lista de licencias del titular 
+	 * compuesta por una licencia de cada tipo que posea, ya sea vigente o vencida cuya fecha de 
+	 * vencimiento en caso de estar vencida sea la mas cercana a la actual.
+	 * @param id entero que corresponde a la primary key de un titular
+	 * @return lista de licencias resultante.
+	 */
+	public List<License> findLastLicensesOfTitular(Integer id) { 
+		return LicenseDAO.findLastLicensesOfTitular(id);
+	}
+
 }

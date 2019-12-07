@@ -188,6 +188,14 @@ public class TitularController {
 	}
 	
 	/**
+	 * Este metodo se comunica con la capa DAO para actualizar un titular en la base de datos.
+	 * @param titular titular a ser actualizado en la base de datos. 
+	 */
+	public void updateTitular(Titular titular) {
+		titularDAO.update(titular);
+	}
+	
+	/**
 	 * Este metodo se comunica con la capa DAO para recuperar un titular de la base de datos
 	 * por tipo y numero de documento.
 	 * @param typeId tipo de documento del titular.
@@ -205,7 +213,6 @@ public class TitularController {
 	 * @param license licencia que sera añdida a la lista.
 	 */
 	public void addTitularsLicense(Integer id, License license, UserDTO userDTO) {
-		
 		Titular titular = findTitular(id);
 		
 		titular.getLicenses().add(license);
@@ -219,7 +226,6 @@ public class TitularController {
 		user.setId(userDTO.getId());
 		
 		LicenseController.getInstance().registerLicenseMovement(license, user, LicenseMovement.Action.ALTA);
-		
 	}
 	
 	/**
@@ -280,8 +286,5 @@ public class TitularController {
 		
 		registerTitularMovement(titular,user, TitularMovement.Action.MODIFICACION);
 	}
-	
-	
-	
 	
 }

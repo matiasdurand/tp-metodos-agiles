@@ -14,4 +14,7 @@ public interface LicenseDAO extends GenericDAO<License, Integer> {
 	public List<License> findAllLicenses();
 
 	public  List<License> findValidLicensesOfTitular(Integer id);
+
+	public List<License> findLastLicensesOfTitular(Integer id);
+
 }
