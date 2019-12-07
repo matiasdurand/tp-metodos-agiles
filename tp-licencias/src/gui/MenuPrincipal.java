@@ -305,13 +305,13 @@ public class MenuPrincipal extends JFrame{
 		});
 		btnAltaUsuario.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/alta_usuario_100px.png")));
 		btnAltaUsuario.setBounds(132, 151, 105, 105);
-		panelMenuLicencia.add(btnAltaUsuario);
+		panelMenuUsuario.add(btnAltaUsuario);
 		
 		JLabel lblAltaUsuario = new JLabel("DAR DE ALTA");
 		lblAltaUsuario.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAltaUsuario.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblAltaUsuario.setBounds(132, 260, 105, 16);
-		panelMenuLicencia.add(lblAltaUsuario);
+		panelMenuUsuario.add(lblAltaUsuario);
 		
 		JButton btnModificarUsuario = new JButton("");
 		btnModificarUsuario.addActionListener(new ActionListener() {
@@ -321,13 +321,13 @@ public class MenuPrincipal extends JFrame{
 		});
 		btnModificarUsuario.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/modificar_usuario_100px.png")));
 		btnModificarUsuario.setBounds(369, 151, 105, 105);
-		panelMenuLicencia.add(btnModificarUsuario);
+		panelMenuUsuario.add(btnModificarUsuario);
 		
 		JLabel lblModificarUsuario = new JLabel("MODIFICAR");
 		lblModificarUsuario.setHorizontalAlignment(SwingConstants.CENTER);
 		lblModificarUsuario.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblModificarUsuario.setBounds(369, 260, 105, 16);
-		panelMenuLicencia.add(lblModificarUsuario);
+		panelMenuUsuario.add(lblModificarUsuario);
 	}
 	
 	//Muestra el panel solicitado ocultando los demas
@@ -417,7 +417,10 @@ public class MenuPrincipal extends JFrame{
 	}
 	
 	protected void ingresar(UserDTO dto) {
-		usuarioDTO=dto;
+		System.out.println(dto.getUsername());
+		System.out.println(dto.getPassword());
+		System.out.println(dto.getSuperUser());
+		usuarioDTO = dto;
 		lblNombreUsuario.setText(usuarioDTO.getUsername());
 		btnUsuario.setEnabled(usuarioDTO.getSuperUser());
 		barraLateral.repaint();

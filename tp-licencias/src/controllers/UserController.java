@@ -66,6 +66,7 @@ public class UserController {
 		userDTO.setId(user.getId());
 		userDTO.setUsername(user.getUsername());
 		userDTO.setPassword(user.getPassword());
+		userDTO.setSuperUser(user.getSuperUser());
 		userDTO.setTypeId(user.getTypeId());
 		userDTO.setPersonalId(user.getPersonalId().toString());
 		userDTO.setName(user.getName());
@@ -94,7 +95,7 @@ public class UserController {
 	public Boolean validate(UserDTO userDTO) {
 		Boolean valid = true;
 		
-		User user = userLocatorByUsername(userDTO.getUsername());
+		User user = findUserByUsername(userDTO.getUsername());
 		
 		if (user != null) {
 			valid = false;
@@ -123,8 +124,12 @@ public class UserController {
 		return valid;
 	}
 	
-	public User userLocatorByUsername(String username) {
+	private User findUserByUsername(String username) {
 		return userDAO.findByUsername(username);
+	}
+	
+	public UserDTO userLocatorByUsername(String username) {
+		return buildUserDTO(userDAO.findByUsername(username));
 	}
 	
 	/**

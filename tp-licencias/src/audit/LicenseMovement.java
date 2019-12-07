@@ -46,7 +46,7 @@ public class LicenseMovement {
 	private User user; 
 	
 	@Column (name="LocalDate")
-	private LocalDate dateTime; //GUARDA FECHA Y HORA(hora,min,seg)
+	private LocalDate dateTime;
 	
 	@OneToOne
 	@JoinColumn(name = "id_licencia")

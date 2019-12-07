@@ -10,16 +10,17 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 
+import controllers.TitularController;
+import controllers.UserController;
 import res.colors.Colors;
 import javax.swing.JTextField;
 import java.awt.Color;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 
-import domain.LicenseType;
 import domain.TypeId;
+import dto.UserDTO;
 
 public class PanelUsuario extends JPanel {
 
@@ -34,7 +35,7 @@ public class PanelUsuario extends JPanel {
 	private boolean mostrarContraseña=false;
 	
 	private UserController controladorUsuario = UserController.getInstance();
-	private UserDTO nuevonuevoUsuarioDTO = new UserDTO();
+	private UserDTO nuevoUsuarioDTO = new UserDTO();
 	
 	private JLabel lblTitulo;
 	private JComboBox<TypeId> cmbTipoDoc;
@@ -71,7 +72,7 @@ public class PanelUsuario extends JPanel {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(tfUser.getText()!="") {
-					nuevoUsuarioDTO = controladorUsuario.userLocatorByUserName(tfUser.getText());
+					nuevoUsuarioDTO = controladorUsuario.userLocatorByUsername(tfUser.getText());
 					if(nuevoUsuarioDTO!=null) {
 						cargarDatos();
 						bloquearComponentes(false);
@@ -84,7 +85,7 @@ public class PanelUsuario extends JPanel {
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(validarEntradas()) {
-					controladorUsuario.modifyUser(nuevonuevoUsuarioDTO, MenuPrincipal.menuPrincipal.usuarioDTO);
+					controladorUsuario.modifyUser(nuevoUsuarioDTO, MenuPrincipal.menuPrincipal.usuarioDTO);
 					JOptionPane.showMessageDialog(null, "El usuario ha sido modificado correctamente");
 				}
 			}
@@ -98,7 +99,6 @@ public class PanelUsuario extends JPanel {
 		cmbTipoDoc.setSelectedItem(nuevoUsuarioDTO.getTypeId());
 		tfPassword.setText(nuevoUsuarioDTO.getPassword());
 		tfRepeatPassword.setText(nuevoUsuarioDTO.getPassword());
-		ckbSuperUser.setSelected(nuevoUsuarioDTO.getSuperUser());
 	}
 	
 	private boolean validarDoc(String doc) {
@@ -128,7 +128,7 @@ public class PanelUsuario extends JPanel {
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(validarEntradas()) {
-					controladorUsuario.registerUser(nuevonuevoUsuarioDTO, MenuPrincipal.menuPrincipal.usuarioDTO);
+					controladorUsuario.registerUser(nuevoUsuarioDTO, MenuPrincipal.menuPrincipal.usuarioDTO);
 					JOptionPane.showMessageDialog(null, "El usuario ha sido dado de alta correctamente");
 				}
 			}
@@ -153,12 +153,12 @@ public class PanelUsuario extends JPanel {
 	}
 	
 	private void completarnuevoUsuarioDTO() {
-		nuevoUsuarioDTO.setName(tfNombre);
-		nuevoUsuarioDTO.setSurname(tfApellido);
-		nuevoUsuarioDTO.setTypeId(cmbTipoDoc.getSelectedItem());
+		nuevoUsuarioDTO.setName(tfNombre.getText());
+		nuevoUsuarioDTO.setSurname(tfApellido.getText());
+		nuevoUsuarioDTO.setTypeId((TypeId) cmbTipoDoc.getSelectedItem());
 		nuevoUsuarioDTO.setPersonalId(tfNroDoc.getText());
 		nuevoUsuarioDTO.setUsername(tfUser.getText());
-		nuevoUsuarioDTO.setPassword(tfPassword);
+		nuevoUsuarioDTO.setPassword(tfPassword.getSelectedText());
 	}
 
 	private void initialize() {
@@ -183,6 +183,7 @@ public class PanelUsuario extends JPanel {
 		add(lblTipoDoc);
 		
 		cmbTipoDoc = new JComboBox<TypeId>();
+		TitularController.getInstance().loadTypeIdComboBox(cmbTipoDoc);
 		cmbTipoDoc.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		cmbTipoDoc.setFocusable(false);
 		cmbTipoDoc.setBounds(299, 213, 149, 40);
@@ -317,7 +318,7 @@ public class PanelUsuario extends JPanel {
 	}
 
 	protected boolean validateUsername() {
-		return controladorUsuario.validate(tfUser.getText());
+		return controladorUsuario.validate(nuevoUsuarioDTO);
 	}
 
 	@SuppressWarnings("deprecation")
