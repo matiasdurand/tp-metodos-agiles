@@ -18,7 +18,6 @@ public class PanelController {
 	private static PanelController _INSTANCE = null;
 	private static PanelEmitir panelEmitir;
 	private static PanelInicial panelInicial;
-	private static ImprimirLicencia imprimir;
 	private static Login login;
 	
 	public static PanelController getInstance() {
@@ -32,9 +31,7 @@ public class PanelController {
 	}
 	
 	public static JFrame getImprimir(TitularDTO titularDTO, LicenseDTO licenseDTO, String destino) throws IOException, java.io.IOException {
-		if(imprimir == null)
-			imprimir = new ImprimirLicencia(titularDTO,licenseDTO,destino);
-		return imprimir;
+		 return (new ImprimirLicencia(titularDTO,licenseDTO,destino)); 
 	}
 
 	public static JPanel getPanelEmitir() {

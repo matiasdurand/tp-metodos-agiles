@@ -33,9 +33,11 @@ public class ImprimirLicencia extends JFrame {
 	private JButton btnCancelar;
 
 	public ImprimirLicencia(TitularDTO titularDTO, LicenseDTO licenseDTO, String destino) throws IOException, java.io.IOException {
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
-		this.setMinimumSize(new Dimension(1050,605));
+		super();
+		setResizable(false);
+		setAutoRequestFocus(false);
+		setMinimumSize(new Dimension(1050,605));
+	    
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ImprimirLicencia.class.getResource("/res/images/print_icon_125px.png")));
 		setTitle("Imprimir licencia");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -88,6 +90,7 @@ public class ImprimirLicencia extends JFrame {
 		contentPane.add(btnImprimir);
 		
 		JButton btnGuardar = new JButton("GUARDAR");
+		btnGuardar.setVisible(false);
 		btnGuardar.setEnabled(false);
 		btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnGuardar.setFocusable(false);

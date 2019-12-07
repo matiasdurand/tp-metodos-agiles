@@ -7,9 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import controllers.PanelController;
-import dao.TaxPayerDAOSQL;
-import domain.TypeId;
-import dto.TaxPayerDTO;
+import dto.UserDTO;
 import res.colors.Colors;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -20,9 +18,6 @@ import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -51,27 +46,13 @@ public class MenuPrincipal extends JFrame{
 	private JPanel panelMenuUsuario;
 	private JPanel panel; //En este puntero se asigna el JPanel que se debe visualizar en pantalla
 	private JLabel lblNombreUsuario;
-	private String user=null;
+	protected UserDTO usuarioDTO=null;
 	
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//PARA REGISTRAR UN CONTRIBUYENTE
-					/*TaxPayerDTO taxPayer = new TaxPayerDTO();
-					taxPayer.setTypeId(TypeId.DNI);
-					taxPayer.setPersonalId((long) 22222222);
-					taxPayer.setName("Adam");
-					taxPayer.setSurname("Smith");
-					taxPayer.setAdress("Calle Falsa 123");
-					
-					LocalDate ld = LocalDate.of(1997, 12, 11);
-				
-					taxPayer.setBirthdate(Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-					
-					new TaxPayerDAOSQL(TaxPayerDTO.class).save(taxPayer);*/
-					
 					MenuPrincipal window = new MenuPrincipal();
 					window.frmPrincipal.setVisible(true);
 				} catch (Exception e) {
@@ -108,7 +89,7 @@ public class MenuPrincipal extends JFrame{
 		armarPanelMenuLicencia();
 		
 		//Inicializamos la vista en panelPrincipal
-		if(user==null)
+		if(usuarioDTO==null)
 			mostrarPanel(PANEL_LOGIN);
 		else
 			mostrarPanel(PANEL_INICIAL);
@@ -155,7 +136,7 @@ public class MenuPrincipal extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				btnCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 17));
 				if(JOptionPane.showConfirmDialog(null, "¿Está seguro que desea cerrar sesión?", "Cerrar sesión", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-					user=null;
+					usuarioDTO=null;
 					lblNombreUsuario.setText("nombreUsuario");
 					barraLateral.repaint();
 					mostrarPanel(PANEL_LOGIN);
@@ -230,6 +211,7 @@ public class MenuPrincipal extends JFrame{
 		panelMenuLicencia.add(btnEmitir);
 		
 		JButton btnImprimir = new JButton("");
+		btnImprimir.setEnabled(false);
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mostrarPanel(PANEL_IMPRIMIR);
@@ -252,6 +234,7 @@ public class MenuPrincipal extends JFrame{
 		panelMenuLicencia.add(lblImprimir);
 		
 		JButton btnRenovar = new JButton("");
+		btnRenovar.setEnabled(false);
 		btnRenovar.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/renovar_licencia_100px.png")));
 		btnRenovar.setBounds(369, 151, 105, 105);
 		panelMenuLicencia.add(btnRenovar);
@@ -323,9 +306,9 @@ public class MenuPrincipal extends JFrame{
 		}
 	}
 	
-	protected void ingresar(String user) {
-		this.user=user;
-		lblNombreUsuario.setText(user);
+	protected void ingresar(UserDTO dto) {
+		usuarioDTO=dto;
+		lblNombreUsuario.setText(usuarioDTO.getUsername());
 		barraLateral.repaint();
 		mostrarPanel(PANEL_INICIAL);
 	}
