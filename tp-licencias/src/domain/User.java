@@ -40,8 +40,7 @@ public class User {
 	private String name;
 
 	@Column (name="apellido")
-	private String surname;
-	
+	private String surname;	
 	
 	public Integer getId() {
 		return id;

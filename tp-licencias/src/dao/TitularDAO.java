@@ -3,6 +3,7 @@ package dao;
 
 import java.util.List;
 
+
 import domain.Titular;
 import domain.TypeId;
 
@@ -15,5 +16,6 @@ public interface TitularDAO extends GenericDAO<Titular, Integer> {
 
 	public Titular findByPersonalId(TypeId typeId, Long personalId);
 	public List<Titular> findAllTitulars();
+	
 	
 }
