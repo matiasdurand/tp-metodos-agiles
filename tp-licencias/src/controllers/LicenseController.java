@@ -81,7 +81,12 @@ public class LicenseController {
 			TitularController.getInstance().registerTitular(titularDTO, license, userDTO);
 		}
 		else { 
-			TitularController.getInstance().addTitularsLicense(titularDTO.getId(), license, userDTO);
+			TitularController.getInstance().addTitularsLicense(titularDTO.getId(), license);
+			
+			User user = UserController.getInstance().buildUser(userDTO);
+			user.setId(userDTO.getId());
+			
+			registerLicenseMovement(license, user, LicenseMovement.Action.ALTA);
 		}
 		
 	}
@@ -240,7 +245,9 @@ public class LicenseController {
 		TitularController.getInstance().addTitularsLicense(titularDTO.getId(), license);
 		
 		User user = UserController.getInstance().buildUser(userDTO);
-		registerLicenseMovement(license,user, LicenseMovement.Action.RENOVACION);
+		user.setId(userDTO.getId());
+		
+		registerLicenseMovement(license, user, LicenseMovement.Action.RENOVACION);
 			
 	}
 	
@@ -295,7 +302,7 @@ public class LicenseController {
 	 * @return lista de licencias resultante.
 	 */
 	public List<License> findLastLicensesOfTitular(Integer id) { 
-		return LicenseDAO.findLastLicensesOfTitular(id);
+		return licenseDAO.findLastLicensesOfTitular(id);
 	}
 
 }

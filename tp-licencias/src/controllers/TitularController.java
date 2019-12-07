@@ -212,7 +212,7 @@ public class TitularController {
 	 * @param id entero que corresponde a la primary key de un titular.
 	 * @param license licencia que sera añdida a la lista.
 	 */
-	public void addTitularsLicense(Integer id, License license, UserDTO userDTO) {
+	public void addTitularsLicense(Integer id, License license) {
 		Titular titular = findTitular(id);
 		
 		titular.getLicenses().add(license);
@@ -220,12 +220,6 @@ public class TitularController {
 		license.setTitular(titular);
 		
 		titularDAO.update(titular);
-		
-		User user = UserController.getInstance().buildUser(userDTO);
-		
-		user.setId(userDTO.getId());
-		
-		LicenseController.getInstance().registerLicenseMovement(license, user, LicenseMovement.Action.ALTA);
 	}
 	
 	/**
