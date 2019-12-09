@@ -54,7 +54,8 @@ public class LicenseDAOSQL extends GenericDAOSQL<License, Integer> implements Li
 		//creamos consulta HQL
 		try {
 			@SuppressWarnings("unchecked")
-			List<License> licenses = (List<License>) session.createQuery("from License where fecha_vencimiento < current_date").getResultList(); 
+			//Busca licencias con fecha de expiración menor o igual a la fecha actual para renovar.
+			List<License> licenses = (List<License>) session.createQuery("from License where fecha_vencimiento <= current_date").getResultList(); 
 			return licenses;
 		}
 		catch(NoResultException e) {
