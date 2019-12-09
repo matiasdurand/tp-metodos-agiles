@@ -13,6 +13,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
+
 import audit.LicenseMovement;
 import dao.LicenseDAO;
 import dao.LicenseDAOSQL;
@@ -303,6 +305,40 @@ public class LicenseController {
 	 */
 	public List<License> findLastLicensesOfTitular(Integer id) { 
 		return licenseDAO.findLastLicensesOfTitular(id);
+	}
+	
+	public void loadLicensesTable(JTable table, Boolean filter) {
+		List<License> licenses = licenseDAO.findAllLicenses();
+		Date todaysDate = new Date();
+		
+		if(filter) {
+			licenses = licenses.stream()
+					.filter(l -> l.getExpiryDate().compareTo(todaysDate) <= 0)
+					.collect(Collectors.toList());
+		}
+		
+		DefaultTableModel model = new DefaultTableModel();
+		ArrayList<Object> columnsName = new ArrayList<Object>();
+		
+		columnsName.add("Tipo Licencia");
+		columnsName.add("Fecha Emision"); 
+		columnsName.add("Fecha Expiracion");
+		columnsName.add("Observacion");
+		
+		for(Object o: columnsName) { //Agrego las columnas al TableModel
+			model.addColumn(o);
+		}
+		
+		for(License l: licenses) { //Agrego la informacion de cada licencia al TableModel
+			Object[] object = new Object [] {
+					l.getLicenseType().toString(), 
+					l.getEmisionDate().toString(),
+					l.getExpiryDate().toString(),
+					l.getObservation().toString()
+			};
+			model.addRow(object);
+		}
+		table.setModel(model);
 	}
 
 }

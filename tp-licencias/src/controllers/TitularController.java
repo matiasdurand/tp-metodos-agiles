@@ -277,7 +277,7 @@ public class TitularController {
 		}
 		
 		User user = UserController.getInstance().buildUser(userDTO);
-		
+		user.setId(userDTO.getId());
 		registerTitularMovement(titular,user, TitularMovement.Action.MODIFICACION);
 	}
 	

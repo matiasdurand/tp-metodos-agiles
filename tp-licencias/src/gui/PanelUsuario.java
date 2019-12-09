@@ -84,9 +84,23 @@ public class PanelUsuario extends JPanel {
 		});
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(validarEntradas()) {
-					controladorUsuario.modifyUser(nuevoUsuarioDTO, MenuPrincipal.menuPrincipal.usuarioDTO);
-					JOptionPane.showMessageDialog(null, "El usuario ha sido modificado correctamente");
+				if(tfUser.getText().equals(nuevoUsuarioDTO.getUsername())) {
+					completarNuevoUsuarioDTO();
+					if(controladorUsuario.validateUserData(nuevoUsuarioDTO)) {
+						controladorUsuario.modifyUser(nuevoUsuarioDTO, MenuPrincipal.menuPrincipal.usuarioDTO);
+						JOptionPane.showMessageDialog(null, "El usuario ha sido modificado correctamente");
+					}
+					else JOptionPane.showMessageDialog(null, "Datos de usuario invalidos. No se pudo mificar el usuario.");
+				}
+				else {
+					if(validateUsername()) {
+						completarNuevoUsuarioDTO();
+						if(controladorUsuario.validateUserData(nuevoUsuarioDTO)) {
+							controladorUsuario.modifyUser(nuevoUsuarioDTO, MenuPrincipal.menuPrincipal.usuarioDTO);
+							JOptionPane.showMessageDialog(null, "El usuario ha sido modificado correctamente");
+						}
+						else JOptionPane.showMessageDialog(null, "Datos de usuario invalidos. No se pudo mificar el usuario.");
+					}
 				}
 			}
 		});
@@ -126,22 +140,22 @@ public class PanelUsuario extends JPanel {
 
 	private boolean validarEntradas() {
 		boolean valido=false;
-		if(validateUsername())
+		if(validateUsername()) {
 			if(validatePassword()) {
-				completarnuevoUsuarioDTO();
-				if(controladorUsuario.validate(nuevoUsuarioDTO))
-					valido=true;
-				else
-					JOptionPane.showMessageDialog(null, "La información del usuario ingresada no es válida");
+				completarNuevoUsuarioDTO();
+				if(controladorUsuario.validateUserData(nuevoUsuarioDTO)) {
+					valido = true;
+				}
+				else JOptionPane.showMessageDialog(null, "La información del usuario ingresada no es válida");
 			}
-			else
-				JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
+			else JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
+		}
 		else
 			JOptionPane.showMessageDialog(null, "El nombre de usuario ingresado ya se encuentra en uso");
 		return valido;
 	}
 	
-	private void completarnuevoUsuarioDTO() {
+	private void completarNuevoUsuarioDTO() {
 		nuevoUsuarioDTO.setName(tfNombre.getText());
 		nuevoUsuarioDTO.setSurname(tfApellido.getText());
 		nuevoUsuarioDTO.setTypeId((TypeId) cmbTipoDoc.getSelectedItem());
@@ -309,7 +323,7 @@ public class PanelUsuario extends JPanel {
 	}
 
 	protected boolean validateUsername() {
-		return controladorUsuario.validate(nuevoUsuarioDTO);
+		return controladorUsuario.validateUsername(tfUser.getText());
 	}
 
 	@SuppressWarnings("deprecation")

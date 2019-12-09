@@ -92,35 +92,38 @@ public class UserController {
 	 * @param userDTO datos del usuario a dar de alta, provenientes de GUI.
 	 * @return true o false, true si los datos son validos, falso en caso contrario.
 	 */
-	public Boolean validate(UserDTO userDTO) {
+	public Boolean validateUsername(String username) {
 		Boolean valid = true;
 		
-		User user = findUserByUsername(userDTO.getUsername());
+		User user = findUserByUsername(username);
 		
 		if (user != null) {
 			valid = false;
 		}
-		else {
-			TitularDTO titularDTO = new TitularDTO();
-			titularDTO.setTypeId(userDTO.getTypeId());
-			titularDTO.setPersonalId(userDTO.getPersonalId());
-			titularDTO.setName(userDTO.getName());
-			titularDTO.setSurname(userDTO.getSurname());
-			
-			List<Validator<String, TitularDTO>> validators = new ArrayList<Validator<String, TitularDTO>>();
-			
-			validators.add(new IdValidator());
-			validators.add(new NameValidator());;
-			
-			Validator<String, TitularDTO> validator = new CompositeValidator<String, TitularDTO>(validators);
-			
-			List<String> errors = validator.validate(titularDTO);
-			
-			if (!errors.isEmpty()) {
-				valid = false;
-			}
-		}
+		return valid;
+	}
 		
+	public Boolean validateUserData(UserDTO userDTO) {
+		Boolean valid = true;
+		
+		TitularDTO titularDTO = new TitularDTO();
+		titularDTO.setTypeId(userDTO.getTypeId());
+		titularDTO.setPersonalId(userDTO.getPersonalId());
+		titularDTO.setName(userDTO.getName());
+		titularDTO.setSurname(userDTO.getSurname());
+			
+		List<Validator<String, TitularDTO>> validators = new ArrayList<Validator<String, TitularDTO>>();
+			
+		validators.add(new IdValidator());
+		validators.add(new NameValidator());;
+			
+		Validator<String, TitularDTO> validator = new CompositeValidator<String, TitularDTO>(validators);
+			
+		List<String> errors = validator.validate(titularDTO);
+		
+		if (!errors.isEmpty()) {
+			valid = false;
+		}
 		return valid;
 	}
 	
@@ -129,7 +132,15 @@ public class UserController {
 	}
 	
 	public UserDTO userLocatorByUsername(String username) {
-		return buildUserDTO(userDAO.findByUsername(username));
+		UserDTO userDTO = null;
+		
+		User user = userDAO.findByUsername(username);
+		
+		if (user != null) {
+			userDTO = buildUserDTO(user);
+		}
+		
+		return userDTO;
 	}
 	
 	/**
