@@ -223,7 +223,7 @@ public class PanelModificarTitular extends JPanel {
 				completarTitularDTO();
 				if(controladorTitular.validate(titularDTO).size()==0) {
 					controladorTitular.modifyTitular(titularDTO, MenuPrincipal.menuPrincipal.usuarioDTO);
-					JOptionPane.showMessageDialog(null, "El titular ha sido dado de alta correctamente");
+					JOptionPane.showMessageDialog(null, "El titular ha sido modificado correctamente");
 					MenuPrincipal.menuPrincipal.cancelar(MenuPrincipal.PANEL_MODIFICAR_TITULAR);
 				}
 				else
