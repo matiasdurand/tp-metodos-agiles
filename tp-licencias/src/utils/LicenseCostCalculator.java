@@ -31,7 +31,7 @@ public class LicenseCostCalculator {
 	 * @return el costo de la licencia.
 	 */
 	public Double getLicenseCost(Combination combination) {
-		return licenseCosts.get(combination)+administrativeCost;
+		return licenseCosts.get(combination) + administrativeCost;
 	}
 	
 	/**

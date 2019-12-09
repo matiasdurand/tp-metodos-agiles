@@ -1,6 +1,6 @@
 package audit;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,7 +46,7 @@ public class LicenseMovement {
 	private User user; 
 	
 	@Column (name="LocalDate")
-	private LocalDate dateTime; //GUARDA FECHA Y HORA(hora,min,seg)
+	private Date dateTime;
 	
 	@OneToOne
 	@JoinColumn(name = "id_licencia")
@@ -65,10 +65,10 @@ public class LicenseMovement {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public LocalDate getDateTime() {
+	public Date getDateTime() {
 		return dateTime;
 	}
-	public void setDateTime(LocalDate dateTime) {
+	public void setDateTime(Date dateTime) {
 		this.dateTime = dateTime;
 	}
 	public License getLicense() {
@@ -93,11 +93,11 @@ public class LicenseMovement {
 		
 		private Action action;
 		private User user; 
-		private LocalDate dateTime;
+		private Date dateTime;
 		private License license;
 		
 		public Builder() {
-			this.dateTime = LocalDate.now();
+			this.dateTime = new Date();
 		}
 		
 		public Builder setAction(Action action) {
