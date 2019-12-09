@@ -257,6 +257,11 @@ public class MenuPrincipal extends JFrame{
 		btnRenovar.setEnabled(true);
 		btnRenovar.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/res/images/renovar_licencia_100px.png")));
 		btnRenovar.setBounds(369, 151, 105, 105);
+		btnRenovar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mostrarPanel(PANEL_RENOVAR);
+			}
+		});
 		panelMenuLicencia.add(btnRenovar);
 		
 		JLabel lblRenovar = new JLabel("RENOVAR");
@@ -310,7 +315,7 @@ public class MenuPrincipal extends JFrame{
 		JLabel lblAltaUsuario = new JLabel("DAR DE ALTA");
 		lblAltaUsuario.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAltaUsuario.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblAltaUsuario.setBounds(132, 260, 105, 16);
+		lblAltaUsuario.setBounds(129, 260, 111, 16);
 		panelMenuUsuario.add(lblAltaUsuario);
 		
 		JButton btnModificarUsuario = new JButton("");
@@ -358,8 +363,10 @@ public class MenuPrincipal extends JFrame{
 				break;
 			}
 			case PANEL_IMPRIMIR:{
-				//TODO implementar un menu para que seleccione la licencia que desea imprimir
-				/*PanelController.getImprimir().setVisible(true);*/
+				break;
+			}
+			case PANEL_RENOVAR:{
+				panel=PanelController.getPanelRenovar();
 				break;
 			}
 			case PANEL_MENU_USUARIO:{
@@ -372,7 +379,8 @@ public class MenuPrincipal extends JFrame{
 				break;
 			}
 			case PANEL_MODIFICAR_USUARIO:{
-				panel=PanelController.getPanelUsuario(PANEL_MODIFICAR_USUARIO);				
+				panel=PanelController.getPanelUsuario(PANEL_MODIFICAR_USUARIO);
+				break;
 			}
 			case PANEL_MENU_TITULAR:{
 				btnTitular.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -380,7 +388,7 @@ public class MenuPrincipal extends JFrame{
 				break;
 			}
 			case PANEL_MODIFICAR_TITULAR:{
-				panel=PanelController.getPanelTitular(PANEL_MODIFICAR_TITULAR);
+				panel=PanelController.getPanelTitular();
 				break;	
 			}
 		}

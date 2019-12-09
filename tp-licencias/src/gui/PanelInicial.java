@@ -14,6 +14,10 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import controllers.LicenseController;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 public class PanelInicial extends JPanel {
 	
 	/**
@@ -21,6 +25,7 @@ public class PanelInicial extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTable tableLicencias;
+	private LicenseController controladorLicencia = LicenseController.getInstance();
 
 	public PanelInicial() {
 		super();
@@ -37,24 +42,29 @@ public class PanelInicial extends JPanel {
 		lblTituloPrincipal.setBounds(12, 15, 240, 25);
 		this.add(lblTituloPrincipal);
 		
-		JCheckBox ckbxVencidas = new JCheckBox(" Vencidas");
-		ckbxVencidas.setFocusable(false);
-		ckbxVencidas.setHorizontalAlignment(SwingConstants.TRAILING);
-		ckbxVencidas.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		ckbxVencidas.setBackground(Colors.FONDO);
-		ckbxVencidas.setBounds(729, 16, 103, 25);
-		this.add(ckbxVencidas);
+		JCheckBox ckbVencidas = new JCheckBox(" Vencidas");
+		ckbVencidas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				/*if(ckbVencidas.isSelected()){
+					controladorLicencia.loadLicensesTable(tableLicencias, ckbVencidas.isSelected());
+				}
+				else
+					controladorLicencia.loadLicensesTable(tableLicencias, ckbVencidas.isSelected());*/
+			}
+		});
+		ckbVencidas.setFocusable(false);
+		ckbVencidas.setHorizontalAlignment(SwingConstants.TRAILING);
+		ckbVencidas.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		ckbVencidas.setBackground(Colors.FONDO);
+		ckbVencidas.setBounds(729, 16, 103, 25);
+		this.add(ckbVencidas);
 		
 		tableLicencias = new JTable();
-		tableLicencias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		//controladorLicencia.loadLicensesTable(tableLicencias);
 		JScrollPane scroll = new JScrollPane();
+		scroll.setFocusable(false);
 		scroll.setBounds(12, 55, 820, 537);
 		scroll.setViewportView(tableLicencias);
-		tableLicencias.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-	        public void valueChanged(ListSelectionEvent event) {
-	        	//TODO comportamiento al seleccionar una fila
-	        }
-		});
 		this.add(scroll);
 		
 		JLabel lblFiltrarPor = new JLabel("Filtrar por:");

@@ -80,7 +80,6 @@ public class PanelRenovar extends JPanel {
 		initialize();
 		inicializarPanelTablaLicencias();
 		inicializarPanelRenovarLicencia();
-
 	}
 
 	private void initialize() {
@@ -107,6 +106,7 @@ public class PanelRenovar extends JPanel {
 		cmbTipoDoc = new JComboBox<TypeId>();
 		cmbTipoDoc.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		cmbTipoDoc.setFocusable(false);
+		controladorTitular.loadTypeIdComboBox(cmbTipoDoc);
 		cmbTipoDoc.setBounds(132, 106, 80, 40);
 		add(cmbTipoDoc);
 		
@@ -151,6 +151,9 @@ public class PanelRenovar extends JPanel {
 						cmbTipoDoc.setEnabled(false);
 						tfNroDoc.setEnabled(false);
 						btnBuscar.setEnabled(false);
+						controladorLicencia.loadRenewLicenceTable(titularDTO,tableLicencias);
+						controladorTitular.loadBloodTypeComboBox(cmbTipoSangre);
+						controladorLicencia.loadRenewLicenceTable(titularDTO, tableLicencias);
 					}
 				}
 				else {
@@ -245,7 +248,7 @@ public class PanelRenovar extends JPanel {
 		add(panelTablaLicencias);
 		panelTablaLicencias.setLayout(null);
 		
-		JButton btnRenovar = new JButton("RENOVAR");
+		btnRenovar = new JButton("RENOVAR");
 		btnRenovar.setBounds(463, 231, 175, 40);
 		panelTablaLicencias.add(btnRenovar);
 		btnRenovar.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -276,7 +279,6 @@ public class PanelRenovar extends JPanel {
 		tableLicencias = new JTable();
 		tableLicencias.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		tableLicencias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		controladorLicencia.loadRenewLicenceTable(titularDTO,tableLicencias);
 		JScrollPane scroll = new JScrollPane();
 		scroll.setViewportView(tableLicencias);
 		scroll.setBounds(12, 0, 820, 218);
@@ -306,6 +308,7 @@ public class PanelRenovar extends JPanel {
 		panelRenovarLicencia = new JPanel();
 		panelRenovarLicencia.setBounds(0, 321, 844, 284);
 		panelRenovarLicencia.setBackground(Colors.FONDO);
+		panelRenovarLicencia.setVisible(false);
 		add(panelRenovarLicencia);
 		panelRenovarLicencia.setLayout(null);
 		

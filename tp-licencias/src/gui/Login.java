@@ -103,13 +103,13 @@ public class Login extends JDialog{
 		JLabel lblIniciarSesion = new JLabel("Iniciar sesi\u00F3n");
 		lblIniciarSesion.setFont(new Font("Tahoma", Font.BOLD, 25));
 		lblIniciarSesion.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIniciarSesion.setBounds(43, 121, 444, 33);
+		lblIniciarSesion.setBounds(51, 121, 444, 33);
 		this.getContentPane().add(lblIniciarSesion);
 		
 		JLabel lblIcono = new JLabel("");
 		lblIcono.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIcono.setIcon(new ImageIcon(Login.class.getResource("/res/images/user_male_circle_filled_100px.png")));
-		lblIcono.setBounds(210, 15, 110, 110);
+		lblIcono.setBounds(218, 15, 110, 110);
 		this.getContentPane().add(lblIcono);
 		
 		JLabel lblUser = new JLabel("Usuario:");
@@ -126,14 +126,14 @@ public class Login extends JDialog{
 		
 		tfUser = new JTextField();
 		tfUser.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		tfUser.setBounds(210, 187, 285, 30);
+		tfUser.setBounds(210, 187, 301, 30);
 		this.getContentPane().add(tfUser);
 		tfUser.setColumns(10);
 		
 		tfPassword = new JPasswordField();
 		tfPassword.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		tfPassword.setColumns(10);
-		tfPassword.setBounds(210, 240, 285, 30);
+		tfPassword.setBounds(210, 240, 301, 30);
 		this.getContentPane().add(tfPassword);
 		
 		btnIngresar = new JButton("INGRESAR");
@@ -163,7 +163,7 @@ public class Login extends JDialog{
 			}
 		});
 		btnIngresar.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnIngresar.setBounds(35, 295, 460, 40);
+		btnIngresar.setBounds(35, 295, 476, 40);
 		this.getContentPane().add(btnIngresar);
 		
 		lblError = new JLabel("*El usuario y contraseña no son válidos. Vuelva a intentarlo.");
