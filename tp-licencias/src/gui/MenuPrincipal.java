@@ -343,8 +343,14 @@ public class MenuPrincipal extends JFrame{
 		btnTitular.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnCerrarSesion.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		frmPrincipal.getContentPane().remove(panel);
+		panel.setVisible(true);
 		switch(opcion) {
 			case PANEL_LOGIN:{
+				panel.setVisible(false);
+				frmPrincipal.getContentPane().add(panel);
+				frmPrincipal.pack();
+				frmPrincipal.revalidate();
+				frmPrincipal.repaint();
 				PanelController.getLogin().setVisible(true);
 				break;
 			}

@@ -34,6 +34,8 @@ import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 
@@ -131,13 +133,21 @@ public class Login extends JDialog{
 		tfUser.setColumns(10);
 		
 		tfPassword = new JPasswordField();
+		tfPassword.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyChar()==KeyEvent.VK_ENTER) {
+					System.out.println("Enter pressed");
+					btnIngresar.doClick();
+				}
+			}
+		});
 		tfPassword.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		tfPassword.setColumns(10);
 		tfPassword.setBounds(210, 240, 301, 30);
 		this.getContentPane().add(tfPassword);
 		
 		btnIngresar = new JButton("INGRESAR");
-		btnIngresar.setFocusable(false);
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!tfUser.getText().isEmpty() && !tfPassword.getText().isEmpty()) {

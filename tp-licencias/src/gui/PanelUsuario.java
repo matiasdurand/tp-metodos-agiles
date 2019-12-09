@@ -89,17 +89,15 @@ public class PanelUsuario extends JPanel {
 					if(controladorUsuario.validateUserData(nuevoUsuarioDTO)) {
 						controladorUsuario.modifyUser(nuevoUsuarioDTO, MenuPrincipal.menuPrincipal.usuarioDTO);
 						JOptionPane.showMessageDialog(null, "El usuario ha sido modificado correctamente");
+						MenuPrincipal.menuPrincipal.cancelar(MenuPrincipal.PANEL_MODIFICAR_USUARIO);
 					}
-					else JOptionPane.showMessageDialog(null, "Datos de usuario invalidos. No se pudo mificar el usuario.");
+					else JOptionPane.showMessageDialog(null, "Los datos ingresados no son validos");
 				}
 				else {
-					if(validateUsername()) {
-						completarNuevoUsuarioDTO();
-						if(controladorUsuario.validateUserData(nuevoUsuarioDTO)) {
-							controladorUsuario.modifyUser(nuevoUsuarioDTO, MenuPrincipal.menuPrincipal.usuarioDTO);
-							JOptionPane.showMessageDialog(null, "El usuario ha sido modificado correctamente");
-						}
-						else JOptionPane.showMessageDialog(null, "Datos de usuario invalidos. No se pudo mificar el usuario.");
+					if(validarEntradas()) {
+						controladorUsuario.modifyUser(nuevoUsuarioDTO, MenuPrincipal.menuPrincipal.usuarioDTO);
+						JOptionPane.showMessageDialog(null, "El usuario ha sido modificado correctamente");
+						MenuPrincipal.menuPrincipal.cancelar(MenuPrincipal.PANEL_MODIFICAR_USUARIO);
 					}
 				}
 			}
@@ -131,8 +129,10 @@ public class PanelUsuario extends JPanel {
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(validarEntradas()) {
+					completarNuevoUsuarioDTO();
 					controladorUsuario.registerUser(nuevoUsuarioDTO, MenuPrincipal.menuPrincipal.usuarioDTO);
 					JOptionPane.showMessageDialog(null, "El usuario ha sido dado de alta correctamente");
+					MenuPrincipal.menuPrincipal.cancelar(MenuPrincipal.PANEL_ALTA_USUARIO);
 				}
 			}
 		});
@@ -161,7 +161,8 @@ public class PanelUsuario extends JPanel {
 		nuevoUsuarioDTO.setTypeId((TypeId) cmbTipoDoc.getSelectedItem());
 		nuevoUsuarioDTO.setPersonalId(tfNroDoc.getText());
 		nuevoUsuarioDTO.setUsername(tfUser.getText());
-		nuevoUsuarioDTO.setPassword(tfPassword.getSelectedText());
+		nuevoUsuarioDTO.setPassword(String.valueOf(tfPassword.getPassword()));
+		nuevoUsuarioDTO.setSuperUser(false);
 	}
 
 	private void initialize() {
@@ -172,7 +173,7 @@ public class PanelUsuario extends JPanel {
 		lblTitulo = new JLabel();
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lblTitulo.setBounds(12, 17, 817, 25);
+		lblTitulo.setBounds(12, 15, 817, 30);
 		this.add(lblTitulo);
 		
 		JLabel lblDocumento = new JLabel("Ingrese el documento:");
@@ -326,9 +327,8 @@ public class PanelUsuario extends JPanel {
 		return controladorUsuario.validateUsername(tfUser.getText());
 	}
 
-	@SuppressWarnings("deprecation")
 	protected boolean validatePassword() {
-		return (tfPassword.getText()!="" && tfPassword.getText()==tfRepeatPassword.getText());
+		return (String.valueOf(tfPassword.getPassword())!="" && String.valueOf(tfPassword.getPassword()).equals(String.copyValueOf(tfRepeatPassword.getPassword())));
 	}
 	
 	public void reset(int opcion) {

@@ -7,16 +7,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 
 import res.colors.Colors;
 import javax.swing.SwingConstants;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import controllers.LicenseController;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Rectangle;
 
 public class PanelInicial extends JPanel {
 	
@@ -45,11 +43,11 @@ public class PanelInicial extends JPanel {
 		JCheckBox ckbVencidas = new JCheckBox(" Vencidas");
 		ckbVencidas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				/*if(ckbVencidas.isSelected()){
+				if(ckbVencidas.isSelected()){
 					controladorLicencia.loadLicensesTable(tableLicencias, ckbVencidas.isSelected());
 				}
 				else
-					controladorLicencia.loadLicensesTable(tableLicencias, ckbVencidas.isSelected());*/
+					controladorLicencia.loadLicensesTable(tableLicencias, ckbVencidas.isSelected());
 			}
 		});
 		ckbVencidas.setFocusable(false);
@@ -60,7 +58,10 @@ public class PanelInicial extends JPanel {
 		this.add(ckbVencidas);
 		
 		tableLicencias = new JTable();
-		//controladorLicencia.loadLicensesTable(tableLicencias);
+		tableLicencias.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 17));
+		tableLicencias.setBounds(new Rectangle(5, 0, 0, 5));
+		controladorLicencia.loadLicensesTable(tableLicencias,ckbVencidas.isSelected());
+		tableLicencias.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		JScrollPane scroll = new JScrollPane();
 		scroll.setFocusable(false);
 		scroll.setBounds(12, 55, 820, 537);

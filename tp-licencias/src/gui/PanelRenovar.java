@@ -261,6 +261,7 @@ public class PanelRenovar extends JPanel {
 					panelRenovarLicencia.setVisible(true);
 				}
 				else
+					JOptionPane.showMessageDialog(null, "Debe seleccionar una licencia para renovar");
 					System.out.println("btnRenovar -> filaSeleccionada="+filaSeleccionada);
 			}
 		});
