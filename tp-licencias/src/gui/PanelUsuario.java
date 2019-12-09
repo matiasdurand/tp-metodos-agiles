@@ -101,14 +101,14 @@ public class PanelUsuario extends JPanel {
 		tfRepeatPassword.setText(nuevoUsuarioDTO.getPassword());
 	}
 	
-	private void bloquearComponentes(Boolean activar) {
-		btnAceptar.setEnabled(!activar);
-		tfNombre.setEnabled(!activar);
-		tfApellido.setEnabled(!activar);
+	private void bloquearComponentes(Boolean bloquear) {
+		btnAceptar.setEnabled(!bloquear);
+		tfNombre.setEnabled(!bloquear);
+		tfApellido.setEnabled(!bloquear);
 		cmbTipoDoc.setEnabled(false);
 		tfNroDoc.setEnabled(false);
-		tfPassword.setEnabled(!activar);
-		tfRepeatPassword.setEnabled(!activar);
+		tfPassword.setEnabled(!bloquear);
+		tfRepeatPassword.setEnabled(!bloquear);
 	}
 
 	private void configurarInterfazAlta() {
@@ -158,7 +158,7 @@ public class PanelUsuario extends JPanel {
 		lblTitulo = new JLabel();
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lblTitulo.setBounds(12, 15, 817, 25);
+		lblTitulo.setBounds(12, 17, 817, 25);
 		this.add(lblTitulo);
 		
 		JLabel lblDocumento = new JLabel("Ingrese el documento:");
@@ -266,6 +266,8 @@ public class PanelUsuario extends JPanel {
 					tfPassword.setEchoChar('*');
 					tfRepeatPassword.setEchoChar('*');
 				}
+				revalidate();
+				repaint();
 			}
 		});
 		add(btnMostrarOcultarContraseña);
@@ -315,8 +317,9 @@ public class PanelUsuario extends JPanel {
 		return (tfPassword.getText()!="" && tfPassword.getText()==tfRepeatPassword.getText());
 	}
 	
-	public void reset() {
+	public void reset(int opcion) {
 		this.removeAll();
 		this.initialize();
+		this.configurarInterfaz(opcion);
 	}
 }

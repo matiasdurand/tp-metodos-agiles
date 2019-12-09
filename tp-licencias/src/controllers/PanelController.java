@@ -76,7 +76,7 @@ public class PanelController {
 		if(panelUsuario == null)
 			panelUsuario = new PanelUsuario(tipo);
 		else
-			panelUsuario.reset();
+			panelUsuario.reset(tipo);
 		return panelUsuario;
 	}
 	
