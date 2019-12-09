@@ -167,8 +167,7 @@ public class Login extends JDialog{
 				            }
 				        });
 				        timer.start();
-					}
-					
+					}	
 				}
 			}
 		});
