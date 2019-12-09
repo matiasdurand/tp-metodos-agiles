@@ -101,25 +101,14 @@ public class PanelUsuario extends JPanel {
 		tfRepeatPassword.setText(nuevoUsuarioDTO.getPassword());
 	}
 	
-	private boolean validarDoc(String doc) {
-        boolean resultado;
-        try {
-            Integer.parseInt(doc);
-            resultado = true;
-        } catch (NumberFormatException excepcion) {
-            resultado = false;
-        }
-        return resultado;
-	}
-	
 	private void bloquearComponentes(Boolean activar) {
-		btnAceptar.setEnabled(activar);
-		tfNombre.setEnabled(activar);
-		tfApellido.setEnabled(activar);
+		btnAceptar.setEnabled(!activar);
+		tfNombre.setEnabled(!activar);
+		tfApellido.setEnabled(!activar);
 		cmbTipoDoc.setEnabled(false);
 		tfNroDoc.setEnabled(false);
-		tfPassword.setEnabled(activar);
-		tfRepeatPassword.setEnabled(activar);
+		tfPassword.setEnabled(!activar);
+		tfRepeatPassword.setEnabled(!activar);
 	}
 
 	private void configurarInterfazAlta() {

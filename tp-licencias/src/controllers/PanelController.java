@@ -14,13 +14,14 @@ import gui.PanelUsuario;
 import gui.PanelEmitir;
 import gui.PanelInicial;
 import gui.PanelModificarTitular;
+import gui.PanelRenovar;
 
 public class PanelController {
 	
 	private static PanelController _INSTANCE = null;
 	private static PanelEmitir panelEmitir;
+	private static PanelRenovar panelRenovar;
 	private static PanelInicial panelInicial;
-	private static ImprimirLicencia imprimir;
 	private static PanelUsuario panelUsuario;
 	private static PanelModificarTitular panelTitular;
 	private static Login login;
@@ -47,6 +48,14 @@ public class PanelController {
 		return panelEmitir;
 	}
 	
+	public static JPanel getPanelRenovar() {
+		if(panelRenovar == null)
+			panelRenovar = new PanelRenovar();
+		else
+			panelRenovar.reset();
+		return panelRenovar;
+	}
+	
 	public static JPanel getPanelInicial() {
 		if(panelInicial == null)
 			panelInicial = new PanelInicial();
@@ -55,9 +64,9 @@ public class PanelController {
 		return panelInicial;
 	}
 	
-	public static JPanel getPanelTitular(int tipo) {
+	public static JPanel getPanelTitular() {
 		if(panelTitular == null)
-			panelTitular = new PanelModificarTitular(tipo);
+			panelTitular = new PanelModificarTitular();
 		else
 			panelTitular.reset();
 		return panelTitular;

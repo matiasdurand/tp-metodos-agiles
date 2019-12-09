@@ -13,13 +13,11 @@ import java.text.SimpleDateFormat;
 
 import javax.swing.SwingConstants;
 
-import controllers.TaxPayerController;
 import controllers.TitularController;
 
 import javax.swing.JComboBox;
 
 import domain.TypeId;
-import dto.TaxPayerDTO;
 import dto.TitularDTO;
 
 import javax.swing.JTextField;
@@ -53,7 +51,7 @@ public class PanelModificarTitular extends JPanel {
 	
 	private SimpleDateFormat formatoFecha = new SimpleDateFormat("dd MMMM yyyy");
 
-	public PanelModificarTitular(int opcion) {
+	public PanelModificarTitular() {
 		super();
 		initialize();
 	}
@@ -101,6 +99,7 @@ public class PanelModificarTitular extends JPanel {
 		cmbTipoDoc = new JComboBox<TypeId>();
 		cmbTipoDoc.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		cmbTipoDoc.setFocusable(false);
+		controladorTitular.loadTypeIdComboBox(cmbTipoDoc);
 		cmbTipoDoc.setBounds(132, 106, 80, 40);
 		add(cmbTipoDoc);
 		
@@ -186,6 +185,7 @@ public class PanelModificarTitular extends JPanel {
 		cmbTipoSangre = new JComboBox<String>();
 		cmbTipoSangre.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		cmbTipoSangre.setFocusable(false);
+		controladorTitular.loadBloodTypeComboBox(cmbTipoSangre);
 		cmbTipoSangre.setEnabled(false);
 		cmbTipoSangre.setBounds(607, 212, 80, 40);
 		add(cmbTipoSangre);
@@ -249,7 +249,7 @@ public class PanelModificarTitular extends JPanel {
 	private void bloquearComponentes(boolean bloquear) {
 		cmbTipoDoc.setEnabled(!bloquear);
 		tfNroDoc.setEnabled(!bloquear);
-		btnAceptar.setEnabled(!bloquear);
+		btnAceptar.setEnabled(bloquear);
 		btnBuscar.setEnabled(!bloquear);
 		tfNombre.setEnabled(bloquear);
 		tfApellido.setEnabled(bloquear);
