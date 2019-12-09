@@ -1,6 +1,6 @@
 package audit;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,7 +46,7 @@ public class TitularMovement {
 	private User user; 
 	
 	@Column (name="LocalDate")
-	private LocalDate dateTime; //GUARDA FECHA Y HORA(hora,min,seg)
+	private Date dateTime;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_titular")
@@ -71,10 +71,10 @@ public class TitularMovement {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public LocalDate getDateTime() {
+	public Date getDateTime() {
 		return dateTime;
 	}
-	public void setDateTime(LocalDate dateTime) {
+	public void setDateTime(Date dateTime) {
 		this.dateTime = dateTime;
 	}
 	public Titular getTitular() {
@@ -93,11 +93,11 @@ public class TitularMovement {
 		
 		private Action action;
 		private User user; 
-		private LocalDate dateTime; 
+		private Date dateTime; 
 		private Titular titular;
 		
 		public Builder() {
-			this.dateTime = LocalDate.now();
+			this.dateTime = new Date();
 		}
 		public Builder setAction(Action action) {
 			this.action = action;
