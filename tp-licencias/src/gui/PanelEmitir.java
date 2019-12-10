@@ -385,6 +385,7 @@ public class PanelEmitir extends JPanel {
 	}
 	
 	private void completarTitularDTO(TaxPayerDTO dto) {
+		titularDTO = new TitularDTO();
 		titularDTO.setPersonalId(dto.getPersonalId().toString());
 		titularDTO.setTypeId(dto.getTypeId());
 		titularDTO.setAdress(dto.getAdress());

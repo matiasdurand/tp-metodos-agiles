@@ -1,6 +1,8 @@
 package controllers;
 
 import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -255,7 +257,9 @@ public class TitularController {
 	 */
 	public void modifyTitular(TitularDTO titularDTO, UserDTO userDTO) {
 		
-		Date todaysDate = new Date();
+		LocalDate ld = LocalDate.now();
+		Date todaysDate = Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant());
+	
 		Titular titular = findTitular(titularDTO.getId());
 		
 		titular.setTypeId(titularDTO.getTypeId());
@@ -267,14 +271,16 @@ public class TitularController {
 		titular.setBloodType(titularDTO.getBloodType());
 		titular.setOrganDonor(titularDTO.getOrganDonor());
 		
-		updateTitular(titular);
-		
 		List<License> licenses = LicenseController.getInstance()
 				.findValidLicensesOfTitular(titularDTO.getId());
 		
 		for(License l : licenses) { 
+			titular.getLicenses().remove(l);
 			l.setExpiryDate(todaysDate);
+			titular.getLicenses().add(l);
 		}
+		
+		updateTitular(titular);
 		
 		User user = UserController.getInstance().buildUser(userDTO);
 		user.setId(userDTO.getId());

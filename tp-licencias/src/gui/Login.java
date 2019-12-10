@@ -78,7 +78,18 @@ public class Login extends JDialog{
 				user.setName("Matias");
 				user.setSurname("Durand");
 				
-				new UserDAOSQL(User.class).save(user);*/
+				new UserDAOSQL(User.class).save(user);
+				
+				User user1 = new User();
+				user1.setUsername("admin2");
+				user1.setPassword("admin2");
+				user1.setSuperUser(false);
+				user1.setTypeId(TypeId.DNI);
+				user1.setPersonalId((long) 40406073);
+				user1.setName("Matias2");
+				user1.setSurname("Durand2");
+				
+				new UserDAOSQL(User.class).save(user1);*/
 				
 				MenuPrincipal.menuPrincipal.cerrar();
 			}
