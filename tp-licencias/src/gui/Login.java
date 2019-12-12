@@ -55,42 +55,6 @@ public class Login extends JDialog{
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
-				//PARA PROBAR REGISTRO UN USUARIO Y UN CONTRIBUYENTE
-				/*TaxPayerDTO taxPayer = new TaxPayerDTO();
-				taxPayer.setTypeId(TypeId.DNI);
-				taxPayer.setPersonalId((long) 98765432);
-				taxPayer.setName("Juan");
-				taxPayer.setSurname("Perez");
-				taxPayer.setAdress("Boulevard 1234");
-				
-				LocalDate ld = LocalDate.of(1997, 12, 11);
-			
-				taxPayer.setBirthdate(Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-				
-				new TaxPayerDAOSQL(TaxPayerDTO.class).save(taxPayer);
-				
-				User user = new User();
-				user.setUsername("admin");
-				user.setPassword("admin");
-				user.setSuperUser(true);
-				user.setTypeId(TypeId.DNI);
-				user.setPersonalId((long) 40406072);
-				user.setName("Matias");
-				user.setSurname("Durand");
-				
-				new UserDAOSQL(User.class).save(user);
-				
-				User user1 = new User();
-				user1.setUsername("admin2");
-				user1.setPassword("admin2");
-				user1.setSuperUser(false);
-				user1.setTypeId(TypeId.DNI);
-				user1.setPersonalId((long) 40406073);
-				user1.setName("Matias2");
-				user1.setSurname("Durand2");
-				
-				new UserDAOSQL(User.class).save(user1);*/
-				
 				MenuPrincipal.menuPrincipal.cerrar();
 			}
 		});
@@ -98,6 +62,31 @@ public class Login extends JDialog{
 	}
 
 	private void initialize() {
+		
+		//PARA PROBAR REGISTRO UN USUARIO Y UN CONTRIBUYENTE
+		/*TaxPayerDTO taxPayer = new TaxPayerDTO();
+		taxPayer.setTypeId(TypeId.DNI);
+		taxPayer.setPersonalId((long) 32165498);
+		taxPayer.setName("Juan");
+		taxPayer.setSurname("Perez");
+		taxPayer.setAdress("Boulevard 1234");
+		
+		LocalDate ld = LocalDate.of(1997, 12, 11);
+	
+		taxPayer.setBirthdate(Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+		
+		new TaxPayerDAOSQL(TaxPayerDTO.class).save(taxPayer);
+		
+		User user = new User();
+		user.setUsername("admin");
+		user.setPassword("admin");
+		user.setSuperUser(true);
+		user.setTypeId(TypeId.DNI);
+		user.setPersonalId((long) 40406072);
+		user.setName("Matias");
+		user.setSurname("Durand");
+		
+		new UserDAOSQL(User.class).save(user);*/
 		
 		this.setTitle("Iniciar sesi\u00F3n");
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

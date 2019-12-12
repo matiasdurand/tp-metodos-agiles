@@ -87,9 +87,8 @@ public class UserController {
 	}
 	
 	/**
-	 * Este metodo valida los datos del nuevo usuario ingresados por pantalla.
-	 * Verifica que los mismos no pertenezcan a otro usuario y que tengan un formato valido.
-	 * @param userDTO datos del usuario a dar de alta, provenientes de GUI.
+	 * Este metodo valida que no exista el nuevo username del usuario ingresados por pantalla.
+	 * @param username username del usuario a dar de alta, provenientes de GUI.
 	 * @return true o false, true si los datos son validos, falso en caso contrario.
 	 */
 	public Boolean validateUsername(String username) {
@@ -103,6 +102,12 @@ public class UserController {
 		return valid;
 	}
 		
+	/**
+	 * Este metodo valida los datos del nuevo usuario ingresados por pantalla.
+	 * Verifica que tengan un formato valido.
+	 * @param userDTO datos del usuario a dar de alta, provenientes de GUI.
+	 * @return true o false, true si los datos son validos, falso en caso contrario.
+	 */
 	public Boolean validateUserData(UserDTO userDTO) {
 		Boolean valid = true;
 		
@@ -127,9 +132,7 @@ public class UserController {
 		return valid;
 	}
 	
-	private User findUserByUsername(String username) {
-		return userDAO.findByUsername(username);
-	}
+	
 	
 	public UserDTO userLocatorByUsername(String username) {
 		UserDTO userDTO = null;
@@ -142,6 +145,11 @@ public class UserController {
 		
 		return userDTO;
 	}
+	
+	private User findUserByUsername(String username) {
+		return userDAO.findByUsername(username);
+	}
+
 	
 	/**
 	 * Este metodo registra un nuevo usuario y llama al registo del movimiento

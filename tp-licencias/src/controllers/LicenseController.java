@@ -56,7 +56,7 @@ public class LicenseController {
 	private ExpiryDateCalculator expiryDateCalculator = ExpiryDateCalculator.getInstance();
 	private LicenseDAO licenseDAO = new LicenseDAOSQL(License.class);
 	private LicenseMovementDAO licenseMovementDAO = new LicenseMovementDAOSQL(LicenseMovement.class);
-	
+
 	
 	private LicenseController () { 
 	}
@@ -90,7 +90,7 @@ public class LicenseController {
 			
 			registerLicenseMovement(license, user, LicenseMovement.Action.ALTA);
 		}
-		
+
 	}
 	
 	public void registerLicenseMovement(License license, User user, LicenseMovement.Action action) {
@@ -250,7 +250,7 @@ public class LicenseController {
 		user.setId(userDTO.getId());
 		
 		registerLicenseMovement(license, user, LicenseMovement.Action.RENOVACION);
-			
+		
 	}
 	
 	/**
@@ -307,38 +307,30 @@ public class LicenseController {
 		return licenseDAO.findLastLicensesOfTitular(id);
 	}
 	
-	public void loadLicensesTable(JTable table, Boolean filter) {
-		List<License> licenses = licenseDAO.findAllLicenses();
-		Date todaysDate = new Date();
-		
-		if(filter) {
-			licenses = licenses.stream()
-					.filter(l -> l.getExpiryDate().compareTo(todaysDate) <= 0)
-					.collect(Collectors.toList());
-		}
-		
-		DefaultTableModel model = new DefaultTableModel();
-		ArrayList<Object> columnsName = new ArrayList<Object>();
-		
-		columnsName.add("Tipo Licencia");
-		columnsName.add("Fecha Emision"); 
-		columnsName.add("Fecha Expiracion");
-		columnsName.add("Observacion");
-		
-		for(Object o: columnsName) { //Agrego las columnas al TableModel
-			model.addColumn(o);
-		}
-		
-		for(License l: licenses) { //Agrego la informacion de cada licencia al TableModel
+	public void loadNotExpiredLicensesTable(JTable table, DefaultTableModel model) {
+		List<License> notExpiredLicenses = licenseDAO.findActiveLicenses();
+		loadLicensesInfo(model, notExpiredLicenses);
+		table.setModel(model);
+	}
+	
+	public void loadExpiredLicensesTable(JTable table, DefaultTableModel model) {
+		List<License> expiredLicenses = licenseDAO.findExpiredLicenses();
+		loadLicensesInfo(model, expiredLicenses);
+		table.setModel(model);
+	}
+	
+	private void loadLicensesInfo(DefaultTableModel model, List<License> licensesInfo) {
+		for(License l: licensesInfo) { //Agrego la informacion de cada licencia al TableModel
 			Object[] object = new Object [] {
 					l.getLicenseType().toString(), 
 					l.getEmisionDate().toString(),
 					l.getExpiryDate().toString(),
-					l.getObservation().toString()
+					l.getObservation().toString(),
+					l.getTitular().getSurname(),
+					l.getTitular().getName()
 			};
 			model.addRow(object);
 		}
-		table.setModel(model);
 	}
 
 }

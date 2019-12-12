@@ -60,7 +60,7 @@ public class PanelController {
 		if(panelInicial == null)
 			panelInicial = new PanelInicial();
 		else
-			panelInicial.reset();
+			panelInicial.updateLicensesTable();
 		return panelInicial;
 	}
 	

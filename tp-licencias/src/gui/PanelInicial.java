@@ -10,9 +10,11 @@ import javax.swing.JTable;
 
 import res.colors.Colors;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
 import controllers.LicenseController;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Rectangle;
 
@@ -23,6 +25,7 @@ public class PanelInicial extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTable tableLicencias;
+	private DefaultTableModel model = new DefaultTableModel();
 	private LicenseController controladorLicencia = LicenseController.getInstance();
 
 	public PanelInicial() {
@@ -40,14 +43,20 @@ public class PanelInicial extends JPanel {
 		lblTituloPrincipal.setBounds(12, 15, 240, 25);
 		this.add(lblTituloPrincipal);
 		
-		JCheckBox ckbVencidas = new JCheckBox(" Vencidas");
+		JCheckBox ckbVencidas = new JCheckBox();
 		ckbVencidas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(ckbVencidas.isSelected()){
-					controladorLicencia.loadLicensesTable(tableLicencias, ckbVencidas.isSelected());
+					model = new DefaultTableModel();
+					loadLicensesTableModel();
+					controladorLicencia.loadExpiredLicensesTable(tableLicencias, model);
 				}
-				else
-					controladorLicencia.loadLicensesTable(tableLicencias, ckbVencidas.isSelected());
+				else {
+					model = new DefaultTableModel();
+					loadLicensesTableModel();
+					controladorLicencia.loadNotExpiredLicensesTable(tableLicencias, model);
+				}
+					
 			}
 		});
 		ckbVencidas.setFocusable(false);
@@ -60,7 +69,8 @@ public class PanelInicial extends JPanel {
 		tableLicencias = new JTable();
 		tableLicencias.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 17));
 		tableLicencias.setBounds(new Rectangle(5, 0, 0, 5));
-		controladorLicencia.loadLicensesTable(tableLicencias,ckbVencidas.isSelected());
+		loadLicensesTableModel();
+		controladorLicencia.loadNotExpiredLicensesTable(tableLicencias, model);
 		tableLicencias.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		JScrollPane scroll = new JScrollPane();
 		scroll.setFocusable(false);
@@ -68,14 +78,39 @@ public class PanelInicial extends JPanel {
 		scroll.setViewportView(tableLicencias);
 		this.add(scroll);
 		
-		JLabel lblFiltrarPor = new JLabel("Filtrar por:");
+		JLabel lblFiltrarPor = new JLabel("Ver licencias expiradas: ");
 		lblFiltrarPor.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblFiltrarPor.setBounds(621, 15, 100, 25);
 		add(lblFiltrarPor);
 	}
 	
-	public void reset() {
+	private void loadLicensesTableModel() {
+		ArrayList<Object> columnsName = new ArrayList<Object>();
+		
+		columnsName.add("Tipo Licencia");
+		columnsName.add("Fecha Emision"); 
+		columnsName.add("Fecha Expiracion");
+		columnsName.add("Observacion");
+		columnsName.add("Apellido");
+		columnsName.add("Nombre");
+		
+		for(Object o: columnsName) { //Agrego las columnas al TableModel
+			model.addColumn(o);
+		}
+		
+		tableLicencias.setModel(model);
+	}
+	
+	/*public void reset() {
 		this.removeAll();
 		this.initialize();
+	}*/
+	
+	public void updateLicensesTable() {
+		model = new DefaultTableModel();
+		loadLicensesTableModel();
+		controladorLicencia.loadNotExpiredLicensesTable(tableLicencias, model);
 	}
+	
+	
 }
