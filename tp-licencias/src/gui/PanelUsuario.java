@@ -162,7 +162,8 @@ public class PanelUsuario extends JPanel {
 		nuevoUsuarioDTO.setPersonalId(tfNroDoc.getText());
 		nuevoUsuarioDTO.setUsername(tfUser.getText());
 		nuevoUsuarioDTO.setPassword(String.valueOf(tfPassword.getPassword()));
-		nuevoUsuarioDTO.setSuperUser(false);
+		if(nuevoUsuarioDTO.getSuperUser() == null)
+			nuevoUsuarioDTO.setSuperUser(false);
 	}
 
 	private void initialize() {

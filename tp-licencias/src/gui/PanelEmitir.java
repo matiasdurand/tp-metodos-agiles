@@ -162,9 +162,6 @@ public class PanelEmitir extends JPanel {
 					getToolkit().beep();
 					e.consume();
 				}
-				else {
-					//Ingrese solo numeros sin puntos
-				}
 			}
 		});
 		this.add(tfNroDoc);

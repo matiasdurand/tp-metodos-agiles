@@ -264,9 +264,18 @@ public class LicenseController {
 		List<License> result = new ArrayList<License>();
 		List<License> licenses = findLastLicensesOfTitular(titularDTO.getId());
 		Date todaysDate = new Date();
-		DefaultTableModel model = new DefaultTableModel();
+		
+		DefaultTableModel model = new DefaultTableModel(){
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //Todas las celdas se marcan como no editables
+		       return false;
+		    }
+		};
+		
 		ArrayList<Object> columnsName = new ArrayList<Object>();
 		
+		columnsName.add("Id");
 		columnsName.add("Tipo Licencia");
 		columnsName.add("Fecha Emision"); 
 		columnsName.add("Fecha Expiracion");
@@ -284,7 +293,8 @@ public class LicenseController {
 		
 		for(License l : result) { //Agrego la informacion de cada licencia al TableModel
 			Object[] object = new Object [] {
-					l.getLicenseType().toString(), 
+					l.getId().toString(),
+					l.getLicenseType(), 
 					l.getEmisionDate().toString(),
 					l.getExpiryDate().toString(),
 					l.getObservation().toString()

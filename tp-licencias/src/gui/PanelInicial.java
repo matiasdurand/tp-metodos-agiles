@@ -25,7 +25,14 @@ public class PanelInicial extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTable tableLicencias;
-	private DefaultTableModel model = new DefaultTableModel();
+	
+	private DefaultTableModel model = new DefaultTableModel(){
+	    @Override
+	    public boolean isCellEditable(int row, int column) {
+	       //Todas las celdas se marcan como no editables
+	       return false;
+	    }
+	};
 	private LicenseController controladorLicencia = LicenseController.getInstance();
 
 	public PanelInicial() {
@@ -38,21 +45,34 @@ public class PanelInicial extends JPanel {
 		this.setBackground(Colors.FONDO);
 		this.setLayout(null);
 		
-		JLabel lblTituloPrincipal = new JLabel("Listado de licencias");
+		JLabel lblTituloPrincipal = new JLabel("Listado de licencias vigentes");
 		lblTituloPrincipal.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblTituloPrincipal.setBounds(12, 15, 240, 25);
+		lblTituloPrincipal.setBounds(12, 15, 288, 25);
 		this.add(lblTituloPrincipal);
 		
 		JCheckBox ckbVencidas = new JCheckBox();
+		ckbVencidas.setText("Ver licencias expiradas");
 		ckbVencidas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(ckbVencidas.isSelected()){
-					model = new DefaultTableModel();
+					model = new DefaultTableModel(){
+					    @Override
+					    public boolean isCellEditable(int row, int column) {
+					       //Todas las celdas se marcan como no editables
+					       return false;
+					    }
+					};
 					loadLicensesTableModel();
 					controladorLicencia.loadExpiredLicensesTable(tableLicencias, model);
 				}
 				else {
-					model = new DefaultTableModel();
+					model = new DefaultTableModel(){
+					    @Override
+					    public boolean isCellEditable(int row, int column) {
+					       //Todas las celdas se marcan como no editables
+					       return false;
+					    }
+					};
 					loadLicensesTableModel();
 					controladorLicencia.loadNotExpiredLicensesTable(tableLicencias, model);
 				}
@@ -60,10 +80,10 @@ public class PanelInicial extends JPanel {
 			}
 		});
 		ckbVencidas.setFocusable(false);
-		ckbVencidas.setHorizontalAlignment(SwingConstants.TRAILING);
+		ckbVencidas.setHorizontalAlignment(SwingConstants.RIGHT);
 		ckbVencidas.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		ckbVencidas.setBackground(Colors.FONDO);
-		ckbVencidas.setBounds(729, 16, 103, 25);
+		ckbVencidas.setBounds(627, 13, 205, 31);
 		this.add(ckbVencidas);
 		
 		tableLicencias = new JTable();
@@ -77,11 +97,6 @@ public class PanelInicial extends JPanel {
 		scroll.setBounds(12, 55, 820, 537);
 		scroll.setViewportView(tableLicencias);
 		this.add(scroll);
-		
-		JLabel lblFiltrarPor = new JLabel("Ver licencias expiradas: ");
-		lblFiltrarPor.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblFiltrarPor.setBounds(621, 15, 100, 25);
-		add(lblFiltrarPor);
 	}
 	
 	private void loadLicensesTableModel() {
@@ -107,10 +122,14 @@ public class PanelInicial extends JPanel {
 	}*/
 	
 	public void updateLicensesTable() {
-		model = new DefaultTableModel();
+		model = new DefaultTableModel(){
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //Todas las celdas se marcan como no editables
+		       return false;
+		    }
+		};
 		loadLicensesTableModel();
 		controladorLicencia.loadNotExpiredLicensesTable(tableLicencias, model);
 	}
-	
-	
 }

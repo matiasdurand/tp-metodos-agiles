@@ -75,11 +75,13 @@ public class PanelRenovar extends JPanel {
 	
 	private SimpleDateFormat formatoFecha = new SimpleDateFormat("dd MMMM yyyy");
 	
+	private int contador=0;
+	
 	public PanelRenovar() {
 		super();
 		initialize();
-		inicializarPanelTablaLicencias();
 		inicializarPanelRenovarLicencia();
+		inicializarPanelTablaLicencias();
 	}
 
 	private void initialize() {
@@ -121,9 +123,6 @@ public class PanelRenovar extends JPanel {
 				if (!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
 					getToolkit().beep();
 					e.consume();
-				}
-				else {
-					//Ingrese solo numeros sin puntos
 				}
 			}
 		});
@@ -258,11 +257,11 @@ public class PanelRenovar extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if(filaSeleccionada>=0) {
 					cargarDatosLicencia();
+					panelTablaLicencias.setVisible(false);
 					panelRenovarLicencia.setVisible(true);
 				}
 				else
 					JOptionPane.showMessageDialog(null, "Debe seleccionar una licencia para renovar");
-					System.out.println("btnRenovar -> filaSeleccionada="+filaSeleccionada);
 			}
 		});
 		
@@ -283,14 +282,17 @@ public class PanelRenovar extends JPanel {
 		JScrollPane scroll = new JScrollPane();
 		scroll.setViewportView(tableLicencias);
 		scroll.setBounds(12, 0, 820, 218);
-		tableLicencias.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-	        public void valueChanged(ListSelectionEvent event) {     
-	        	if(tableLicencias.getSelectedRow()>=0) {
-	        		filaSeleccionada = (Integer)tableLicencias.getValueAt(tableLicencias.getSelectedRow(), 0);	        		
-	        	}
-	        	if(filaSeleccionada!=-1)
-	        		btnRenovar.setEnabled(true);
-	        }
+		tableLicencias.getSelectionModel().addListSelectionListener(lse -> {
+			if(contador==1) {
+	    		if(tableLicencias.getSelectedRow()>=0) {
+	    			filaSeleccionada = Integer.valueOf(tableLicencias.getValueAt(tableLicencias.getSelectedRow(), 0).toString());
+	    			btnRenovar.setEnabled(true);
+	    		}
+	    		else
+	    			btnRenovar.setEnabled(false);
+	    		contador=0;
+			}
+			else contador++;
 	    });
 		panelTablaLicencias.add(scroll);
 	}
@@ -298,7 +300,8 @@ public class PanelRenovar extends JPanel {
 	private void cargarDatosLicencia() {
 		taObservaciones.setText("");
 		expiryDate = controladorLicencia.calculateExpiryDate(titularDTO);
-		cmbClase.setSelectedItem(tableLicencias.getValueAt(tableLicencias.getSelectedRow(),1));
+		cmbClase.addItem((LicenseType)tableLicencias.getValueAt(tableLicencias.getSelectedRow(),1));
+		cmbClase.setSelectedItem((LicenseType)tableLicencias.getValueAt(tableLicencias.getSelectedRow(),1));
 		StringBuffer sb = new StringBuffer("$");
 		sb.append(String.valueOf(controladorLicencia.calculateLicenseCost((LicenseType)cmbClase.getSelectedItem(), expiryDate)));
 		tfCosto.setText(sb.toString());
@@ -373,7 +376,7 @@ public class PanelRenovar extends JPanel {
 				controladorLicencia.renewLicense(titularDTO, licenciaDTO, MenuPrincipal.menuPrincipal.usuarioDTO);
 				if(JOptionPane.showConfirmDialog(null, "Licencia renovada exitosamente, ¿Desea imprimirla ahora?", "Éxito", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
 					try {
-						PanelController.getImprimir(titularDTO, licenciaDTO, _DESTINO);
+						PanelController.getImprimir(titularDTO, licenciaDTO, _DESTINO).setVisible(true);
 					}catch(Exception ex) {}
 				}
 				MenuPrincipal.menuPrincipal.cancelar(MenuPrincipal.PANEL_RENOVAR);
@@ -420,6 +423,8 @@ public class PanelRenovar extends JPanel {
 	public void reset() {
 		this.removeAll();
 		this.initialize();
+		inicializarPanelTablaLicencias();
+		inicializarPanelRenovarLicencia();
 	}
 }
 

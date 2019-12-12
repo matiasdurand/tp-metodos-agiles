@@ -50,11 +50,6 @@ public class PanelModificarTitular extends JPanel {
 	private JButton btnCancelar;
 	
 	private SimpleDateFormat formatoFecha = new SimpleDateFormat("dd MMMM yyyy");
-
-	public PanelModificarTitular() {
-		super();
-		initialize();
-	}
 	
 	private void completarTitularDTO() {
 		titularDTO.setAdress(tfDireccion.getText());
@@ -73,6 +68,11 @@ public class PanelModificarTitular extends JPanel {
             resultado = false;
         }
         return resultado;
+	}
+	
+	public PanelModificarTitular() {
+		super();
+		initialize();
 	}
 
 	private void initialize() {
