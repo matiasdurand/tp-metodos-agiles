@@ -86,12 +86,16 @@ public class PanelUsuario extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if(tfUser.getText().equals(nuevoUsuarioDTO.getUsername())) {
 					completarNuevoUsuarioDTO();
-					if(controladorUsuario.validateUserData(nuevoUsuarioDTO)) {
-						controladorUsuario.modifyUser(nuevoUsuarioDTO, MenuPrincipal.menuPrincipal.usuarioDTO);
-						JOptionPane.showMessageDialog(null, "El usuario ha sido modificado correctamente");
-						MenuPrincipal.menuPrincipal.cancelar(MenuPrincipal.PANEL_MODIFICAR_USUARIO);
+					if(validatePassword()) {
+						if(controladorUsuario.validateUserData(nuevoUsuarioDTO)) {
+							controladorUsuario.modifyUser(nuevoUsuarioDTO, MenuPrincipal.menuPrincipal.usuarioDTO);
+							JOptionPane.showMessageDialog(null, "El usuario ha sido modificado correctamente");
+							MenuPrincipal.menuPrincipal.cancelar(MenuPrincipal.PANEL_MODIFICAR_USUARIO);
+						}
+						else JOptionPane.showMessageDialog(null, "Los datos ingresados no son validos");
 					}
-					else JOptionPane.showMessageDialog(null, "Los datos ingresados no son validos");
+					else
+						JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
 				}
 				else {
 					if(validarEntradas()) {
@@ -148,10 +152,10 @@ public class PanelUsuario extends JPanel {
 				}
 				else JOptionPane.showMessageDialog(null, "La información del usuario ingresada no es válida");
 			}
-			else JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
+			else JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden o no son válidas");
 		}
 		else
-			JOptionPane.showMessageDialog(null, "El nombre de usuario ingresado ya se encuentra en uso");
+			JOptionPane.showMessageDialog(null, "El nombre de usuario ingresado ya se encuentra en uso o no es válido");
 		return valido;
 	}
 	
@@ -325,11 +329,11 @@ public class PanelUsuario extends JPanel {
 	}
 
 	protected boolean validateUsername() {
-		return controladorUsuario.validateUsername(tfUser.getText());
+		return (tfUser.getText().length()>0 && controladorUsuario.validateUsername(tfUser.getText()));
 	}
 
 	protected boolean validatePassword() {
-		return (String.valueOf(tfPassword.getPassword())!="" && String.valueOf(tfPassword.getPassword()).equals(String.copyValueOf(tfRepeatPassword.getPassword())));
+		return (String.valueOf(tfPassword.getPassword()).length()>0 && String.valueOf(tfPassword.getPassword()).equals(String.valueOf(tfRepeatPassword.getPassword())));
 	}
 	
 	public void reset(int opcion) {
